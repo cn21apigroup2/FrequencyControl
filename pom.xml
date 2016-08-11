@@ -27,6 +27,7 @@
 		<maven.war.plugin.version>2.3</maven.war.plugin.version>
 		<maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
 		<cargo.maven2.plugin.version>1.0</cargo.maven2.plugin.version>
+		<maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -157,13 +158,11 @@
 				<!-- 是否替换资源中的属性 -->
 				<filtering>false</filtering>
 			</resource>
-			<resource>  
-                <directory>src/main/resources</directory>  
-                <!--  
-                    <includes> <include>**/*.properties</include>  
-                    <include>**/*.xml</include> </includes> <filtering>true</filtering>  
-                -->  
-            </resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- <includes> <include>**/*.properties</include> <include>**/*.xml</include> 
+					</includes> <filtering>true</filtering> -->
+			</resource>
 		</resources>
 		<finalName>FrequencyControl</finalName>
 		<plugins>
@@ -176,7 +175,15 @@
 					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
