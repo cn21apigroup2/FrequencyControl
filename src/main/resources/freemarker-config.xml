@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+     <property name="location" value="classpath:FrequencyControl.properties" />
+     </bean>
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	  <property name="templateLoaderPath" value="/WEB-INF/freemarker"/>
+	   <property name="freemarkerSettings">
+	       <props>
+	       <prop key="defaultEncoding">${default_encoding}</prop>	
+		   <prop key="number_format">${number_format}</prop>
+		   <prop key="date_format">${date_format}</prop>
+		   <prop key="datetime_format">${datetime_format}</prop>
+	       <prop key="classic_compatible">${classic_compatible}</prop>
+	       </props>
+       </property>
+       <property name="freemarkerVariables">
+           <map>              
+              <entry key="mediaRoot" value="${mediaRoot}" />
+              <entry key="jsRoot" value="${jsRoot}" />
+              <entry key="cssRoot" value="${cssRoot}" />
+              <entry key="imageRoot" value="${imageRoot}" />
+              <entry key="lessRoot" value="${lessRoot}" />
+           </map>
+       </property>
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+	  <property name="contentType" value="text/html;charset=UTF-8" />
+	  <property name="cache" value="true"/>
+	  <property name="prefix" value=""/>
+	  <property name="suffix" value=".ftl"/>
+	</bean>
+	
+</beans>

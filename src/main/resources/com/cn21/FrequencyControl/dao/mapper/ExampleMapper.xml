@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn21.FrequencyControl.dao.ExampleDao">
+
+    <select id="getExampleByName" parameterType="String" resultMap="example">
+    	select * from example where name=#{name};
+    </select>
+    <resultMap type="Example" id="example">  
+        <result column="name" property="name"/>  
+    </resultMap>  
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">	
+	
+	<bean id="dataSource"
+        class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource">
+            <ref local="tcDataSource" />
+        </property>
+    </bean>
+    
+    <bean id="tcDataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+	  <property name="poolProperties">  
+	    <bean class="org.apache.tomcat.jdbc.pool.PoolProperties">  
+	      <property name="url" value="${jdbcUrl}"/>  
+	      <property name="driverClassName" value="${driverClass}"/>  
+	      <property name="username" value="${username}"/>  
+	      <property name="password" value="${password}"/>  
+	      <property name="jmxEnabled" value="false"/>  
+	      <property name="testWhileIdle" value="false"/>  
+	      <property name="testOnBorrow" value="true"/>  
+	      <property name="validationInterval" value="30000"/>  
+	      <property name="testOnReturn" value="false"/>  
+	      <property name="validationQuery" value="select 1"/>  
+	      <property name="timeBetweenEvictionRunsMillis" value="30000"/>  
+	      <property name="maxActive" value="70"/>  
+	      <property name="initialSize" value="10"/>  
+	      <property name="maxWait" value="100000"/>  
+	      <property name="removeAbandonedTimeout" value="30"/>  
+	      <property name="minEvictableIdleTimeMillis" value="30000"/>  
+	      <property name="minIdle" value="10"/>  
+	      <property name="logAbandoned" value="false"/>  
+	      <property name="removeAbandoned" value="true"/>  
+	      <property name="jdbcInterceptors" value="org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"/>  
+	   </bean>  
+	  </property>  
+	</bean>     
+        
+</beans>
