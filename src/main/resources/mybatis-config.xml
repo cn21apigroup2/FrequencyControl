@@ -22,17 +22,4 @@
     <typeAliases>
     <typeAlias alias="Example"  type="com.cn21.FrequencyControl.module.Example"/>
     </typeAliases>
-    
-	<environments default="dev">
-        <environment id="dev">
-            <transactionManager type="JDBC">                
-            </transactionManager>
-            <dataSource type="POOLED">
-                <property name="driver" value="${driverClass}" />
-                <property name="url" value="${jdbcUrl}" />
-                <property name="username" value="${username}" />
-                <property name="password" value="${password}" />
-            </dataSource>           
-        </environment>		
-    </environments>    
 </configuration>
