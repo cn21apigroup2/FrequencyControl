@@ -8,6 +8,7 @@ CREATE TABLE `user` (
   deleted TINYINT DEFAULT 0 COMMENT '0标识启用，1标识停用',
   PRIMARY KEY (`user_id`)  
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8 COMMENT '用户信息表';
+CREATE INDEX index_username ON user(username);
 
 DROP TABLE IF EXISTS `application`;  
 CREATE TABLE `application`(
