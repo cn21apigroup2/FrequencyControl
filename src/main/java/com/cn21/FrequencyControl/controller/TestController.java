@@ -8,11 +8,16 @@
  */
 package com.cn21.FrequencyControl.controller;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cn21.FrequencyControl.dao.BlacklistDao;
 import com.cn21.FrequencyControl.module.Example;
 import com.cn21.FrequencyControl.service.ExampleService;
 
@@ -25,6 +30,8 @@ import com.cn21.FrequencyControl.service.ExampleService;
 public class TestController {
 	@Autowired
 	private ExampleService exampleService;
+	@Autowired
+	private BlacklistDao bd;
 
 	/**
 	 * 欢迎页面
@@ -37,4 +44,18 @@ public class TestController {
 		modelAndView.addObject("example", example);
 		return modelAndView;
 	}
+	
+	/**
+	 * test页面
+	 * @return void
+	 */
+	@RequestMapping(value = "/test")
+	public ModelAndView test() {
+		Map<String,Date> l=bd.testingByUsername("app1", "007");
+		System.out.println(l.toString());
+		ModelAndView modelAndView = new ModelAndView("/test");
+		modelAndView.addObject("info", l.toString()+l.size());
+		return modelAndView;
+	}
+	
 }
