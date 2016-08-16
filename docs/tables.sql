@@ -9,6 +9,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`user_id`)  
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8 COMMENT '用户信息表';
 CREATE INDEX index_username ON user(username);
+commit;
 
 DROP TABLE IF EXISTS `application`;  
 CREATE TABLE `application`(
@@ -23,6 +24,7 @@ PRIMARY KEY(app_id),
 FOREIGN KEY(user_id) REFERENCES USER(user_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '应用表';
 CREATE INDEX index_app_key ON application(app_key);
+commit;
 
 DROP TABLE IF EXISTS `interface_control`;  
 CREATE TABLE `interface_control`(
@@ -39,3 +41,22 @@ PRIMARY KEY(interface_id),
 FOREIGN KEY(app_id) REFERENCES application(app_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '频次控制接口表';
 CREATE INDEX index_signature ON interface_control(signature);
+commit;
+
+DROP TABLE IF EXISTS blacklist;
+CREATE TABLE blacklist (
+  blacklist_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '黑名单ID',
+  app_key CHAR(36) NOT NULL COMMENT 'APP的唯一标识',
+  customer_id VARCHAR(30) NOT NULL COMMENT '每个APP下的用户名',
+  limited_ip BINARY(16) NOT NULL COMMENT '被禁IP地址',
+  times TINYINT NOT NULL COMMENT '被加入黑名单次数',
+  fir_date DATETIME COMMENT '第一次加入黑民单时间',
+  sec_date DATETIME COMMENT '第二次加入黑名单时间',
+  thr_date DATETIME COMMENT '第三次加入黑名单时间',
+  absoulte_date DATETIME COMMENT  '完全冻结时间'
+)ENGINE = InnoDB DEFAULT CHARSET = UTF8 COMMENT '黑名单信息记录表' ;
+
+CREATE INDEX APP_KEY_INDEX ON blacklist(app_key);
+CREATE INDEX CUSTOMER_ID_INDEX ON blacklist(customer_id);
+CREATE INDEX LIMITED_IP_INDEX ON blacklist(limited_ip);
+commit;
