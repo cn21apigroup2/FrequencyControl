@@ -21,5 +21,6 @@
     </settings>    
     <typeAliases>
     <typeAlias alias="Example"  type="com.cn21.FrequencyControl.module.Example"/>
+    <typeAlias alias="Application"  type="com.cn21.FrequencyControl.module.Application"/>
     </typeAliases>
 </configuration>
