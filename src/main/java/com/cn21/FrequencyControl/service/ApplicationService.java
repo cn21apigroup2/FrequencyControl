@@ -35,11 +35,11 @@ public interface ApplicationService {
 	List<Application> getDeletedApplicationListByUserId(Long userId);
 	
 	/**
-	 * 根据appkey恢复被删除的应用
-	 * @param appKey
+	 * 根据appId恢复被删除的应用
+	 * @param appId
 	 * @return
 	 */
-	boolean regainApplication(String appKey);
+	boolean regainApplication(long appId);
 	
 	/**
 	 * 创建应用
@@ -56,6 +56,13 @@ public interface ApplicationService {
 	boolean modifyApplicationDesc(Application application);
 	
 	/**
+	 * 更新应用
+	 * @param application
+	 * @return
+	 */
+	boolean modifyApplication(Application application);
+	
+	/**
 	 * 修改应用平台
 	 * @param application
 	 * @return
@@ -67,7 +74,7 @@ public interface ApplicationService {
 	 * @param application
 	 * @return
 	 */
-	boolean deleteApplication(String appKey);
+	boolean deleteApplication(long appId);
 	
 	/**
 	 * 根据appKey获取应用
@@ -76,7 +83,9 @@ public interface ApplicationService {
 	 */
 	Application getApplicationByAppKey(String appKey);
 
-	Application generateApp(HttpServletRequest request);
+	Application generateApp(HttpServletRequest request,long userId);
+
+	Application getApplicationByAppId(long appId);
 	
 
 }

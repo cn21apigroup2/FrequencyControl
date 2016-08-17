@@ -11,23 +11,30 @@
     <select id="getAppListByUserId" parameterType="long" resultMap="application">
     	select * from application where user_id=#{userId} and deleted=0;
     </select>
+    <select id="getApplicationByAppId" parameterType="long" resultMap="application">
+    	select * from application where app_id=#{appId};
+    </select>
     <select id="getDeletedAppListByUserId" parameterType="long" resultMap="application">
     	select * from application where user_id=#{userId} and deleted=1;
     </select>
     <select id="getApplicationByAppKey" parameterType="String" resultMap="application">
     	select * from application where app_key=#{appKey} and deleted=0;
     </select>
+    <update id="updateApplication" parameterType="Application">
+    update application set app_description=#{app_description},platform=#{platform},
+    app_name=#{app_name} where app_id=#{app_id};
+    </update>
     <update id="updateAppDescription" parameterType="Application">
     update application set app_description=#{app_description} where app_key=#{app_key};
     </update>
     <update id="updateAppPlatform" parameterType="Application">
     update application set platform=#{platform} where app_key=#{app_key};
     </update>
-    <delete id="deleteApplication" parameterType="String">
-    update application set deleted=1 where app_key=#{app_key};
+    <delete id="deleteApplication" parameterType="long">
+    update application set deleted=1 where app_id=#{app_id};
     </delete>
-    <update id="regainApplication" parameterType="String">
-    update application set deleted=0 where app_key=#{app_key};
+    <update id="regainApplication" parameterType="long">
+    update application set deleted=0 where app_id=#{app_id};
     </update>
     <resultMap type="Application" id="application">  
         <id column="app_id" property="app_id"/>  

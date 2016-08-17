@@ -17,20 +17,24 @@ import com.cn21.FrequencyControl.module.Application;
  * @date 2016年8月8日
  */
 public interface ApplicationDao {
-	
+
 	int addApplication(Application application);
 
 	List<Application> getAppListByUserId(long userId);
 
-	List<Application> getDeletedAppListByUserI(long userId);
+	List<Application> getDeletedAppListByUserId(long userId);
 
 	Application getApplicationByAppKey(String appKey);
 
+	Application getApplicationByAppId(long appId);
+
 	int updateAppDescription(Application application);
+	
+	int updateApplication(Application application);
 
 	int updateAppPlatform(Application application);
 
-	int deleteApplication(String app_key);
+	int deleteApplication(long app_id);
 
-	int regainApplication(String app_key);
+	int regainApplication(long app_id);
 }

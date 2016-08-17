@@ -38,32 +38,34 @@ public class AppController {
 	 */
 	@RequestMapping(value = "/list/{userId}")
 	public ModelAndView showAllUserApps(@PathVariable Long userId) {
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
+		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取用户应用列表
 		ModelAndView modelAndView = new ModelAndView("/app/appList");
 		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
 	/**
-	 * 创建app
+	 * 保存创建的app
 	 * @return void
 	 */
 	@RequestMapping(value = "/save/{userId}")
-	public ModelAndView saveUserApps(@PathVariable Long userId,
+	public ModelAndView saveUserApps(@PathVariable long userId,
 			HttpServletRequest request, HttpServletResponse respons) {
-		Application application=applicationService.generateApp(request);
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/createApp");
+		Application application=applicationService.generateApp(request,userId);//根据用户提交表单生成app
+		applicationService.createApplication(application);//持久化到数据库
+		List<Application> applications = applicationService.getApplicationListByUserId(userId);
+		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
 	
 	/**
-	 * 创建app
+	 * 去创建app
 	 * @return void
 	 */
 	@RequestMapping(value = "/create/{userId}")
-	public ModelAndView createUserApps(@PathVariable Long userId) {
+	public ModelAndView createUserApps(@PathVariable long userId) {
 		ModelAndView modelAndView = new ModelAndView("/app/createApp");
 		modelAndView.addObject("userId", userId);
 		return modelAndView;
@@ -74,21 +76,41 @@ public class AppController {
 	 * @return void
 	 */
 	@RequestMapping(value = "/modify/{userId}/{appId}")
-	public ModelAndView createUserApps(@PathVariable Long userId,@PathVariable Long appId) {
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/modifyApp");
+	public ModelAndView modifyUserApps(@PathVariable long userId,@PathVariable long appId) {
+		Application application = applicationService.getApplicationByAppId(appId);//
+		ModelAndView modelAndView = new ModelAndView("/app/modifyApp");
+		modelAndView.addObject("application", application);
+		modelAndView.addObject("userId", userId);
+		return modelAndView;
+	}
+	/**
+	 * 保存修改app
+	 * @return void
+	 */
+	@RequestMapping(value = "/saveModify/{userId}/{appId}")
+	public ModelAndView saveModifyApps(@PathVariable long userId,@PathVariable long appId,
+			HttpServletRequest request, HttpServletResponse respons) {
+		Application application=applicationService.getApplicationByAppId(appId);
+		application.setApp_description(request.getParameter("appDescription"));
+		application.setApp_name(request.getParameter("appName"));
+		application.setPlatform(request.getParameter("appPlatform"));
+		applicationService.modifyApplication(application);//保存修改
+		List<Application> applications = applicationService.getApplicationListByUserId(userId);
+		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
-	
 	/**
 	 * 删除app
 	 * @return void
 	 */
 	@RequestMapping(value = "/delete/{userId}/{appId}")
-	public ModelAndView deleteUserApps(@PathVariable Long userId,@PathVariable Long appId) {
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/deleteApp");
+	public ModelAndView deleteUserApps(@PathVariable long userId,@PathVariable long appId) {
+		applicationService.deleteApplication(appId);//删除应用
+		List<Application> applications = applicationService.getApplicationListByUserId(userId);
+		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
@@ -98,9 +120,25 @@ public class AppController {
 	 * @return void
 	 */
 	@RequestMapping(value = "/listDel/{userId}")
-	public ModelAndView showAlldeletedApps(@PathVariable Long userId,@PathVariable Long appId) {
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/deleteApps");
+	public ModelAndView showAllDeletedApps(@PathVariable long userId) {
+		List<Application> applications = applicationService.getDeletedApplicationListByUserId(userId);//获取已删除应用列表
+		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("applications", applications);
+		modelAndView.addObject("deleted", 1);
+		return modelAndView;
+	}
+	
+	/**
+	 * 恢复已删除的app
+	 * @return void
+	 */
+	@RequestMapping(value = "/resume/{userId}/{appId}")
+	public ModelAndView resumeDeletedApps(@PathVariable long userId,@PathVariable long appId) {
+		applicationService.regainApplication(appId);//恢复已删除应用
+		List<Application> applications = applicationService.getDeletedApplicationListByUserId(userId);//获取已删除应用列表
+		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}

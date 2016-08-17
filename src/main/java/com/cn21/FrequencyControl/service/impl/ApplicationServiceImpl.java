@@ -8,7 +8,12 @@
  */
 package com.cn21.FrequencyControl.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,7 +50,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 	@Override
 	public List<Application> getDeletedApplicationListByUserId(Long userId) {
 		// TODO Auto-generated method stub
-		return applicationDao.getDeletedAppListByUserI(userId);
+		return applicationDao.getDeletedAppListByUserId(userId);
 	}
 
 	/* (non-Javadoc)
@@ -53,9 +58,9 @@ public class ApplicationServiceImpl implements ApplicationService{
 	 * @see com.cn21.FrequencyControl.service.ApplicationService#regainApplication(java.lang.String)
 	 */
 	@Override
-	public boolean regainApplication(String appKey) {
+	public boolean regainApplication(long appId) {
 		// TODO Auto-generated method stub
-		int successCount = applicationDao.regainApplication(appKey);
+		int successCount = applicationDao.regainApplication(appId);
 		if(successCount==1) return true;
 		return false;
 	}
@@ -101,9 +106,9 @@ public class ApplicationServiceImpl implements ApplicationService{
 	 * @see com.cn21.FrequencyControl.service.ApplicationService#deleteApplication(com.cn21.FrequencyControl.module.Application)
 	 */
 	@Override
-	public boolean deleteApplication(String appKey) {
+	public boolean deleteApplication(long appId) {
 		// TODO Auto-generated method stub
-		int successCount = applicationDao.deleteApplication(appKey);
+		int successCount = applicationDao.deleteApplication(appId);
 		if(successCount==1) return true;
 		return false;
 	}
@@ -118,14 +123,59 @@ public class ApplicationServiceImpl implements ApplicationService{
 		return applicationDao.getApplicationByAppKey(appKey);
 	}
 
+	/* (non-Javadoc)
+	 * 生成application
+	 * @see com.cn21.FrequencyControl.service.ApplicationService#generateApp(javax.servlet.http.HttpServletRequest, long)
+	 */
 	@Override
-	public Application generateApp(HttpServletRequest request) {
+	public Application generateApp(HttpServletRequest request,long userId) {
 		String appName = request.getParameter("appName");
 		String appDescription = request.getParameter("appDescription");
 		String appPlatform = request.getParameter("appPlatform");
-		return null;
+		Map<String, String> appKeyAndSecret = generateAppKeyAndSecret(userId);
+		Application application = new Application();
+		application.setApp_name(appName);
+		application.setApp_description(appDescription);
+		application.setPlatform(appPlatform);
+		application.setApp_key(appKeyAndSecret.get("appKey"));
+		application.setSecret(appKeyAndSecret.get("secret"));
+		application.setUser_id(userId);
+		return application;
+	}
+	/**
+	 * appKey和secret的生成算法
+	 * @param userId
+	 * @return
+	 */
+	private Map<String,String> generateAppKeyAndSecret(long userId){
+		Map<String, String> result = new HashMap<String, String>();
+		userId = userId % 1000000000;// userId控制在9位数以内
+		Lock lock = new ReentrantLock();
+		String uuid = null;
+		lock.lock();//互斥访问
+		try {
+			uuid = UUID.randomUUID().toString();
+		} finally {
+			lock.unlock();
+		}
+		result.put("appKey", userId + uuid.substring(0, 8));// appKey为userId低9位+UUID高8位
+		result.put("secret", userId + uuid.substring(24));// secret为userId低9位+UUID低12位
+		return result;
 	}
 
+	@Override
+	public Application getApplicationByAppId(long appId) {
+		// TODO Auto-generated method stub
+		return applicationDao.getApplicationByAppId(appId);
+	}
+
+	@Override
+	public boolean modifyApplication(Application application) {
+		// TODO Auto-generated method stub
+		int successCount=applicationDao.updateApplication(application);
+		if(successCount==1) return true;
+		return false;
+	}
 
 
 }

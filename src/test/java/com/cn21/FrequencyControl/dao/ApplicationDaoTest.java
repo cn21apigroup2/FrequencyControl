@@ -123,7 +123,7 @@ public class ApplicationDaoTest {
 	 */
 	@Test
 	public void testDeleteApplication() {
-		int actual = applicationDao.deleteApplication(getApplication().getApp_key());
+		int actual = applicationDao.deleteApplication(getApplication().getApp_id());
 		int expected=1;
 		assertEquals(expected,actual);
 	}
