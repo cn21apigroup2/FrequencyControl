@@ -10,6 +10,9 @@ package com.cn21.FrequencyControl.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cn21.FrequencyControl.module.Application;
-import com.cn21.FrequencyControl.module.Example;
 import com.cn21.FrequencyControl.service.ApplicationService;
 
 /**
@@ -37,7 +39,21 @@ public class AppController {
 	@RequestMapping(value = "/list/{userId}")
 	public ModelAndView showAllUserApps(@PathVariable Long userId) {
 		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/appList");
+		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("applications", applications);
+		return modelAndView;
+	}
+	/**
+	 * 创建app
+	 * @return void
+	 */
+	@RequestMapping(value = "/save/{userId}")
+	public ModelAndView saveUserApps(@PathVariable Long userId,
+			HttpServletRequest request, HttpServletResponse respons) {
+		
+		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
+		ModelAndView modelAndView = new ModelAndView("/createApp");
 		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
@@ -48,9 +64,8 @@ public class AppController {
 	 */
 	@RequestMapping(value = "/create/{userId}")
 	public ModelAndView createUserApps(@PathVariable Long userId) {
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/createApp");
-		modelAndView.addObject("applications", applications);
+		ModelAndView modelAndView = new ModelAndView("/app/createApp");
+		modelAndView.addObject("userId", userId);
 		return modelAndView;
 	}
 	

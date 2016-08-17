@@ -5,8 +5,8 @@
 
 <mapper namespace="com.cn21.FrequencyControl.dao.ApplicationDao">
 	<insert id="addApplication" parameterType="Application" keyProperty="app_id" useGeneratedKeys="true">
-	insert into application(user_id,app_key,secret,app_description,platform) 
-	values(#{user_id},#{app_key},#{secret},#{app_description},#{platform});
+	insert into application(user_id,app_name,app_key,secret,app_description,platform) 
+	values(#{user_id},#{app_name},#{app_key},#{secret},#{app_description},#{platform});
 	</insert>
     <select id="getAppListByUserId" parameterType="long" resultMap="application">
     	select * from application where user_id=#{userId} and deleted=0;
@@ -32,6 +32,7 @@
     <resultMap type="Application" id="application">  
         <id column="app_id" property="app_id"/>  
         <result column="user_id" property="user_id"/>  
+        <result column="app_name" property="app_name"/>  
         <result column="app_key" property="app_key"/>  
         <result column="secret" property="secret"/>  
         <result column="app_description" property="app_description"/>

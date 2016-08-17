@@ -35,7 +35,6 @@ APPID
 用户唯一标识（IP/Username）
 进入黑名单次数
 是否生效
-
 CREATE TABLE `example` (
   `name` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8

@@ -33,6 +33,7 @@ public class ApplicationDaoTest {
 		Application application = new Application();
 		application.setUser_id(1);
 		application.setApp_key("123456");
+		application.setApp_name("切水果");
 		application.setPlatform("IOS");
 		application.setSecret("123456");
 		application.setCreate_date(new Timestamp(System.currentTimeMillis()));
@@ -66,8 +67,8 @@ public class ApplicationDaoTest {
 		assertTrue(expectedApplication.getApp_description().equals(actualApplication.getApp_description()));
 		assertTrue(expectedApplication.getPlatform().equals(actualApplication.getPlatform()));
 		assertTrue(expectedApplication.getApp_key().equals(actualApplication.getApp_key()));
+		assertTrue(expectedApplication.getApp_name().equals(actualApplication.getApp_name()));
 		assertTrue(expectedApplication.getSecret().equals(actualApplication.getSecret()));
-		assertTrue(expectedApplication.getCreate_date().toString().equals(actualApplication.getCreate_date().toString()));
 		assertTrue(expectedApplication.getIs_reviewed()==actualApplication.getIs_reviewed());
 		assertTrue(expectedApplication.getDeleted()==actualApplication.getDeleted());
 		
@@ -83,7 +84,7 @@ public class ApplicationDaoTest {
 		assertTrue(expected.getApp_description().equals(actual.getApp_description()));
 		assertTrue(expected.getPlatform().equals(actual.getPlatform()));
 		assertTrue(expected.getApp_key().equals(actual.getApp_key()));
-		assertTrue(expected.getCreate_date().toString().equals(actual.getCreate_date().toString()));
+		assertTrue(expected.getApp_name().equals(actual.getApp_name()));
 		assertTrue(expected.getIs_reviewed()==actual.getIs_reviewed());
 		assertTrue(expected.getSecret().equals(actual.getSecret()));
 		assertTrue(expected.getDeleted()==actual.getDeleted());

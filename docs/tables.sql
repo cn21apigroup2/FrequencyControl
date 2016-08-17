@@ -2,31 +2,32 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (  
   user_id INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   username VARCHAR(30) NOT NULL COMMENT '用户名',
-  password VARCHAR(50) COMMENT '密码MD5加密',
+  PASSWORD VARCHAR(50) COMMENT '密码MD5加密',
   email VARCHAR(30) COMMENT '用户邮箱',
-  register_date TIMESTAMP(14) default CURRENT_TIMESTAMP COMMENT '注册日期',
+  register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '注册日期',
   deleted TINYINT DEFAULT 0 COMMENT '0标识启用，1标识停用',
   PRIMARY KEY (`user_id`)  
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8 COMMENT '用户信息表';
-CREATE INDEX index_username ON user(username);
-commit;
+CREATE INDEX index_username ON USER(username);
+COMMIT;
 
 DROP TABLE IF EXISTS `application`;  
 CREATE TABLE `application`(
 app_id INT NOT NULL AUTO_INCREMENT COMMENT '应用唯一标识 主键',
 user_id INT NOT NULL COMMENT '该应用属于哪一个用户的标识',
+app_name VARCHAR(30) NOT NULL COMMENT '应用名称',
 app_key VARCHAR(30) NOT NULL COMMENT '该应用标识 颁发给用户',
 secret VARCHAR(30) DEFAULT NULL COMMENT '该应用的秘钥,颁发给用户,签证使用',
 app_description TEXT DEFAULT NULL  COMMENT '应用描述',
 platform VARCHAR(30) DEFAULT NULL COMMENT '应用的平台',
-create_date TIMESTAMP(14) default CURRENT_TIMESTAMP COMMENT '创建时间日期',
-is_reviewed ENUM('0','1','2') DEFAULT 0 COMMENT '审核状态 0表示未审核，1表示已审核通过，2标识审核未通过',
+create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间日期',
+is_reviewed ENUM('0','1','2') DEFAULT '0' COMMENT '审核状态 0表示未审核，1表示已审核通过，2标识审核未通过',
 deleted TINYINT DEFAULT 0 COMMENT '0表示未删除，1表示已删除',
 PRIMARY KEY(app_id),
 FOREIGN KEY(user_id) REFERENCES USER(user_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '应用表';
 CREATE INDEX index_app_key ON application(app_key);
-commit;
+COMMIT;
 
 DROP TABLE IF EXISTS `interface_control`;  
 CREATE TABLE `interface_control`(
@@ -43,7 +44,7 @@ PRIMARY KEY(interface_id),
 FOREIGN KEY(app_id) REFERENCES application(app_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '频次控制接口表';
 CREATE INDEX index_signature ON interface_control(signature);
-commit;
+COMMIT;
 
 DROP TABLE IF EXISTS blacklist;
 CREATE TABLE blacklist (
@@ -56,9 +57,9 @@ CREATE TABLE blacklist (
   sec_date DATETIME COMMENT '第二次加入黑名单时间',
   thr_date DATETIME COMMENT '第三次加入黑名单时间',
   absoulte_date DATETIME COMMENT  '完全冻结时间'
-)ENGINE = InnoDB DEFAULT CHARSET = UTF8 COMMENT '黑名单信息记录表' ;
+)ENGINE = INNODB DEFAULT CHARSET = UTF8 COMMENT '黑名单信息记录表' ;
 
 CREATE INDEX APP_KEY_INDEX ON blacklist(app_key);
 CREATE INDEX CUSTOMER_ID_INDEX ON blacklist(customer_id);
 CREATE INDEX LIMITED_IP_INDEX ON blacklist(limited_ip);
-commit;
+COMMIT;

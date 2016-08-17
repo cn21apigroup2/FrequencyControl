@@ -19,6 +19,7 @@ public class Application {
 	private long user_id;
 	private String app_key;
 	private String secret;
+	private String app_name;
 	private String app_description;
 	private Timestamp create_date;
 	private int is_reviewed;
@@ -26,6 +27,19 @@ public class Application {
 	private short deleted;
 	
 	
+	
+	/**
+	 * @return the app_name
+	 */
+	public String getApp_name() {
+		return app_name;
+	}
+	/**
+	 * @param app_name the app_name to set
+	 */
+	public void setApp_name(String app_name) {
+		this.app_name = app_name;
+	}
 	/**
 	 * @return the create_date
 	 */

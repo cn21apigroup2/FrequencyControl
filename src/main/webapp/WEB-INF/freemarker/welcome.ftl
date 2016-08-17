@@ -7,6 +7,9 @@
 
 	</head>
 	<body>
-		example name:${example.name}
+		<ul>
+                  <li><a href="/app/list/1">app管理</a>
+                  </li>
+            </ul>
 	</body>
 </html>
