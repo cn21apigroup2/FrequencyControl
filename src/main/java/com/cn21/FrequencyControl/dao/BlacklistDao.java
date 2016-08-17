@@ -2,6 +2,7 @@ package com.cn21.FrequencyControl.dao;
 
 import com.cn21.FrequencyControl.dto.BlacklistDto;
 import com.cn21.FrequencyControl.module.Blacklist;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,12 @@ public interface BlacklistDao {
      */
     void reset(String appKey,String username);
 
+    /**
+     * 通过IP重置一条记录
+     * @param appKey
+     * @param ip
+     */
+    void resetByIp(String appKey,String ip);
     /**
      * 修改黑名单数据内容
      * @param blacklist

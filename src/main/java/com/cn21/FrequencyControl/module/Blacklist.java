@@ -7,9 +7,7 @@ import java.util.Date;
  */
 public class Blacklist {
     private int blacklistId;
-    private int userId;
-    private int appId;
-    private String appMarking;
+    private String appKey;
     private String customerId;
     private String limitedIp;
     private short times;
@@ -27,28 +25,12 @@ public class Blacklist {
         this.blacklistId = blacklistId;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getAppKey() {
+        return appKey;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getAppId() {
-        return appId;
-    }
-
-    public void setAppId(int appId) {
-        this.appId = appId;
-    }
-
-    public String getAppMarking() {
-        return appMarking;
-    }
-
-    public void setAppMarking(String appMarking) {
-        this.appMarking = appMarking;
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
     public String getCustomerId() {
