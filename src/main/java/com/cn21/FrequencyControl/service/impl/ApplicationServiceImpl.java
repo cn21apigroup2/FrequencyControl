@@ -10,6 +10,8 @@ package com.cn21.FrequencyControl.service.impl;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -114,6 +116,14 @@ public class ApplicationServiceImpl implements ApplicationService{
 	public Application getApplicationByAppKey(String appKey) {
 		// TODO Auto-generated method stub
 		return applicationDao.getApplicationByAppKey(appKey);
+	}
+
+	@Override
+	public Application generateApp(HttpServletRequest request) {
+		String appName = request.getParameter("appName");
+		String appDescription = request.getParameter("appDescription");
+		String appPlatform = request.getParameter("appPlatform");
+		return null;
 	}
 
 

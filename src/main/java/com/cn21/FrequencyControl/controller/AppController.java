@@ -51,7 +51,7 @@ public class AppController {
 	@RequestMapping(value = "/save/{userId}")
 	public ModelAndView saveUserApps(@PathVariable Long userId,
 			HttpServletRequest request, HttpServletResponse respons) {
-		
+		Application application=applicationService.generateApp(request);
 		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取例子
 		ModelAndView modelAndView = new ModelAndView("/createApp");
 		modelAndView.addObject("applications", applications);

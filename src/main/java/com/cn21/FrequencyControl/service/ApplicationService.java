@@ -10,6 +10,8 @@ package com.cn21.FrequencyControl.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.cn21.FrequencyControl.module.Application;
 
 /**
@@ -73,6 +75,8 @@ public interface ApplicationService {
 	 * @return
 	 */
 	Application getApplicationByAppKey(String appKey);
+
+	Application generateApp(HttpServletRequest request);
 	
 
 }
