@@ -8,6 +8,9 @@
 
 	</head>
 	<body>
-		欢迎使用
+			 <ul class="dropdown-menu">
+                  <li><a href="/app/list/1">app管理</a>
+                  </li>
+            </ul>
 	</body>
 </html>

@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<jackson.version>2.5.0</jackson.version>
-		<junit.version>3.8.1</junit.version>
+		<junit.version>4.10</junit.version>
 		<aspectjweaver.version>1.8.9</aspectjweaver.version>
 		<mysql.connector.java.version>5.1.38</mysql.connector.java.version>
 		<log4j.version>1.2.17</log4j.version>
@@ -28,6 +28,7 @@
 		<maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
 		<cargo.maven2.plugin.version>1.0</cargo.maven2.plugin.version>
 		<maven.compiler.plugin.version>2.3.2</maven.compiler.plugin.version>
+		<geronimo.servlet.version>1.0</geronimo.servlet.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -36,7 +37,12 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.apache.geronimo.specs/geronimo-servlet_3.0_spec -->
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_3.0_spec</artifactId>
+			<version>${geronimo.servlet.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
@@ -158,13 +164,11 @@
 				<!-- 是否替换资源中的属性 -->
 				<filtering>false</filtering>
 			</resource>
-			<resource>  
-                <directory>src/main/resources</directory>  
-                <!--  
-                    <includes> <include>**/*.properties</include>  
-                    <include>**/*.xml</include> </includes> <filtering>true</filtering>  
-                -->  
-            </resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<!-- <includes> <include>**/*.properties</include> <include>**/*.xml</include> 
+					</includes> <filtering>true</filtering> -->
+			</resource>
 		</resources>
 		<finalName>FrequencyControl</finalName>
 		<plugins>

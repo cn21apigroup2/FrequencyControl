@@ -23,7 +23,6 @@
 
 	<import resource="classpath:spring-datasource.xml" />
 
-	<context:component-scan base-package="com.cn21.FrequencyControl.util"></context:component-scan>
 	<context:component-scan base-package="com.cn21.FrequencyControl.service"></context:component-scan>
 	<context:component-scan base-package="com.cn21.FrequencyControl.dao"></context:component-scan>
 
@@ -43,15 +42,5 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="*" isolation="READ_COMMITTED" />
-		</tx:attributes>
-	</tx:advice>
-
-	<aop:config>
-		<aop:pointcut id="zfServiceOperation"
-			expression="execution(* com.cn21.FrequencyControl.service..*.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="zfServiceOperation" />
-	</aop:config>
+	<tx:annotation-driven/>
 </beans>
