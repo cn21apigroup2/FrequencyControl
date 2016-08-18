@@ -20,19 +20,9 @@
         <setting name="defaultStatementTimeout" value="2000"/>
     </settings>    
     <typeAliases>
-    <typeAlias alias="Example"  type="com.cn21.FrequencyControl.module.Example"/>
+    <typeAlias alias="User"  type="com.cn21.FrequencyControl.module.User"/>
+     <typeAlias alias="Example"  type="com.cn21.FrequencyControl.module.Example"/>
+    <typeAlias alias="Application"  type="com.cn21.FrequencyControl.module.Application"/>
     </typeAliases>
-    
-	<environments default="dev">
-        <environment id="dev">
-            <transactionManager type="JDBC">                
-            </transactionManager>
-            <dataSource type="POOLED">
-                <property name="driver" value="${driverClass}" />
-                <property name="url" value="${jdbcUrl}" />
-                <property name="username" value="${username}" />
-                <property name="password" value="${password}" />
-            </dataSource>           
-        </environment>		
-    </environments>    
+   
 </configuration>
