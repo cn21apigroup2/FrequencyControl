@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn21.FrequencyControl.dao.ApplicationDao">
+	<insert id="addApplication" parameterType="Application" keyProperty="app_id" useGeneratedKeys="true">
+	insert into application(user_id,app_name,app_key,secret,app_description,platform) 
+	values(#{user_id},#{app_name},#{app_key},#{secret},#{app_description},#{platform});
+	</insert>
+    <select id="getAppListByUserId" parameterType="long" resultMap="application">
+    	select * from application where user_id=#{userId} and deleted=0;
+    </select>
+    <select id="getApplicationByAppId" parameterType="long" resultMap="application">
+    	select * from application where app_id=#{appId};
+    </select>
+    <select id="getPageByUserId" parameterType="java.util.Map" resultMap="application">
+    	select * from application where user_id=#{userId} and deleted=0 limit #{beginIndex},#{pageSize};
+    </select>
+    <select id="getDeletedAppListByUserId" parameterType="long" resultMap="application">
+    	select * from application where user_id=#{userId} and deleted=1;
+    </select>
+    <select id="getTotalCount" parameterType="long" resultType="int">
+    	select count(1) from application where user_id=#{userId} and deleted=0;
+    </select>
+    <select id="getApplicationByAppKey" parameterType="String" resultMap="application">
+    	select * from application where app_key=#{appKey} and deleted=0;
+    </select>
+    <update id="updateApplication" parameterType="Application">
+    update application set app_description=#{app_description},platform=#{platform},
+    app_name=#{app_name} where app_id=#{app_id};
+    </update>
+    <update id="updateAppDescription" parameterType="Application">
+    update application set app_description=#{app_description} where app_key=#{app_key};
+    </update>
+    <update id="updateAppPlatform" parameterType="Application">
+    update application set platform=#{platform} where app_key=#{app_key};
+    </update>
+    <delete id="deleteApplication" parameterType="long">
+    update application set deleted=1 where app_id=#{app_id};
+    </delete>
+    <update id="regainApplication" parameterType="long">
+    update application set deleted=0 where app_id=#{app_id};
+    </update>
+    <resultMap type="Application" id="application">  
+        <id column="app_id" property="app_id"/>  
+        <result column="user_id" property="user_id"/>  
+        <result column="app_name" property="app_name"/>  
+        <result column="app_key" property="app_key"/>  
+        <result column="secret" property="secret"/>  
+        <result column="app_description" property="app_description"/>
+        <result column="create_date" property="create_date"/>
+        <result column="is_reviewed" property="is_reviewed"/>
+        <result column="platform" property="platform"/>  
+        <result column="deleted" property="deleted"/>  
+    </resultMap>  
+</mapper>
