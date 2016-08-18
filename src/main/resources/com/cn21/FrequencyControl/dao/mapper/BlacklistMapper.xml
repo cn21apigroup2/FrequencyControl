@@ -31,7 +31,13 @@
     </insert>
     
     <update id="reset">
-    	update blacklist set times=0 where app_key=#{0} and customer_id="#{1}"
+    	update blacklist set times=0,fir_date=NULL ,
+    	sec_date=NULL , thr_date=NULL , absoulte_date=NULL where app_key=#{0} and customer_id=#{1}
+    </update>
+
+    <update id="resetByIp">
+        update blacklist set times=0,fir_date=NULL ,
+        sec_date=NULL , thr_date=NULL , absoulte_date=NULL where app_key=#{0} and limited_ip=#{1}
     </update>
     
     <update id="modify" parameterType="com.cn21.FrequencyControl.module.Blacklist">
@@ -46,7 +52,7 @@
     
     <resultMap type="com.cn21.FrequencyControl.module.Blacklist" id="blacklist">  
         <result property="blacklistId" column="blacklist_id"/>
-        <result property="appMarking" column="app_key"/>
+        <result property="appKey" column="app_key"/>
         <result property="customerId" column="customer_id"/>
         <result property="limitedIp" column="limited_ip"/>
         <result property="times" column="times"/>
@@ -57,7 +63,8 @@
     </resultMap>
     
     <resultMap type="com.cn21.FrequencyControl.dto.BlacklistDto" id="blacklistDto">
-        <result property="appMarking" column="app_key"/>
+        <result property="id" column="blacklist_id"/>
+        <result property="appKey" column="app_key"/>
         <result property="username" column="customer_id"/>
         <result property="limitedIp" column="limited_ip"/>
         <result property="firDate" column="fir_date"/>

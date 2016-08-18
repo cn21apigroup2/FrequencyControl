@@ -6,7 +6,8 @@ import java.util.Date;
  * Created by Steven on 2016/8/15.
  */
 public class BlacklistDto {
-    private String appMarking;
+    private int id;
+    private String appKey;
     private String username;
     private String limitedIp;
     private Date firDate;
@@ -14,12 +15,20 @@ public class BlacklistDto {
     private Date thrDate;
     private Date absoulteDate;
 
-    public String getAppMarking() {
-        return appMarking;
+    public String getAppKey() {
+        return appKey;
     }
 
-    public void setAppMarking(String appMarking) {
-        this.appMarking = appMarking;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
     public String getUsername() {
@@ -68,5 +77,19 @@ public class BlacklistDto {
 
     public void setAbsoulteDate(Date absoulteDate) {
         this.absoulteDate = absoulteDate;
+    }
+
+    @Override
+    public String toString() {
+        return "BlacklistDto{" +
+                "id=" + id +
+                ", appKey='" + appKey + '\'' +
+                ", username='" + username + '\'' +
+                ", limitedIp='" + limitedIp + '\'' +
+                ", firDate=" + firDate +
+                ", secDate=" + secDate +
+                ", thrDate=" + thrDate +
+                ", absoulteDate=" + absoulteDate +
+                '}';
     }
 }
