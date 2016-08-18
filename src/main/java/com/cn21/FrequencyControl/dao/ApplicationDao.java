@@ -9,6 +9,7 @@
 package com.cn21.FrequencyControl.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cn21.FrequencyControl.module.Application;
 
@@ -37,4 +38,8 @@ public interface ApplicationDao {
 	int deleteApplication(long app_id);
 
 	int regainApplication(long app_id);
+	
+	List<Application> getPageByUserId(Map<String,Object> paramMap);
+	
+	int getTotalCount(long userId);
 }

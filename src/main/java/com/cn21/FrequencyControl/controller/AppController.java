@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cn21.FrequencyControl.controller.common.Page;
 import com.cn21.FrequencyControl.module.Application;
 import com.cn21.FrequencyControl.service.ApplicationService;
 
@@ -42,6 +43,18 @@ public class AppController {
 		ModelAndView modelAndView = new ModelAndView("/app/appList");
 		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
+		return modelAndView;
+	}
+	/**
+	 * 按页获取获取用户app列表 
+	 * @return void
+	 */
+	@RequestMapping(value = "/page/{userId}/{pageNo}/{pageSize}")
+	public ModelAndView showUserAppsByPage(@PathVariable Long userId,@PathVariable int pageNo,@PathVariable int pageSize) {
+		Page<Application> page = applicationService.getPageByUserId(userId, pageNo, pageSize);//获取用户应用列表
+		ModelAndView modelAndView = new ModelAndView("/app/appListByPage");
+		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("page", page);
 		return modelAndView;
 	}
 	/**

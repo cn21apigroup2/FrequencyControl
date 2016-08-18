@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cn21.FrequencyControl.controller.common.Page;
 import com.cn21.FrequencyControl.dao.ApplicationDao;
 import com.cn21.FrequencyControl.module.Application;
 import com.cn21.FrequencyControl.service.ApplicationService;
@@ -175,6 +176,29 @@ public class ApplicationServiceImpl implements ApplicationService{
 		int successCount=applicationDao.updateApplication(application);
 		if(successCount==1) return true;
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * 分页查询
+	 * @see com.cn21.FrequencyControl.service.ApplicationService#getPageByUserId(long, int, int)
+	 */
+	@Override
+	public Page<Application> getPageByUserId(long userId, int pageNo,
+			int pageSize) {
+		if(pageNo<=0) pageNo=Page.DEFAULT_PAGE_NO;
+		Page<Application> page = new Page<Application>();
+		int totalCount = applicationDao.getTotalCount(userId);
+		Map<String,Object> paramMap=new HashMap<String,Object>();
+		paramMap.put("userId", userId);
+		paramMap.put("beginIndex", (pageNo-1)*pageSize);
+		paramMap.put("pageSize", pageSize);
+		List<Application> records = applicationDao.getPageByUserId(paramMap);
+		page.setRecords(records);
+		page.setTotalSize(totalCount);
+		page.setPageSize(pageSize); //分页查询setTotalSize setPageSize 必须在setPageNo和setMaxPage之前设置
+		page.setPageNo(pageNo);
+		page.setMaxPage(page.getTotalPages());
+		return page;
 	}
 
 

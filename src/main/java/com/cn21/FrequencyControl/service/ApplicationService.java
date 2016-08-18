@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cn21.FrequencyControl.controller.common.Page;
 import com.cn21.FrequencyControl.module.Application;
 
 /**
@@ -86,6 +87,8 @@ public interface ApplicationService {
 	Application generateApp(HttpServletRequest request,long userId);
 
 	Application getApplicationByAppId(long appId);
+	
+	Page<Application> getPageByUserId(long userId,int pageNo,int pageSize);
 	
 
 }

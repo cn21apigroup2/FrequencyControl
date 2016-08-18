@@ -14,8 +14,14 @@
     <select id="getApplicationByAppId" parameterType="long" resultMap="application">
     	select * from application where app_id=#{appId};
     </select>
+    <select id="getPageByUserId" parameterType="java.util.Map" resultMap="application">
+    	select * from application where user_id=#{userId} and deleted=0 limit #{beginIndex},#{pageSize};
+    </select>
     <select id="getDeletedAppListByUserId" parameterType="long" resultMap="application">
     	select * from application where user_id=#{userId} and deleted=1;
+    </select>
+    <select id="getTotalCount" parameterType="long" resultType="int">
+    	select count(1) from application where user_id=#{userId} and deleted=0;
     </select>
     <select id="getApplicationByAppKey" parameterType="String" resultMap="application">
     	select * from application where app_key=#{appKey} and deleted=0;

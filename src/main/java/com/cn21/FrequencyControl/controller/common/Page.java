@@ -15,12 +15,25 @@ import java.util.List;
  * @date 2016年8月17日
  */
 public class Page<T> {
-	private static final int DEFAULT_PAGE_SIZE=10;
-	private static final int DEFAULT_PAGE_NO=1;
+	public static final int DEFAULT_PAGE_SIZE=10;
+	public static final int DEFAULT_PAGE_NO=1;
 	private int pageNo;
 	private int totalSize;
 	private int pageSize;
+	private int maxPage;
 	List<T> records;
+	/**
+	 * @return the maxPage
+	 */
+	public int getMaxPage() {
+		return maxPage;
+	}
+	/**
+	 * @param maxPage the maxPage to set
+	 */
+	public void setMaxPage(int maxPage) {
+		this.maxPage = maxPage;
+	}
 	/**
 	 * 获取首页
 	 * @return
@@ -67,7 +80,7 @@ public class Page<T> {
 	public List<T> getRecords(){
 		return records;
 	}
-	public void settRecords(List<T> records){
+	public void setRecords(List<T> records){
 		 this.records=records;
 	}
 	/**
@@ -80,8 +93,8 @@ public class Page<T> {
 	 * @param pageNo the pageNo to set
 	 */
 	public void setPageNo(int pageNo) {
-		if(pageNo<=0  || pageNo >getTopPageNo())
-			pageNo=DEFAULT_PAGE_NO;
+		if(pageNo<=0  || pageNo >getTotalPages())
+			pageNo=getTotalPages();
 		this.pageNo = pageNo;
 	}
 	/**
