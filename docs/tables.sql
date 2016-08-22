@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `interface_control`;
 CREATE TABLE `interface_control`(
 interface_id INT NOT NULL AUTO_INCREMENT COMMENT '唯一标识 自增主键',
 app_id INT NOT NULL COMMENT '应用标识',
-signature VARCHAR(50) NOT NULL COMMENT '接口标识符 需要被频次控制的方法签名包括方法名和参数',
+api_name VARCHAR(30) DEFAULT NULL COMMENT '标识接口的字符串',
 frequency INT DEFAULT 100 COMMENT '接口调用频次',
 timeout BIGINT DEFAULT 0  COMMENT '接口频次控制的时间长度 与unit配合使用',
 unit ENUM('s','m','h','d') DEFAULT 's' COMMENT '时间单位 与timeout配合使用 s/秒 m/分 h/时 d/天',
@@ -43,7 +43,19 @@ deleted TINYINT DEFAULT 0 COMMENT '0表示未删除，1表示已删除',
 PRIMARY KEY(interface_id),
 FOREIGN KEY(app_id) REFERENCES application(app_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '频次控制接口表';
-CREATE INDEX index_signature ON interface_control(signature);
+CREATE INDEX index_api_name ON interface_control(api_name);
+COMMIT;
+
+DROP TABLE IF EXISTS `parameter`;  
+CREATE TABLE `parameter`(
+parameter_id INT NOT NULL AUTO_INCREMENT COMMENT '唯一标识 自增主键',
+interface_id INT NOT NULL  COMMENT '接口ID',
+parameter_key VARCHAR(30) DEFAULT NULL COMMENT '参数',
+parameter_value VARCHAR(50) DEFAULT NULL COMMENT '对应参数值',
+PRIMARY KEY(parameter_id),
+FOREIGN KEY(interface_id) REFERENCES interface_control(interface_id)
+)ENGINE=INNODB DEFAULT CHARSET=utf8 COMMENT '参数表';
+CREATE INDEX index_interface_id ON parameter(interface_id);
 COMMIT;
 
 DROP TABLE IF EXISTS blacklist;

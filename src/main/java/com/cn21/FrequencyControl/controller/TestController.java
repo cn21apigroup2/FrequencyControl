@@ -37,4 +37,5 @@ public class TestController {
 		modelAndView.addObject("example", example);
 		return modelAndView;
 	}
+
 }
