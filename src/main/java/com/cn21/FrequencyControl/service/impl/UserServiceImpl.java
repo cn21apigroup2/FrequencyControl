@@ -1,10 +1,16 @@
 package com.cn21.FrequencyControl.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.cn21.FrequencyControl.dao.UserDao;
 import com.cn21.FrequencyControl.module.User;
 import com.cn21.FrequencyControl.service.UserService;
-  
+
+@Service
 public class UserServiceImpl implements UserService {  
+	 
+	 @Autowired
     private UserDao userdao;  
     public int deleteUserById(int userId) {  
         // TODO Auto-generated method stub  
