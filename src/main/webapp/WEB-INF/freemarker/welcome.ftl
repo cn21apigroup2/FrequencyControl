@@ -8,8 +8,8 @@
 	</head>
 	<body>
 		<ul>
-                  <li><a href="/app/list/1">app管理</a>
-                  <li><a href="/app/page/1/1/1">app管理 -分页</a>
+                  <li><a href="${mediaHost}/app/list/1">app管理</a>
+                  <li><a href="${mediaHost}/app/page/1/1/1">app管理 -分页</a>
                   </li>
             </ul>
 	</body>
