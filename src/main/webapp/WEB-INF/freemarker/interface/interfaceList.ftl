@@ -15,9 +15,9 @@ body {margin-top: 20px}
 	<input type="hidden" name="appId" id="appId" value="${appId}"/>
 	
 	    <div align="center">
-		    <a href="/FrequencyControl/interface/list/${userId}/${appId}"><span>接口列表</span></a>
-		    <a href="/FrequencyControl/interface/listDel/${appId}"><span>已删除接口列表</span></a>
-		    <a href="/FrequencyControl/interface/create/${appId}"></span>创建接口</span></a>
+		    <a href="${mediaHost}/interface/list/${userId}/${appId}"><span>接口列表</span></a>
+		    <a href="${mediaHost}/interface/listDel/${appId}"><span>已删除接口列表</span></a>
+		    <a href="${mediaHost}/interface/create/${appId}"></span>创建接口</span></a>
  		</div>
  		
 		<tr >
@@ -37,11 +37,11 @@ body {margin-top: 20px}
 						<td id="unit">${interfac.unit }</td>												
 						<td>
 						     <#if !deleted??>
-						     <a href="/FrequencyControl/interface/modify/${appId}/${interfac.interface_id}">编辑</a>
-						     <a href="/FrequencyControl/interface/delete/${appId}/${interfac.interface_id}">删除</a>
-						     <a href="/FrequencyControl/parameter/list/${interfac.interface_id}">参数控制</a>
+						     <a href="${mediaHost}/interface/modify/${appId}/${interfac.interface_id}">编辑</a>
+						     <a href="${mediaHost}/interface/delete/${appId}/${interfac.interface_id}">删除</a>
+						     <a href="${mediaHost}/parameter/list/${interfac.interface_id}">参数控制</a>
 						     <#elseif deleted??&&deleted==1>
-						     <a href="/FrequencyControl/interface/resume/${appId}/${interfac.interface_id}">恢复</a>
+						     <a href="${mediaHost}/interface/resume/${appId}/${interfac.interface_id}">恢复</a>
 						     </#if>
 						</td>
 						

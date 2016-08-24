@@ -9,7 +9,7 @@
 	</head>
 	<body>
 		<input type="hidden" name="userId" id="userId" value="${userId}"/>
-		<form class="createForm"  id="createForm" action="/app/save/${userId}" method="post">
+		<form class="createForm"  id="createForm" action="${mediaHost}/app/save/${userId}" method="post">
 				<div class="appNameSet">
 					<label>应用名称</label>
 					<input class="required" id="appName" name="appName" maxlength="30" value="" placeholder="应用名称(30字以内)"/>

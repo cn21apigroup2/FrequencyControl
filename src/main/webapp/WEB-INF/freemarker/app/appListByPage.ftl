@@ -10,9 +10,9 @@
 	<body>
 		<input type="hidden" name="userId" id="userId" value="${userId}"/>
 		<div>
-		<a href="/app/list/${userId}">应用列表</a>
-		<a href="/app/listDel/${userId}">已删除应用列表</a>
-		<a href="/app/create/${userId}">创建应用</a>
+		<a href="${mediaHost}/app/list/${userId}">应用列表</a>
+		<a href="${mediaHost}/app/listDel/${userId}">已删除应用列表</a>
+		<a href="${mediaHost}/app/create/${userId}">创建应用</a>
  		</div>
 		<table>
  　　	<caption></caption>
@@ -34,10 +34,10 @@
  </td>
  <td>
  	<#if !deleted??>
- 	<a href="/app/modify/${userId}/${application.app_id}">编辑</a>
-	<a href="/app/delete/${userId}/${application.app_id}">删除</a>
+ 	<a href="${mediaHost}/app/modify/${userId}/${application.app_id}">编辑</a>
+	<a href="${mediaHost}/app/delete/${userId}/${application.app_id}">删除</a>
 	<#elseif deleted?? && deleted==1>
-	<a href="/app/resume/${userId}/${application.app_id}">恢复</a>
+	<a href="${mediaHost}/app/resume/${userId}/${application.app_id}">恢复</a>
 	</#if>
  </td>
  </tr>
@@ -45,8 +45,8 @@
  　　<tbody>
 	</table>
 	<div id="pager">
-          <#import "/page.ftl" as p>
-              <@p.pager pageNo=page.pageNo pageSize=page.pageSize recordCount=page.totalSize pageCount=page.maxPage toURL="/app/page/${userId}" method="post"/>
+          <#import "${mediaHost}/page.ftl" as p>
+              <@p.pager pageNo=page.pageNo pageSize=page.pageSize recordCount=page.totalSize pageCount=page.maxPage toURL="${mediaHost}/app/page/${userId}" method="post"/>
     </div>
 	</body>
 </html>

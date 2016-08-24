@@ -8,7 +8,7 @@
 	</head>
 	<body>
 	    <input type="hidden" name="appId" id="appId" value="${appId}"/>
-	    <form action="/FrequencyControl/interface/modifySave/${appId}/${interfac.interface_id}" type="text" method="post">
+	    <form action="${mediaHost}/interface/modifySave/${appId}/${interfac.interface_id}" type="text" method="post">
 		<table border="1" cellpadding="1" cellspacing="1">
 			 接口名称：
 			<input class="required" type="text" name="apiName" value="${interfac.api_name}">
