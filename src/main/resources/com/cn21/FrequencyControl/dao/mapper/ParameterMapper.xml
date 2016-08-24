@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn21.FrequencyControl.dao.ParameterDao">
+	<insert id="addParameter" parameterType="Parameter" keyProperty="interface_id" useGeneratedKeys="true">
+	insert into parameter(interface_id,parameter_key,parameter_value) 
+	values(#{interface_id},#{parameter_key},#{parameter_value});
+	</insert>
+    <select id="getParameterListByInterId" parameterType="long" resultMap="parameter">
+    	select * from parameter where interface_id=#{interId};
+    </select>    
+    <select id="getParameterByParaId" parameterType="long" resultMap="parameter">
+    	select * from parameter where parameter_id=#{paraId};
+    </select>
+    <update id="updateParameter" parameterType="Parameter">
+    update parameter set parameter_key=#{parameter_key},parameter_value=#{parameter_value} where parameter_id=#{parameter_id};
+    </update>
+    <update id="updateParameterKey" parameterType="Parameter">
+    update parameter set parameter_key=#{parameter_key} where parameter_id=#{parameter_id};
+    </update>
+    <update id="updateParameterValue" parameterType="Parameter">
+    update parameter set parameter_value=#{parameter_value} where parameter_id=#{parameter_id};
+    </update>
+    <delete id="deleteParameter" parameterType="long">
+    delete from parameter where parameter_id=#{parameter_id};
+    </delete>
+    <resultMap type="Parameter" id="parameter">  
+        <id column="parameter_id" property="parameter_id"/>  
+        <result column="interface_id" property="interface_id"/>  
+        <result column="parameter_key" property="parameter_key"/>   
+        <result column="parameter_value" property="parameter_value"/>  
+    </resultMap>  
+</mapper>
