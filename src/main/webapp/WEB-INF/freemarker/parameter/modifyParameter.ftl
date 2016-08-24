@@ -8,7 +8,7 @@
 	</head>
 	<body>
 	    <input type="hidden" name="interId" id="interId" value="${interId}"/>
-	    <form action="/FrequencyControl/parameter/modifySave/${interId}/${parameter.parameter_id}" type="text" method="post">
+	    <form action="${mediaHost}/parameter/modifySave/${interId}/${parameter.parameter_id}" type="text" method="post">
 		<table border="1" cellpadding="1" cellspacing="1">
 			 参数名称：
 			<input class="required" type="text" name="parameterKey" value="${parameter.parameter_key}">

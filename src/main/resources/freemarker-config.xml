@@ -20,6 +20,7 @@
        </property>
        <property name="freemarkerVariables">
            <map>              
+              <entry key="mediaHost" value="${mediaHost}" />
               <entry key="mediaRoot" value="${mediaRoot}" />
               <entry key="jsRoot" value="${jsRoot}" />
               <entry key="cssRoot" value="${cssRoot}" />

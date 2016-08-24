@@ -15,7 +15,7 @@ body {margin-top: 20px}
 	<input type="hidden" name="interId" id="interId" value="${interId}"/>
 	
 	    <div align="center">		 
-		    <a href="/FrequencyControl/parameter/create/${interId}"></span>添加参数</span></a>
+		    <a href="${mediaHost}/parameter/create/${interId}"></span>添加参数</span></a>
  		</div>
  		
 		<tr >
