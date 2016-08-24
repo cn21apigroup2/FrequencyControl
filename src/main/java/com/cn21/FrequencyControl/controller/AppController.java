@@ -13,6 +13,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ import com.cn21.FrequencyControl.service.ApplicationService;
 @Controller
 @RequestMapping("/app")
 public class AppController {
+	private static final Logger logger=Logger.getLogger(AppController.class);
 	@Autowired
 	private ApplicationService applicationService;
 
@@ -40,6 +42,7 @@ public class AppController {
 	@RequestMapping(value = "/list/{userId}")
 	public ModelAndView showAllUserApps(@PathVariable Long userId) {
 		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取用户应用列表
+		logger.info("get Application List By UserId");
 		ModelAndView modelAndView = new ModelAndView("/app/appList");
 		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
