@@ -13,8 +13,9 @@ import org.springframework.web.servlet.mvc.Controller;
 import com.cn21.FrequencyControl.service.impl.UserServiceImpl;  
 import com.cn21.FrequencyControl.module.User;  
 @RequestMapping("/register")
-public class RigisterController implements Controller{
+public class RegisterController implements Controller{
 	private UserServiceImpl userServiceImpl;
+	@RequestMapping("/registersuccess")
 	public ModelAndView handleRequest(HttpServletRequest request,  
             HttpServletResponse response) throws Exception {
 		String name=request.getParameter("userName");  
@@ -29,11 +30,11 @@ public class RigisterController implements Controller{
         	user=userServiceImpl.selectUser(user);  
             System.out.println("注册成功");  
             model.put("user", user);
-        	return new ModelAndView("Main.jsp",model); 
+        	return new ModelAndView("Main.ftl",model); 
         }else{
         	System.out.println("注册失败");  
             model.put("error", "异常错误，请重新注册");  
-            return new ModelAndView("Rigister.jsp",model);
+            return new ModelAndView("/Register",model);
         }
 		
 	}
