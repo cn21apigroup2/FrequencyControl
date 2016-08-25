@@ -8,7 +8,7 @@
 	</head>
 	<body >
 	    <input type="hidden" name="appId" id="appId" value="${appId}"/>
-		<form class="createForm"  id="createForm" action="${mediaHost}/interface/save/${appId}" method="post">
+		<form class="createForm"  id="createForm" action="${mediaHost}/interface/save/${userId}/${appId}" method="post">
 				<div class="apiNameSet">
 					<label>接口名称</label>
 					<input class="required" id="apiName" name="apiName" maxlength="30" value="" placeholder="接口名称(30字以内)"/>

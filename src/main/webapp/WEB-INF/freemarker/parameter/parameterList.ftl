@@ -15,7 +15,7 @@ body {margin-top: 20px}
 	<input type="hidden" name="interId" id="interId" value="${interId}"/>
 	
 	    <div align="center">		 
-		    <a href="${mediaHost}/parameter/create/${interId}"></span>添加参数</span></a>
+		    <a href="${mediaHost}/parameter/create/${userId}/${interId}"></span>添加参数</span></a>
  		</div>
  		
 		<tr >
@@ -31,8 +31,8 @@ body {margin-top: 20px}
 						<td id="parameterValue">${parameter.parameter_value }</td>												
 						<td>
 						     
-						     <a href="/FrequencyControl/parameter/modify/${interId}/${parameter.parameter_id}">编辑</a>
-						     <a href="/FrequencyControl/parameter/delete/${interId}/${parameter.parameter_id}">删除</a>						     
+						     <a href="/FrequencyControl/parameter/modify/${userId}/${interId}/${parameter.parameter_id}">编辑</a>
+						     <a href="/FrequencyControl/parameter/delete/${userId}/${interId}/${parameter.parameter_id}">删除</a>						     
 						</td>
 						
 					</tr>

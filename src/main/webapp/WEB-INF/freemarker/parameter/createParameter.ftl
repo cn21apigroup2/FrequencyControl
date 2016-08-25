@@ -8,7 +8,7 @@
 	</head>
 	<body >
 	    <input type="hidden" name="interId" id="interId" value="${interId}"/>
-		<form class="createForm"  id="createForm" action="${mediaHost}l/parameter/save/${interId}" method="post">
+		<form class="createForm"  id="createForm" action="${mediaHost}/parameter/save/${userId}/${interId}" method="post">
 				<div class="parameterKeySet">
 					<label>参数名</label>
 					<input class="required" id="parameterKey" name="parameterKey"  value="" placeholder="参数(30字以内)"/>
