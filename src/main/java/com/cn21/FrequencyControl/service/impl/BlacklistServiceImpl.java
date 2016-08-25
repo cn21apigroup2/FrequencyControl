@@ -24,7 +24,7 @@ public class BlacklistServiceImpl implements BlacklistService {
      * @return
      */
     @Override
-    public BlacklistDto queryByUsername(String appKey, String username) {
+    public Blacklist queryByUsername(String appKey, String username) {
         return bd.queryByUsername(appKey, username);
     }
 
@@ -35,7 +35,7 @@ public class BlacklistServiceImpl implements BlacklistService {
      * @return
      */
     @Override
-    public BlacklistDto queryByIp(String appKey, String ip) {
+    public Blacklist queryByIp(String appKey, String ip) {
         return bd.queryByIp(appKey, ip);
     }
 
@@ -45,8 +45,8 @@ public class BlacklistServiceImpl implements BlacklistService {
      * @return
      */
     @Override
-    public List<BlacklistDto> query(String appKey) {
-        return bd.query(appKey);
+    public List<Blacklist> query(String appKey) {
+        return bd.queryAllByAppKey(appKey);
     }
 
     /**
@@ -84,7 +84,7 @@ public class BlacklistServiceImpl implements BlacklistService {
      * @return
      */
     @Override
-    public BlacklistDto reset(String appKey, String username, String ip) {
+    public Blacklist reset(String appKey, String username, String ip) {
         if(!username.equals("")&&username!=null){
             bd.reset(appKey, username);
             return queryByUsername(appKey,username);
@@ -102,4 +102,12 @@ public class BlacklistServiceImpl implements BlacklistService {
     public void add(Blacklist blacklist){
         bd.add(blacklist);
     }
+
+	@Override
+	public boolean update(Blacklist blackList) {
+		// TODO Auto-generated method stub
+		 int successCount=bd.modify(blackList);
+		 if(successCount==1) return true;
+		 return false;
+	}
 }

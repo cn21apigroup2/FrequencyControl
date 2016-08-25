@@ -17,12 +17,12 @@ public interface BlacklistService {
      * @param username
      * @return
      */
-    BlacklistDto queryByUsername(String appKey,String username);
+    Blacklist queryByUsername(String appKey,String username);
 
 
-    BlacklistDto queryByIp(String appKey,String ip);
+    Blacklist queryByIp(String appKey,String ip);
 
-    List<BlacklistDto> query(String appKey);
+    List<Blacklist> query(String appKey);
 
 
     /**
@@ -42,7 +42,10 @@ public interface BlacklistService {
      * @param ip
      * @return
      */
-    BlacklistDto reset(String appKey,String username,String ip);
+    Blacklist reset(String appKey,String username,String ip);
 
     void add(Blacklist blacklist);
+
+
+	boolean update(Blacklist blackList);
 }
