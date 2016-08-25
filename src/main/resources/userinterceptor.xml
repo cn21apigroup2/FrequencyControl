@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mvc:interceptor>
+     	
+     		<mvc:mapping path="/addition/**"/>
+     		<mvc:mapping path="/login/**"/>
+     		<mvc:mapping path="/userAct/**"/>
+     		<mvc:mapping path="/userTemplate/**"/>
+     	
+     		<bean class="com.cn21.FrequencyControl.interceptor.UserInterceptor">
+     			<!-- 不用拦截的URL请求 -->
+     			<property name="unCheckUrls">
+     				<list>
+     					<value>/login/getCheckCode</value>
+     					<value>/login/validateCheckCode</value>
+     					<value>/login</value>
+     					<value>/login/validate</value>
+     					<value>/login/isUsed</value>
+     					<value>/login/toRegister</value>
+     					<value>/login/register</value>
+     					<value>/login/isEmailUsed</value>
+     					<value>/login/sendPass</value>
+     					<value>/login/forgetPassword</value>
+     				</list>
+     			
+     			</property>
+     		
+     		</bean>
+     	</mvc:interceptor>
