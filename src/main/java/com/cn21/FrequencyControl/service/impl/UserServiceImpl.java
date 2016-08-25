@@ -1,43 +1,76 @@
 package com.cn21.FrequencyControl.service.impl;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn21.FrequencyControl.dao.UserDao;
 import com.cn21.FrequencyControl.module.User;
 import com.cn21.FrequencyControl.service.UserService;
-
+/**
+ * @author chenjiekun
+ * @date 2016年8月18日
+ */
 @Service
-public class UserServiceImpl implements UserService {  
-	 
-	 @Autowired
-    private UserDao userdao;  
-    public int deleteUserById(int userId) {  
-        // TODO Auto-generated method stub  
-        return this.deleteUserById(userId);  
-    }  
+public class UserServiceImpl implements UserService {
+	@Autowired
+	protected UserDao userdao;
+	@Override
+	public boolean hasMatchUser(String username, String password) {
+		User targetUser = userdao.getUserByUsername(username);
+		if(targetUser==null) return false;
+		if(targetUser.getPassword().equals(password)) return true;
+		return false;
+	}
+	@Override
+	public boolean hasMatchUsername(String username) {
+		User targetUser = userdao.getUserByUsername(username);
+		if(targetUser!=null) return true;
+		return false;
+	}
+	@Override
+	public User getUserInfoByUserName(String username) {
+		return userdao.getUserByUsername(username);
+	}
+	
+	@Override
+	public boolean register(String username, String password,String email,HttpServletRequest request) {
+		User user = new User();
+		user.setName(username);
+		user.setPassword(password);
+		user.setEmail(email);
+		return userdao.addUser(user)==1?true:false;
+	}
+
+	@Override
+	public User getUserInfoByUserId(int userId) {
+		// TODO Auto-generated method stub
+		return userdao.getUserByUserId(userId);
+	}
+	
+	@Override
+	public int updateUserPassword(User user) {
+		// TODO Auto-generated method stub
+		return userdao.updateUserPassword(user);
+	}
+	
+	@Override
+	public int isEmailUsed(String email) {
+		// TODO Auto-generated method stub
+		return userdao.isEmailUsed(email);
+	}
+	@Override
+	public boolean updateLoginLog(String username, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public String getRemoteIp(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}
+
   
-    public int insertUser(User user) {  
-        // TODO Auto-generated method stub  
-        return this.userdao.insertUser(user);  
-    }  
-  
-    public User selectUser(User user) {  
-        // TODO Auto-generated method stub  
-        return this.userdao.selectUser(user);  
-    }  
-  
-    public int updaqteUser(User user) {  
-        // TODO Auto-generated method stub  
-        return this.userdao.updateUser(user);  
-    }  
-  
-    public void setUserdaoIMP(UserDao userdao) {  
-        this.userdao = userdao;  
-    }  
-  
-    public UserDao getUserdaoIMP() {  
-        return userdao;  
-    }  
-  
-}  

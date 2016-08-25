@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cn21.FrequencyControl.dao.UserMapper">
+	<select id="getUserByUsername" parameterType="String" resultMap="userMap">
+    	select * from user where username=#{username};
+    </select>
+    <select id="getUserByUserId" parameterType="int" resultMap="userMap">
+    	select * from user where user_Id=#{user_Id};
+    </select>
+    <insert id="addUser" parameterType="User" keyProperty="user_Id" useGeneratedKeys="true">
+		insert into user(username,password,email,register_date) values(#{username}, #{password}, #{email},#{register_date})
+	</insert>
+	<update id="updateUserPassword" parameterType="User">
+	update user set password = #{password}
+		where username = #{username};
+	</update>
+	<update id="updateUserVisitInfo" parameterType="User">
+	update user set last_ip = #{lastIp},last_visit = #{lastVisit}
+		where username = #{username};
+	</update>
+	<delete id="deleteUserByUsername" parameterType="String">
+	delete from user where username=#{username};
+	</delete>
+	
+	<select id="getUsers" resultMap="userMap">
+		select * from user order by register_date desc
+	</select>
+	
+	<select id="getAddedUsers" resultMap="userMap" parameterType="java.sql.Timestamp">
+		select * from user where register_date>#{adminLastLoginTime};
+	</select>
+	
+	<select id="isEmailUsed" resultMap="userMap" parameterType="String">
+		select * from user where email=#{email} limit 1;
+	</select>
+	
+	<update id="updateUserEmail" parameterType="User">
+		update user set email = #{email}
+		where username = #{username}
+	</update>
+	
+	
+    <resultMap type="User" id="userMap">  
+        <id column="user_Id" property="user_Id"/>  
+        <result column="username" property="username"/>  
+        <result column="password" property="password"/>  
+        <result column="email" property="email"/>
+        <result column="last_ip" property="lastIp"/>  
+        <result column="last_visit" property="lastVisit"/>
+        <result column="register_date" property="registerdate"/>  
+    </resultMap>  
+   
+</mapper>
