@@ -21,7 +21,7 @@ import com.cn21.FrequencyControl.service.ExampleService;
  * @date 2016年8月8日
  */
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/")
 public class TestController {
 	@Autowired
 	private ExampleService exampleService;
@@ -30,7 +30,7 @@ public class TestController {
 	 * 欢迎页面
 	 * @return void
 	 */
-	@RequestMapping(value = "/welcome")
+	@RequestMapping(value = "")
 	public ModelAndView welcome() {
 		Example example = exampleService.showExample("陈小锋");//获取例子
 		ModelAndView modelAndView = new ModelAndView("/welcome");

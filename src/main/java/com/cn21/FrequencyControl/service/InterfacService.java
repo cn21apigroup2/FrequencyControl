@@ -70,5 +70,6 @@ public interface InterfacService {
 	boolean updateInterfac(Interfac interfac);
 	
 	Interfac getInterfacByInterId(long interId);
+	
 	Interfac generateInterfac(HttpServletRequest request,long appId);
 }

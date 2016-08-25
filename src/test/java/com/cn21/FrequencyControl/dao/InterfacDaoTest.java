@@ -25,12 +25,12 @@ public class InterfacDaoTest {
 	private InterfacDao interfacDao;
 	private Interfac getInterfac(){
 		Interfac interfac = new Interfac();
-		interfac.setApp_id(1);
+		interfac.setApp_id(2);
 		interfac.setApi_name("大头1");
 		interfac.setFrequency(1234);
-		interfac.setInterface_id(1);
+		interfac.setInterface_id(13);
 		interfac.setTimeout(23);
-		interfac.setUnit("s");		
+		interfac.setUnit('s');		
 		return interfac;
 	}
 	/**
@@ -47,11 +47,11 @@ public class InterfacDaoTest {
 	 */
 	@Test
 	public void testGetInterfacListByAppId() {
-		int expected=5;
-		int expectedAppId=1;
-		List<Interfac> actual = interfacDao.getInterfacListByAppId(1);
+		int expected=4;
+		int expectedAppId=2;
+		List<Interfac> actual = interfacDao.getInterfacListByAppId(expectedAppId);
 		assertEquals(expected,actual.size());
-		Interfac actualInterfac = actual.get(4);
+		Interfac actualInterfac = actual.get(3);
 		Interfac expectedInterfac = getInterfac();	
 		assertTrue(expectedInterfac.getFrequency()==actualInterfac.getFrequency());
 		assertTrue(expectedInterfac.getApi_name().equals(actualInterfac.getApi_name()));
@@ -82,8 +82,7 @@ public class InterfacDaoTest {
 	public void testUpdateInterFrequency() {
 		Interfac interfacByInterId = interfacDao.getInterfacByInterId(getInterfac().getInterface_id());
 		String newFrequency="1232";
-		long  l = Long.valueOf(newFrequency).longValue();
-		interfacByInterId.setFrequency(l);
+		interfacByInterId.setFrequency(Integer.parseInt(newFrequency));
 		int actual = interfacDao.updateInterFrequency(interfacByInterId);
 		int expected=1;
 		assertEquals(actual,expected);

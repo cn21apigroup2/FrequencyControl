@@ -25,7 +25,7 @@ public class ParameterDaoTest {
 	private ParameterDao parameterDao;
 	private Parameter getParameter(){
 		Parameter parameter = new Parameter();
-		parameter.setParameter_id(10);
+		parameter.setParameter_id(14);
 		parameter.setInterface_id(1);
 		parameter.setParameter_key("ere");
 		parameter.setParameter_value("2");	
@@ -45,11 +45,11 @@ public class ParameterDaoTest {
 	 */
 	@Test
 	public void testGetParameterListByInterId() {
-		int expected=4;
+		int expected=6;
 		int expectedInterId=1;
-		List<Parameter> actual = parameterDao.getParameterListByInterId(1);
+		List<Parameter> actual = parameterDao.getParameterListByInterId(expectedInterId);
 		assertEquals(expected,actual.size());
-		Parameter actualParameter = actual.get(3);
+		Parameter actualParameter = actual.get(5);
 		Parameter expectedParameter = getParameter();	
 		assertTrue(expectedParameter.getInterface_id()==actualParameter.getInterface_id());
 		assertTrue(expectedParameter.getParameter_key().equals(actualParameter.getParameter_key()));
@@ -84,6 +84,6 @@ public class ParameterDaoTest {
 	 */
 	@Test
 	public void testDeleteParameter() {
-		parameterDao.deleteParameter(3);
+		parameterDao.deleteParameter(14);
 	}
 }

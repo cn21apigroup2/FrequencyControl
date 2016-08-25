@@ -5,11 +5,18 @@
 
     <mapper namespace="com.cn21.FrequencyControl.dao.InterfacDao">
 	<insert id="addInterfac" parameterType="Interfac" keyProperty="interface_id" useGeneratedKeys="true">
-	insert into Interface_control(app_id,api_name,frequency,timeout,unit,deleted) 
-	values(#{app_id},#{api_name},#{frequency},#{timeout},#{unit},#{deleted});
+	insert into Interface_control(app_id,api_name,frequency,timeout,unit) 
+	values(#{app_id},#{api_name},#{frequency},#{timeout},#{unit});
 	</insert>
     <select id="getInterfacListByAppId" parameterType="long" resultMap="interfac">
-    	select * from interface_control where app_id=#{appId} and deleted=0;
+    	select
+		parameter_id,parameter_key,parameter_value,interface_control.interface_id,
+		app_id,api_name,can_loan,deleted,frequency,quota,timeout,unit
+
+		from
+		interface_control LEFT JOIN parameter ON interface_control.interface_id=parameter.interface_id 
+		where
+		interface_control.app_id=#{app_id} and deleted=0;
     </select>
     <select id="getDeletedInterfacListByAppId" parameterType="long" resultMap="interfac">
     	select * from interface_control where app_id=#{appId} and deleted=1;
@@ -42,6 +49,12 @@
         <result column="frequency" property="frequency"/>  
         <result column="timeout" property="timeout"/>  
         <result column="unit" property="unit"/>
-        <result column="deleted" property="deleted"/>  
+        <result column="deleted" property="deleted"/> 
+        <collection property="parameters" ofType="Parameter"
+			column="interface_id">
+			<id column="parameter_id" property="parameter_id" />
+			<result column="parameter_key" property="parameter_key" />
+			<result column="parameter_value" property="parameter_value" />
+		</collection> 
     </resultMap>  
 </mapper>

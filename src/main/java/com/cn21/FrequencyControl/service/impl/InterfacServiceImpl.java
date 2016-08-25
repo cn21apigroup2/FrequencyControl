@@ -1,6 +1,7 @@
 package com.cn21.FrequencyControl.service.impl;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,13 +67,11 @@ public class InterfacServiceImpl implements InterfacService{
 		String apiFrequency = request.getParameter("apiFrequency");
 		String timeout = request.getParameter("timeout");
 		String unit = request.getParameter("unit");
-		long  l = Long.valueOf(apiFrequency).longValue();
-		long  a = Long.valueOf(timeout).longValue();
 		Interfac interfac = new Interfac();
 		interfac.setApi_name(apiName);
-		interfac.setFrequency(l);
-		interfac.setTimeout(a);
-		interfac.setUnit(unit);
+		interfac.setFrequency(Integer.parseInt(apiFrequency));
+		interfac.setTimeout(Integer.parseInt(timeout));
+		interfac.setUnit(unit.charAt(0));
 		interfac.setApp_id(appId);
 		return interfac;
 	}

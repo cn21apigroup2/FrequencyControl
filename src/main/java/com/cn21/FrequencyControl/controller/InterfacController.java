@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cn21.FrequencyControl.module.Interfac;
 import com.cn21.FrequencyControl.service.InterfacService;
 
@@ -68,11 +70,12 @@ public class InterfacController {
 	 * 修改interface
 	 * @return void
 	 */
-	@RequestMapping(value = "/modify/{appId}/{interId}")
-	public ModelAndView modifyInterfac(@PathVariable long appId,@PathVariable long interId) {
+	@RequestMapping(value = "/modify/{userId}/{appId}/{interId}")
+	public ModelAndView modifyInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId) {
 		Interfac interfac = interfacService.getInterfacByInterId(interId);//获取例子
 		ModelAndView modelAndView = new ModelAndView("/interface/modifyInterface");
 		modelAndView.addObject("interfac", interfac);
+		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("appId", appId);
 		return modelAndView;
 	}
@@ -86,12 +89,10 @@ public class InterfacController {
 		Interfac interfac = interfacService.getInterfacByInterId(interId);//获取例子		
 		String apiFrequency = request.getParameter("apiFrequency");
 		String timeout = request.getParameter("timeout");
-		long  l = Long.valueOf(apiFrequency).longValue();
-		long  a = Long.valueOf(timeout).longValue();				
-		interfac.setFrequency(l);
-		interfac.setTimeout(a);
+		interfac.setFrequency(Integer.parseInt(apiFrequency));
+		interfac.setTimeout(Integer.parseInt(timeout));
 		interfac.setApi_name(request.getParameter("apiName"));
-		interfac.setUnit(request.getParameter("unit"));
+		interfac.setUnit(request.getParameter("unit").charAt(0));
 		interfacService.modifyInterfac(interfac);	
 		
 		List<Interfac> interfacs = interfacService.getInterfacListByAppId(appId);
@@ -143,4 +144,22 @@ public class InterfacController {
 		modelAndView.addObject("userId",userId);
 		return modelAndView;
 	}
+	
+	//---------------------------------------------------------------------	
+
+		/**
+		 * 客户端jar包拉取数据接口
+		 * 
+		 * @param app_id
+		 * @return
+		 */
+		@RequestMapping("/pull/{userId}/{appId}")
+		@ResponseBody
+		public String pull(HttpServletRequest request,@PathVariable long userId, @PathVariable long appId) {
+			List<Interfac> interfaces = interfacService.getInterfacListByAppId(appId);
+			JSONArray result = new JSONArray();
+			result.addAll(interfaces);
+			return result.toJSONString();
+		}
+		
 }

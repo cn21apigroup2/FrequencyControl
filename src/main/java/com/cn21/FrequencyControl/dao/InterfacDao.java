@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.Parameter;
 @Repository
 public interface InterfacDao {
 	int addInterfac(Interfac interfac);
@@ -26,4 +27,6 @@ public interface InterfacDao {
 	int deleteInterfac(long interId);
 
 	int regainInterfac(long interface_id);
+	
+	List<Parameter> getParameters(long interface_id);
 }
