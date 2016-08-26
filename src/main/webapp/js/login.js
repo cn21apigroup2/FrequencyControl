@@ -16,6 +16,5 @@ window.onload=function(){
         var loginDate = "userName="+document.getElementsByName("userName").item(0).value+
             "&password="+document.getElementsByName("password").item(0).value;
         request.send(loginDate);
-
     }
 }
