@@ -15,6 +15,8 @@ public interface InterfacDao {
 	List<Interfac> getDeletedInterfacListByAppId(long appId);	
 
 	Interfac getInterfacByInterId(long interId);
+	
+	Interfac getOverallControl(long appId,String apiName);
 
 	int updateInterfac(Interfac interfac);
 

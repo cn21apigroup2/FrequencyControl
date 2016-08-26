@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.cn21.FrequencyControl.module.Interfac;
 import com.cn21.FrequencyControl.service.InterfacService;
+import com.google.gson.JsonObject;
 
 /**
  * @author zhangqingxiang
@@ -33,10 +36,12 @@ public class InterfacController {
 	@RequestMapping(value = "/list/{userId}/{appId}")
 	public ModelAndView showAllInterfac(@PathVariable long userId, @PathVariable long appId) {
 		List<Interfac> interfacs = interfacService.getInterfacListByAppId(appId);//获取例子
+		Interfac overallControl = interfacService.getOverAllControl(interfacs);
 		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
 		modelAndView.addObject("appId", appId);
 		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("interfacs", interfacs);
+		modelAndView.addObject("overallControl", overallControl);
 		return modelAndView;
 	}
 	/**
@@ -48,9 +53,7 @@ public class InterfacController {
 			HttpServletRequest request, HttpServletResponse respons) {
 		Interfac interfac=interfacService.generateInterfac(request, appId);//根据用户提交表单生成app
 		interfacService.createInterfac(interfac);//持久化到数据库
-		List<Interfac> interfacs = interfacService.getInterfacListByAppId(appId);
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
-		modelAndView.addObject("interfacs", interfacs);
+		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
 		modelAndView.addObject("appId", appId);	
 		modelAndView.addObject("userId", userId);	
 		return modelAndView;
@@ -95,9 +98,7 @@ public class InterfacController {
 		interfac.setUnit(request.getParameter("unit").charAt(0));
 		interfacService.modifyInterfac(interfac);	
 		
-		List<Interfac> interfacs = interfacService.getInterfacListByAppId(appId);
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
-		modelAndView.addObject("interfacs", interfacs);
+		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
 		modelAndView.addObject("appId", appId);	
 		modelAndView.addObject("userId", userId);	
 		return modelAndView;
@@ -109,9 +110,7 @@ public class InterfacController {
 	@RequestMapping(value = "/delete/{userId}/{appId}/{interId}")
 	public ModelAndView deleteInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId) {
 		interfacService.deleteInterfac(interId);
-		List<Interfac> interfacs = interfacService.getInterfacListByAppId(appId);//获取例子
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
-		modelAndView.addObject("interfacs", interfacs);
+		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
 		modelAndView.addObject("appId",appId);
 		modelAndView.addObject("userId",userId);
 		return modelAndView;
@@ -137,9 +136,7 @@ public class InterfacController {
 	@RequestMapping(value = "/resume/{userId}/{appId}/{interId}")
 	public ModelAndView resumeDeletedInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId){
 		interfacService.regainInterfac(interId);
-		List<Interfac> interfacs=interfacService.getInterfacListByAppId(appId);
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
-		modelAndView.addObject("interfacs", interfacs);
+		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
 		modelAndView.addObject("appId",appId);
 		modelAndView.addObject("userId",userId);
 		return modelAndView;
@@ -157,9 +154,13 @@ public class InterfacController {
 		@ResponseBody
 		public String pull(HttpServletRequest request,@PathVariable long userId, @PathVariable long appId) {
 			List<Interfac> interfaces = interfacService.getInterfacListByAppId(appId);
-			JSONArray result = new JSONArray();
-			result.addAll(interfaces);
-			return result.toJSONString();
+			Interfac overAllControl = interfacService.getOverAllControl(interfaces);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("overallControl", overAllControl);
+			JSONArray jSonArray = new JSONArray();
+			jSonArray.addAll(interfaces);
+			jsonObject.put("interfaces", jSonArray);
+			return jsonObject.toJSONString();
 		}
 		
 }

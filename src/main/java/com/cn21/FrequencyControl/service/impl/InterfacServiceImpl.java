@@ -103,4 +103,27 @@ public class InterfacServiceImpl implements InterfacService{
 		if(successCount==1) return true;
 		return false;
 	}
+	@Override
+	public void createOverallControl(long appId) {
+		Interfac interfac = new Interfac();
+		interfac.setApi_name(OVERALL_CONTROL);
+		interfac.setFrequency(-1);
+		interfac.setTimeout(1);
+		interfac.setUnit('d');
+		interfac.setApp_id(appId);
+		interfacDao.addInterfac(interfac);
+		
+	}
+	@Override
+	public Interfac getOverAllControl(List<Interfac> interfacs) {
+		Interfac overallControl=null;
+		for (Interfac interfac : interfacs) {//获取全局控制接口
+			if(interfac.getApi_name().equals(InterfacService.OVERALL_CONTROL)){
+				overallControl=interfac;
+				interfacs.remove(interfac);
+				break;
+			}
+		}
+		return overallControl;
+	}
 }
