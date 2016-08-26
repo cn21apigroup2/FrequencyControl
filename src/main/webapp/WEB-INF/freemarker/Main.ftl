@@ -7,8 +7,8 @@
 <body>  
     进入主页面<br/>  
     你的基本信息如下：<br/>  
-    id:${uservo.id}<br/>  
-    用户名:${uservo.name}<br/>  
-    密码:${uservo.pwd}<br/>  
+    id:${user.id}<br/>  
+    用户名:${user.name}<br/>  
+    密码:${user.pwd}<br/>  
 </body>  
 </html>

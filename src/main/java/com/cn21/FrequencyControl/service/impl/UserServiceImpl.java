@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean register(String username, String password,String email,HttpServletRequest request) {
 		User user = new User();
-		user.setName(username);
+		user.setUsername(username);
 		user.setPassword(password);
 		user.setEmail(email);
 		return userdao.addUser(user)==1?true:false;

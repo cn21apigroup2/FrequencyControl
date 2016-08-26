@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0" />
-<title>登录界面</title>
+<title>注册界面</title>
 
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
@@ -100,7 +100,7 @@ html,body {
 			</div>
 			<div class="login-content ">
 			<div class="form">
-			<form action="/register/registersuccess" method="post">
+			<form action="/login/registersuccess" method="post">
 				<div class="form-group">
 					<div class="col-xs-12">
 						<div class="input-group">
@@ -113,6 +113,14 @@ html,body {
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
+							<input type="text" id="password" name="password" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-12  ">
+						<div class="input-group">
+							<span class="input-group-addon">邮&nbsp;&nbsp;&nbsp;&nbsp;箱</span>
 							<input type="text" id="password" name="password" class="form-control">
 						</div>
 					</div>

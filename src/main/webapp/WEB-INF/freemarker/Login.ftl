@@ -98,7 +98,7 @@ html,body {
 			</div>
 			<div class="login-content ">
 			<div class="form">
-			<form action="/login/verifyUser" method="post">
+			<form action="${mediaHost}/login/validate" method="post">
 				<div class="form-group">
 					<div class="col-xs-12">
 						<div class="input-group">
@@ -123,6 +123,14 @@ html,body {
 				<div class="form-group">
 					<div class="col-xs-12 link">
 						<p class="text-center remove-margin"><small>还没注册?</small> <a href="/login/toRegister" ><small>注册</small></a>
+						</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-xs-12 link">
+						<p class="text-center remove-margin">
+						<a href="/sendPass" ><small>找回密码</small>
+						<a href="/chPwd/${userId}" ><small>更改密码</small></a>
 						</p>
 					</div>
 				</div>
