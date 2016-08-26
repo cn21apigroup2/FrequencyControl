@@ -18,7 +18,7 @@
  　　	<caption></caption>
  　　	<tr> <th>APP 名称</th><th>APP KEY</th><th>APP Secret</th><th>APP 描述</th><th>运行平台</th><th>审核状态</th><th>操作</th></tr>
  　　	<tbody>
- <#list page.records as application>
+ <#list applications as application>
  　　　　<tr>
  <input type="hidden" name="appId" id="appId" value="${application.app_id}"/>
  <td id="appName">${application.app_name}</td>
@@ -35,6 +35,7 @@
  <td>
  	<#if !deleted??>
  	<a href="${mediaHost}/app/modify/${userId}/${application.app_id}">编辑</a>
+	<a href="${mediaHost}/interface/list/${userId}/${application.app_id}">接口控制列表</a>
 	<a href="${mediaHost}/app/delete/${userId}/${application.app_id}">删除</a>
 	<#elseif deleted?? && deleted==1>
 	<a href="${mediaHost}/app/resume/${userId}/${application.app_id}">恢复</a>
@@ -44,9 +45,5 @@
  </#list>
  　　<tbody>
 	</table>
-	<div id="pager">
-          <#import "${mediaHost}/page.ftl" as p>
-              <@p.pager pageNo=page.pageNo pageSize=page.pageSize recordCount=page.totalSize pageCount=page.maxPage toURL="${mediaHost}/app/page/${userId}" method="post"/>
-    </div>
 	</body>
 </html>

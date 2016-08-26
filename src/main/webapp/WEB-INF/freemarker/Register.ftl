@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -100,7 +100,7 @@ html,body {
 			</div>
 			<div class="login-content ">
 			<div class="form">
-			<form action="rigister.do" method="post">
+			<form action="/register/registersuccess" method="post">
 				<div class="form-group">
 					<div class="col-xs-12">
 						<div class="input-group">
@@ -124,7 +124,7 @@ html,body {
 				</div>
 				<div class="form-group">
 					<div class="col-xs-12 link">
-						<p class="text-center remove-margin"><small>已经注册?</small> <a href="Login.ftl" ><small>登录</small></a>
+						<p class="text-center remove-margin"><small>已经注册?</small> <a href="/login/index" ><small>登录</small></a>
 						</p>
 					</div>
 				</div>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    <mapper namespace="com.cn21.FrequencyControl.dao.InterfacDao">
+	<insert id="addInterfac" parameterType="Interfac" keyProperty="interface_id" useGeneratedKeys="true">
+	insert into Interface_control(app_id,api_name,frequency,timeout,unit) 
+	values(#{app_id},#{api_name},#{frequency},#{timeout},#{unit});
+	</insert>
+    <select id="getInterfacListByAppId" parameterType="long" resultMap="interfac">
+    	select
+		parameter_id,parameter_key,parameter_value,interface_control.interface_id,
+		app_id,api_name,can_loan,deleted,frequency,quota,timeout,unit
+
+		from
+		interface_control LEFT JOIN parameter ON interface_control.interface_id=parameter.interface_id 
+		where
+		interface_control.app_id=#{app_id} and deleted=0;
+    </select>
+    <select id="getDeletedInterfacListByAppId" parameterType="long" resultMap="interfac">
+    	select * from interface_control where app_id=#{appId} and deleted=1;
+    </select>    
+    <select id="getInterfacByInterId" parameterType="long" resultMap="interfac">
+    	select * from interface_control where interface_id=#{interId} and deleted=0;
+    </select>
+    <update id="updateInterfac" parameterType="Interfac">
+    update interface_control set api_name=#{api_name},frequency=#{frequency},timeout=#{timeout},unit=#{unit}  where interface_id=#{interface_id};
+    </update>
+    <update id="updateInterFrequency" parameterType="Interfac">
+    update interface_control set frequency=#{frequency} where interface_id=#{interface_id};
+    </update>
+    <update id="updateInterTimeout" parameterType="Interfac">
+    update interface_control set timeout=#{timeout}  where interface_id=#{interface_id};
+    </update>
+    <update id="updateInterUnit" parameterType="Interfac">
+    update interface_control set unit=#{unit}  where interface_id=#{interface_id};
+    </update>
+    <delete id="deleteInterfac" parameterType="long">
+    update interface_control set deleted=1 where interface_id=#{interface_id};
+    </delete>
+    <update id="regainInterfac" parameterType="long">
+    update interface_control set deleted=0 where interface_id=#{interface_id};
+    </update>
+    <resultMap type="Interfac" id="interfac">  
+        <id column="interface_id" property="interface_id"/>  
+        <result column="app_id" property="app_id"/>  
+        <result column="api_name" property="api_name"/>  
+        <result column="frequency" property="frequency"/>  
+        <result column="timeout" property="timeout"/>  
+        <result column="unit" property="unit"/>
+        <result column="deleted" property="deleted"/> 
+        <collection property="parameters" ofType="Parameter"
+			column="interface_id">
+			<id column="parameter_id" property="parameter_id" />
+			<result column="parameter_key" property="parameter_key" />
+			<result column="parameter_value" property="parameter_value" />
+		</collection> 
+    </resultMap>  
+</mapper>

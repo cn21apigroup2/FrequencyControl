@@ -1,10 +1,10 @@
 package com.cn21.FrequencyControl.module;
 
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
 
 /**
  * @author chenjiekun
- * @date 2016年8月17日
+ * @date 2016年8月11日
  */
 public class User {
 
@@ -12,58 +12,80 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private Boolean deleted;
-	private SimpleDateFormat register_date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+	private short deleted;
+	private Timestamp register_date;
 
-	/*@Override
-	public String toString() {
-		return "User [user_id=" + user_id + ", username=" + username + ", password=" + password
-				+ ",  email=" + email + ", register_date=" + register_date + "]";
-	}*/
-
+	/**
+	 * @return the email
+	 */
 	public String getEmail() {
 		return email;
 	}
-
+	/**
+	 * @param email the email to set
+	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public SimpleDateFormat getregister_date() {
+	/**
+	 * @return the register_date
+	 */
+	public Timestamp getRegister_date() {
 		return register_date;
 	}
-
-	public void setregister_date(SimpleDateFormat register_date) {
+	/**
+	 * @param register_date the register_date to set
+	 */
+	public void setRegister_date(Timestamp register_date) {
 		this.register_date = register_date;
 	}
-
+	/**
+	 * @return the user_id
+	 */
 	public int getId() {
 		return user_id;
 	}
-
+	/**
+	 * @param user_id the user_id to set
+	 */
 	public void setId(int user_id) {
 		this.user_id = user_id;
 	}
-
+	/**
+	 * @return the username
+	 */
 	public String getName() {
 		return username;
 	}
-
+	/**
+	 * @param username the username to set
+	 */
 	public void setName(String username) {
 		this.username = username;
 	}
 
-	public Boolean getdeleted() {
+	/**
+	 * @return the deleted
+	 */
+	public short getDeleted() {
 		return deleted;
 	}
-
-	public void setdeleted(Boolean deleted) {
+	/**
+	 * @param deleted the deleted to set
+	 */
+	public void setDeleted(short deleted) {
 		this.deleted = deleted;
 	}
+	/**
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
-
+	/**
+	 * @param password the password to set
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}

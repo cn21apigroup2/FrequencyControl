@@ -5,15 +5,15 @@
 
 <mapper namespace="com.cn21.FrequencyControl.dao.BlacklistDao">
 
-    <select id="query" parameterType="String" resultMap="blacklistDto">
+    <select id="queryAllByAppKey" parameterType="String" resultMap="blacklist">
     	select * from blacklist where app_key=#{appKey}
     </select>
     
-    <select id="queryByUsername" resultMap="blacklistDto">
+    <select id="queryByUsername" resultMap="blacklist">
     	select * from blacklist where app_key=#{0} and customer_id=#{1}
     </select>
     
-    <select id="queryByIp" resultMap="blacklistDto">
+    <select id="queryByIp" resultMap="blacklist">
     	select * from blacklist where app_key=#{0} and limited_ip=#{1}
     </select>
     
@@ -25,7 +25,7 @@
     	select fir_date,sec_date,thr_date from blacklist where app_key=#{0} and limited_ip=#{1}
     </select>
     
-    <insert id="add" parameterType="com.cn21.FrequencyControl.module.Blacklist">
+    <insert id="add" parameterType="Blacklist">
     	insert into blacklist values(null,#{appKey},#{customerId},#{limitedIp},#{times},#{firDate},
     	#{secDate},#{thrDate},#{absoulteDate})
     </insert>
@@ -40,33 +40,22 @@
         sec_date=NULL , thr_date=NULL , absoulte_date=NULL where app_key=#{0} and limited_ip=#{1}
     </update>
     
-    <update id="modify" parameterType="com.cn21.FrequencyControl.module.Blacklist">
-    	update blacklist set app_key=#{appKey}, customer_id=#{customerId}, limited_ip=#{limitedIp},
+    <update id="modify" parameterType="Blacklist">
+    	update blacklist set
     	times=#{times}, fir_date=#{firDate}, sec_date=#{secDate}, thr_date=#{thrDate}, absoulte_date=#{absoulteDate} 
-    	where blacklist_id=#{blacklistId} 
+    	where app_key=#{appKey} 
     </update>
     
     <delete id="delete" parameterType="int">
     	delete from blacklist where blacklist_id=#{id}
    	</delete>
     
-    <resultMap type="com.cn21.FrequencyControl.module.Blacklist" id="blacklist">  
+    <resultMap type="Blacklist" id="blacklist">  
         <result property="blacklistId" column="blacklist_id"/>
         <result property="appKey" column="app_key"/>
         <result property="customerId" column="customer_id"/>
         <result property="limitedIp" column="limited_ip"/>
         <result property="times" column="times"/>
-        <result property="firDate" column="fir_date"/>
-        <result property="secDate" column="sec_date"/>
-        <result property="thrDate" column="thr_date"/>
-        <result property="absoulteDate" column="absoulte_date"/>
-    </resultMap>
-    
-    <resultMap type="com.cn21.FrequencyControl.dto.BlacklistDto" id="blacklistDto">
-        <result property="id" column="blacklist_id"/>
-        <result property="appKey" column="app_key"/>
-        <result property="username" column="customer_id"/>
-        <result property="limitedIp" column="limited_ip"/>
         <result property="firDate" column="fir_date"/>
         <result property="secDate" column="sec_date"/>
         <result property="thrDate" column="thr_date"/>

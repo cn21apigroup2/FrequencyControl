@@ -9,7 +9,7 @@
 	</head>
 	<body>
 			 <ul class="dropdown-menu">
-                  <li><a href="/app/list/1">app管理</a>
+                  <li><a href="${mediaHost}/app/list/1">app管理</a>
                   </li>
             </ul>
 	</body>

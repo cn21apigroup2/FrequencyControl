@@ -1,12 +1,10 @@
 package com.cn21.FrequencyControl.dao;
 
-import com.cn21.FrequencyControl.dto.BlacklistDto;
-import com.cn21.FrequencyControl.module.Blacklist;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import com.cn21.FrequencyControl.module.Blacklist;
 
 /**
  * Created by Steven on 2016/8/15.
@@ -19,21 +17,21 @@ public interface BlacklistDao {
      * @param appKey
      * @return
      */
-    List<BlacklistDto> query(String appKey);
+    List<Blacklist> queryAllByAppKey(String appKey);
 
     /**
      * 通过用户名查询黑名单数据
      * @param username
      * @return
      */
-    BlacklistDto queryByUsername(String appKey,String username);
+    Blacklist queryByUsername(String appKey,String username);
 
     /**
      * 通过ip地址查询黑名单数据
      * @param ip
      * @return
      */
-    BlacklistDto queryByIp(String appKey,String ip);
+    Blacklist queryByIp(String appKey,String ip);
 
     /**
      * 通过用户名判断权限
@@ -75,7 +73,7 @@ public interface BlacklistDao {
      * @param blacklist
      * @return
      */
-    void modify(Blacklist blacklist);
+    int modify(Blacklist blacklist);
 
     /**
      * 删除一条记录

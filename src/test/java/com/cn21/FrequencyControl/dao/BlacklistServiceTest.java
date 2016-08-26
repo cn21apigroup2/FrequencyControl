@@ -36,7 +36,7 @@ public class BlacklistServiceTest {
     }
     //@Test
     public void queryByUsrnameTest(){
-        BlacklistDto bd;
+        Blacklist bd;
         bd=blacklistService.queryByUsername("ADSDI2NNGR00ASD8","Destiny");
         if(bd==null){
             System.out.println("null");
@@ -46,7 +46,7 @@ public class BlacklistServiceTest {
     }
     //@Test
     public void queryByIpTest(){
-        BlacklistDto bd;
+        Blacklist bd;
         bd=blacklistService.queryByIp("ADSDI2NNGR00ASD8","192.168.199.256");
         if(bd==null){
             System.out.println("null");
@@ -56,7 +56,7 @@ public class BlacklistServiceTest {
     }
     //@Test
     public void queryTest(){
-        List<BlacklistDto> list;
+        List<Blacklist> list;
         list=blacklistService.query("ADSDI2NNGR00ASD8");
         if(list.isEmpty()){
             System.out.println("null");
