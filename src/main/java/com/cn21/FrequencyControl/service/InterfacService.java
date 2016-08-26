@@ -12,6 +12,7 @@ import com.cn21.FrequencyControl.module.Interfac;
  * @date 2016年8月22日
  */
 public interface InterfacService {
+	public static final String OVERALL_CONTROL="#overall#";
     
 	/**
 	 * 根据appId获取接口列表
@@ -72,4 +73,8 @@ public interface InterfacService {
 	Interfac getInterfacByInterId(long interId);
 	
 	Interfac generateInterfac(HttpServletRequest request,long appId);
+	
+	void createOverallControl(long appId);
+	
+	Interfac getOverAllControl(List<Interfac> interfacs);
 }

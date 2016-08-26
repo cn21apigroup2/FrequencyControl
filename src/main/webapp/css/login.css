@@ -1,0 +1,73 @@
+@charset "utf-8";
+/* CSS Document */
+*{
+	margin:0;
+	padding:0;}
+a{
+	text-decoration:none;
+	color:#0078D7}
+a:hover{
+	color:#666;
+	}
+
+#header .top{
+	line-height:40px;
+	text-align:center;
+	color:#FFFFFF;
+	width:100%;
+	height:40px;
+	background-color:#002050;}
+#header .bottom{
+	width:100%;
+	height:80px;
+	background-color:#F5F5F5;}
+#login_windows{
+	margin:10px auto;
+	width:350px;
+	height:500px;
+	//background-color:#000;}
+#login_windows .header{
+	text-align:center;
+	font-size:36px;
+	font-weight:lighter;}
+#login_windows .text input{
+	height:35px;
+	width:100%;
+	border-color:#999;
+	border-style:solid;
+	margin-top:20px;}
+#login_windows .text input:focus{
+	border-color:#03F;}
+#login_windows .submit input{
+	width:354px;
+	height:36px;
+	background-color:#0078D7;
+	color:#FFFFFF;
+	font-size:20px;
+	border-style:none;
+	margin-top:60px;}
+#body{
+	height:450px;}
+#login_windows .checkbox{
+	margin-top:20px;}
+#login_windows .create_propt{
+	text-align:center;
+	line-height:40px;
+	color:#0078D7;	}
+#login_windows .create_propt:hover{
+	color:#666;
+	cursor:pointer;}
+#login_windows .forget_password{
+	margin-top:40px;
+	text-align:center;
+	}
+#footer{
+	text-align:center;
+	color:#999;}
+#login_windows .submit input:hover{
+	border-style:solid;
+	border-color:#03F;
+	cursor:pointer;}
+#keep_login_lable:hover{
+	cursor:pointer;}
+

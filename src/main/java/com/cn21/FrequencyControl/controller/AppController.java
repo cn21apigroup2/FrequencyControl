@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.cn21.FrequencyControl.controller.common.Page;
 import com.cn21.FrequencyControl.module.Application;
 import com.cn21.FrequencyControl.service.ApplicationService;
+import com.cn21.FrequencyControl.service.InterfacService;
 
 /**
  * @author chenxiaofeng
@@ -34,6 +35,8 @@ public class AppController {
 	private static final Logger logger=Logger.getLogger(AppController.class);
 	@Autowired
 	private ApplicationService applicationService;
+	@Autowired
+	private InterfacService interfacService;
 
 	/**
 	 * 获取用户app列表
@@ -69,10 +72,10 @@ public class AppController {
 			HttpServletRequest request, HttpServletResponse respons) {
 		Application application=applicationService.generateApp(request,userId);//根据用户提交表单生成app
 		applicationService.createApplication(application);//持久化到数据库
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);
-		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		application=applicationService.getApplicationByAppKey(application.getApp_key());
+		interfacService.createOverallControl(application.getApp_id());//增加默认的全局频次控制
+		ModelAndView modelAndView = new ModelAndView("/app/appSave");
 		modelAndView.addObject("userId", userId);
-		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
 	
@@ -111,10 +114,8 @@ public class AppController {
 		application.setApp_name(request.getParameter("appName"));
 		application.setPlatform(request.getParameter("appPlatform"));
 		applicationService.modifyApplication(application);//保存修改
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);
-		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		ModelAndView modelAndView = new ModelAndView("/app/appSave");
 		modelAndView.addObject("userId", userId);
-		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
 	/**
@@ -124,10 +125,8 @@ public class AppController {
 	@RequestMapping(value = "/delete/{userId}/{appId}")
 	public ModelAndView deleteUserApps(@PathVariable long userId,@PathVariable long appId) {
 		applicationService.deleteApplication(appId);//删除应用
-		List<Application> applications = applicationService.getApplicationListByUserId(userId);
-		ModelAndView modelAndView = new ModelAndView("/app/appList");
+		ModelAndView modelAndView = new ModelAndView("/app/appSave");
 		modelAndView.addObject("userId", userId);
-		modelAndView.addObject("applications", applications);
 		return modelAndView;
 	}
 	
@@ -156,6 +155,7 @@ public class AppController {
 		ModelAndView modelAndView = new ModelAndView("/app/appList");
 		modelAndView.addObject("userId", userId);
 		modelAndView.addObject("applications", applications);
+		modelAndView.addObject("deleted", 1);
 		return modelAndView;
 	}
 	

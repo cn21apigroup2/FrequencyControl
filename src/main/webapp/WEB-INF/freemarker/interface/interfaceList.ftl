@@ -28,6 +28,20 @@ body {margin-top: 20px}
 			<th>操作</th>
 		</tr>
 		<tbody>
+		<#if overallControl??>
+				<tr>
+					<input type="hidden" name="appId" id="appId" value="${overallControl.app_id}">
+					    <td id="apiName">全局频次控制 </td>
+						<td id="frequency">${overallControl.frequency }</td>
+						<td id="timeout">${overallControl.timeout }</td>
+						<td id="unit">${overallControl.unit }</td>												
+						<td>
+						     <a href="${mediaHost}/interface/modify/${userId}/${appId}/${overallControl.interface_id}">编辑</a>
+						</td>
+						
+					</tr>
+					</#if>
+				<#if interfacs??>
 		   		 <#list interfacs as interfac>
 					<tr>
 					<input type="hidden" name="appId" id="appId" value="${interfac.app_id}">
@@ -47,6 +61,7 @@ body {margin-top: 20px}
 						
 					</tr>
 		        </#list>
+		        </#if>
 		        <tbody>
 	</table>
 	
