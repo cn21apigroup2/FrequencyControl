@@ -20,7 +20,7 @@
         <setting name="defaultStatementTimeout" value="2000"/>
     </settings>    
     <typeAliases>
-        <typeAlias alias="User"  type="com.cn21.FrequencyControl.module.User"/>
+    <typeAlias alias="User"  type="com.cn21.FrequencyControl.module.User"/>
     <typeAlias alias="Example"  type="com.cn21.FrequencyControl.module.Example"/>
     <typeAlias alias="Blacklist"  type="com.cn21.FrequencyControl.module.Blacklist"/>
     <typeAlias alias="Application"  type="com.cn21.FrequencyControl.module.Application"/>

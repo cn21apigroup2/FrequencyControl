@@ -26,9 +26,9 @@ public interface ApplicationDao {
 	List<Application> getDeletedAppListByUserId(long userId);
 
 	Application getApplicationByAppKey(String appKey);
-
+	
 	Application getApplicationByAppId(long appId);
-
+	
 	int updateAppDescription(Application application);
 	
 	int updateApplication(Application application);

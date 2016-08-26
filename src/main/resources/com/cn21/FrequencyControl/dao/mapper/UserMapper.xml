@@ -3,14 +3,14 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.cn21.FrequencyControl.dao.UserMapper">
-	<select id="getUserByUsername" parameterType="String" resultMap="userMap">
+<mapper namespace="com.cn21.FrequencyControl.dao.UserDao">
+	<select id="getUserByUsername" parameterType="String" resultMap="user">
     	select * from user where username=#{username};
     </select>
-    <select id="getUserByUserId" parameterType="int" resultMap="userMap">
-    	select * from user where user_Id=#{user_Id};
+    <select id="getUserByUserId" parameterType="int" resultMap="user">
+    	select * from user where user_id=#{userId};
     </select>
-    <insert id="addUser" parameterType="User" keyProperty="user_Id" useGeneratedKeys="true">
+    <insert id="addUser" parameterType="User" keyProperty="user_id" useGeneratedKeys="true">
 		insert into user(username,password,email,register_date) values(#{username}, #{password}, #{email},#{register_date})
 	</insert>
 	<update id="updateUserPassword" parameterType="User">
@@ -25,15 +25,15 @@
 	delete from user where username=#{username};
 	</delete>
 	
-	<select id="getUsers" resultMap="userMap">
+	<select id="getUsers" resultMap="user">
 		select * from user order by register_date desc
 	</select>
 	
-	<select id="getAddedUsers" resultMap="userMap" parameterType="java.sql.Timestamp">
+	<select id="getAddedUsers" resultMap="user" parameterType="java.sql.Timestamp">
 		select * from user where register_date>#{adminLastLoginTime};
 	</select>
 	
-	<select id="isEmailUsed" resultMap="userMap" parameterType="String">
+	<select id="isEmailUsed" resultMap="user" parameterType="String">
 		select * from user where email=#{email} limit 1;
 	</select>
 	
@@ -43,14 +43,12 @@
 	</update>
 	
 	
-    <resultMap type="User" id="userMap">  
-        <id column="user_Id" property="user_Id"/>  
+    <resultMap type="User" id="user">  
+        <id column="user_id" property="user_id"/>  
         <result column="username" property="username"/>  
         <result column="password" property="password"/>  
         <result column="email" property="email"/>
-        <result column="last_ip" property="lastIp"/>  
-        <result column="last_visit" property="lastVisit"/>
-        <result column="register_date" property="registerdate"/>  
+        <result column="register_date" property="register_date"/>  
     </resultMap>  
    
 </mapper>

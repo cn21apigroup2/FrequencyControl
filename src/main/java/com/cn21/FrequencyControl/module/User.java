@@ -14,68 +14,29 @@ public class User {
 	private String email;
 	private short deleted;
 	private Timestamp register_date;
-
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	/**
-	 * @return the register_date
-	 */
-	public Timestamp getRegister_date() {
-		return register_date;
-	}
-	/**
-	 * @param register_date the register_date to set
-	 */
-	public void setRegister_date(Timestamp register_date) {
-		this.register_date = register_date;
-	}
 	/**
 	 * @return the user_id
 	 */
-	public int getId() {
+	public int getUser_id() {
 		return user_id;
 	}
 	/**
 	 * @param user_id the user_id to set
 	 */
-	public void setId(int user_id) {
+	public void setUser_id(int user_id) {
 		this.user_id = user_id;
 	}
 	/**
 	 * @return the username
 	 */
-	public String getName() {
+	public String getUsername() {
 		return username;
 	}
 	/**
 	 * @param username the username to set
 	 */
-	public void setName(String username) {
+	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	/**
-	 * @return the deleted
-	 */
-	public short getDeleted() {
-		return deleted;
-	}
-	/**
-	 * @param deleted the deleted to set
-	 */
-	public void setDeleted(short deleted) {
-		this.deleted = deleted;
 	}
 	/**
 	 * @return the password
@@ -89,6 +50,44 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	/**
+	 * @return the deleted
+	 */
+	public short getDeleted() {
+		return deleted;
+	}
+	/**
+	 * @param deleted the deleted to set
+	 */
+	public void setDeleted(short deleted) {
+		this.deleted = deleted;
+	}
+	/**
+	 * @return the register_date
+	 */
+	public Timestamp getRegister_date() {
+		return register_date;
+	}
+	/**
+	 * @param register_date the register_date to set
+	 */
+	public void setRegister_date(Timestamp register_date) {
+		this.register_date = register_date;
+	}
+	
+	
 
 	
 }

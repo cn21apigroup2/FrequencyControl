@@ -45,7 +45,7 @@
  　　<tbody>
 	</table>
 	<div id="pager">
-          <#import "${mediaHost}/page.ftl" as p>
+          <#import "/page.ftl" as p>
               <@p.pager pageNo=page.pageNo pageSize=page.pageSize recordCount=page.totalSize pageCount=page.maxPage toURL="${mediaHost}/app/page/${userId}" method="post"/>
     </div>
 	</body>

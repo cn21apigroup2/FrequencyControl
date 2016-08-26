@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0" />
-<title>登录界面</title>
+<title>修改密码</title>
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 </head>
 <style type="text/css">
@@ -98,7 +98,7 @@ html,body {
 			</div>
 			<div class="login-content ">
 			<div class="form">
-			<form action="${mediaHost}/login/validate" method="post">
+			<form action="/savePwd" method="post">
 				<div class="form-group">
 					<div class="col-xs-12">
 						<div class="input-group">
@@ -117,23 +117,10 @@ html,body {
 				</div>
 				<div class="form-group form-actions">
 					<div class="col-xs-4 col-xs-offset-4 ">
-						<button type="submit" class="btn btn-sm btn-info">登录</button>
+						<button type="submit" class="btn btn-sm btn-info">确定</button>
 					</div>
 				</div>
-				<div class="form-group">
-					<div class="col-xs-12 link">
-						<p class="text-center remove-margin"><small>还没注册?</small> <a href="/login/toRegister" ><small>注册</small></a>
-						</p>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-xs-12 link">
-						<p class="text-center remove-margin">
-						<a href="/sendPass" ><small>找回密码</small>
-						<a href="/chPwd/${userId}" ><small>更改密码</small></a>
-						</p>
-					</div>
-				</div>
+				
 			</form>
 			</div>
 		</div>
