@@ -45,7 +45,7 @@ public class EmailInfo {
     	this.userName = "ciacs@ubuzzer.com";
     	this.password = "@youtui123";
     	this.fromAddress = "kefu@ubuzzer.com";
-    	this.mailServerHost = "smtp.qq.com";
+    	this.mailServerHost = "smtp.exmail.qq.com";
     }
     
 	/**

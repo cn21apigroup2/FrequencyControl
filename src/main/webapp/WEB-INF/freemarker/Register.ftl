@@ -1,146 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0" />
-<title>注册界面</title>
-
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-
-<style type="text/css">
-html,body {
-	height: 100%;
-}
-.box {
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#6699FF', endColorstr='#6699FF'); /*  IE */
-	background-image:linear-gradient(bottom, #6699FF 0%, #6699FF 100%);
-	background-image:-o-linear-gradient(bottom, #6699FF 0%, #6699FF 100%);
-	background-image:-moz-linear-gradient(bottom, #6699FF 0%, #6699FF 100%);
-	background-image:-webkit-linear-gradient(bottom, #6699FF 0%, #6699FF 100%);
-	background-image:-ms-linear-gradient(bottom, #6699FF 0%, #6699FF 100%);
-	
-	margin: 0 auto;
-	position: relative;
-	width: 100%;
-	height: 100%;
-}
-.login-box {
-	width: 100%;
-	max-width:500px;
-	height: 400px;
-	position: absolute;
-	top: 50%;
-
-	margin-top: -200px;
-	/*设置负值，为要定位子盒子的一半高度*/
-	
-}
-@media screen and (min-width:500px){
-	.login-box {
-		left: 50%;
-		/*设置负值，为要定位子盒子的一半宽度*/
-		margin-left: -250px;
-	}
-}	
-
-.form {
-	width: 100%;
-	max-width:500px;
-	height: 275px;
-	margin: 25px auto 0px auto;
-	padding-top: 25px;
-}	
-.login-content {
-	height: 300px;
-	width: 100%;
-	max-width:500px;
-	background-color: rgba(255, 250, 2550, .6);
-	float: left;
-}		
-	
-	
-.input-group {
-	margin: 0px 0px 30px 0px !important;
-}
-.form-control,
-.input-group {
-	height: 40px;
-}
-
-.form-group {
-	margin-bottom: 0px !important;
-}
-.login-title {
-	padding: 20px 10px;
-	background-color: rgba(0, 0, 0, .6);
-}
-.login-title h1 {
-	margin-top: 10px !important;
-}
-.login-title small {
-	color: #fff;
-}
-
-.link p {
-	line-height: 20px;
-	margin-top: 30px;
-}
-.btn-sm {
-	padding: 8px 24px !important;
-	font-size: 16px !important;
-}
-</style>
+<meta charset="utf-8">
+<link type="text/css" rel="stylesheet" href="/css/register.css">
+<title>Register</title>
 
 </head>
 <body>
-<div class="box">
-		<div class="login-box">
-			<div class="login-title text-center">
-				<h1><small>注册</small></h1>
-			</div>
-			<div class="login-content ">
-			<div class="form">
-			<form action="/login/registersuccess" method="post">
-				<div class="form-group">
-					<div class="col-xs-12">
-						<div class="input-group">
-							<span class="input-group-addon">用户名</span>
-							<input type="text" id="userName" name="userName" class="form-control" value="${error}">
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-xs-12  ">
-						<div class="input-group">
-							<span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-							<input type="text" id="password" name="password" class="form-control">
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-xs-12  ">
-						<div class="input-group">
-							<span class="input-group-addon">邮&nbsp;&nbsp;&nbsp;&nbsp;箱</span>
-							<input type="text" id="password" name="password" class="form-control">
-						</div>
-					</div>
-				</div>
-				<div class="form-group form-actions">
-					<div class="col-xs-4 col-xs-offset-4 ">
-						<button type="submit" class="btn btn-sm btn-info">注册</button>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-xs-12 link">
-						<p class="text-center remove-margin"><small>已经注册?</small> <a href="/login/index" ><small>登录</small></a>
-						</p>
-					</div>
-				</div>
-			</form>
-			</div>
-		</div>
-	</div>
-</div>
-
+	<div id="header">
+    	<div class="top">
+        	欢迎使用API接口频次控制系统
+        </div>
+    </div>
+    <div id="body">
+    	<div class="wrap">
+            <div class="create_logo">
+                创建账户
+            </div>
+            <div class="create_text_disc">
+                使用新的电子邮箱创建你的账户，我们将通过电子邮件认证你的身证，请务必准确填写。电子邮箱可作为登录的用户名。如果你已有账户，请使用该账户<a style="color:#0078D7;" href="${mediaHost}/login/index">登录</a>
+            </div>
+            <form action="/login/registersuccess" method="post">
+            <div class="create_text_input">
+                <div class="input_username">
+                    用户名<br>
+                    <input type="text" name="username"><br>
+                </div>
+                <div class="input_email">
+                    电子邮箱<br>
+                    <input type="text" name="email"><br>
+                    <a style="font-size:10px; font-weight:400; line-height:24px;">最少输入8个字符，区分大小写</a>
+                </div>
+                <div class="input_password">
+                    密码<br>
+                    <input type="password" name="password"><br>
+                </div>
+                <div class="input_confirm_password">
+                    重新输入密码<br>
+                    <input type="password" name="confirm"><br>
+                </div>
+                <div class="input_date">
+                    日期<br>
+                    <input type="date" name="registerDate"><br>
+                </div>
+                <div class="input_phone">
+                    电话号码<br>
+                    <input type="text" name="phoneNumber"><br>
+                </div>
+                <div class="confirm_checkbox">
+            		 <input id="confirm_checkbox" type="checkbox" value="true" /><label id="confirm_checkbox_lable" style="vertical-align:middle;">&nbsp;&nbsp;请阅读并同意<a style="color:#0078DF;">相关协议</a></label> <br />
+                </div>
+                <div class="submit">
+                	<input type="submit" value="创建账户"><br>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div id="footer"></div>
 </body>
 </html>

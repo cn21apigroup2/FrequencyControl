@@ -124,22 +124,21 @@ public class UserController {
 	 * @throws ServletException 
 	 */
 	@RequestMapping(value="/validate")
-	public ModelAndView validateLogin(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+	public void validateLogin(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		String username = request.getParameter("userName");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
 		ModelAndView modelAndView = new ModelAndView();
 		if(userService.hasMatchUser(username,password)){
 			User user = userService.getUserInfoByUserName(username);
-			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
-			session.setAttribute("username", username);
-			return null;
+			response.sendRedirect("/app/list/"+user.getUser_id());
+//			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
+//			session.setAttribute("username", username);
 		}
 		else{
 			request.getRequestDispatcher("/login/index").forward(request, response);
 			modelAndView.addObject("msg", "用户不存在或密码错误！");
 		}
-		return modelAndView;
 	}
 	
 	
@@ -240,7 +239,7 @@ public class UserController {
 	
 	@RequestMapping("/validateCheckCode")
 	@ResponseBody
-	public String validateCheckCode(String checkCode,HttpServletRequest req, HttpServletResponse resp)
+	public String pictureCheckCode(String checkCode,HttpServletRequest req, HttpServletResponse resp)
 	{
 		boolean isRight = false;
 		HttpSession session = req.getSession();
@@ -275,14 +274,14 @@ public class UserController {
 	 */
 	@RequestMapping(value="/registersuccess")
 	public ModelAndView userRegister(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
-		String username = request.getParameter("userName");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		ModelAndView modelAndView = new ModelAndView();
 		if(!userService.hasMatchUsername(username)){
 			userService.register(username,password,email,request);		
 			User user = userService.getUserInfoByUserName(username);
-			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
+			response.sendRedirect("/app/list/"+user.getUser_id());
 			return null;
 		}
 		else{
@@ -363,7 +362,7 @@ public class UserController {
 	@ResponseBody
 	public String sendNewPassword(HttpServletRequest req, HttpServletResponse resp)throws Exception
 	{
-		String username = (String)req.getParameter("username");
+		String username = req.getParameter("username");
 		User user = userService.getUserInfoByUserName(username);
 		JsonObject json = new JsonObject();
 		if(user != null)
@@ -373,7 +372,7 @@ public class UserController {
 				EmailInfo mail = new EmailInfo();
 				
 				//邮件上显示发送人的昵称
-				mail.setNickName("友推");
+				mail.setNickName("frequencycontrol");
 				//接收者邮件地址
 				mail.setToAddress(user.getEmail());
 				//发送者邮件地址
