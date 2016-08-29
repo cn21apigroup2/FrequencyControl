@@ -52,7 +52,7 @@ public class UserController {
 	@RequestMapping(value="index")
 	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("/Login");
+			modelAndView.setViewName("/login");
 		return modelAndView;
 	}
 	/**
@@ -261,7 +261,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/toRegister")
 	public ModelAndView toRegister(HttpServletRequest request,HttpServletResponse response){
-		ModelAndView modelAndView = new ModelAndView("/Register");
+		ModelAndView modelAndView = new ModelAndView("/register");
 		return modelAndView;
 	}
 	/**
@@ -285,7 +285,7 @@ public class UserController {
 			return null;
 		}
 		else{
-			modelAndView.setViewName("/Register");
+			modelAndView.setViewName("/register");
 			modelAndView.addObject("msg", "用户名已存在！");
 		}
 		return modelAndView;
