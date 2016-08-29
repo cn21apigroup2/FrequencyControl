@@ -103,7 +103,7 @@ html,body {
 					<div class="col-xs-12">
 						<div class="input-group">
 							<span class="input-group-addon">用户名</span>
-							<input type="text" id="userName" name="userName" class="form-control" value="${error}">
+							<input type="text" id="userName" name="userName" placeholder="请输入用户名" class="form-control" value="${error}">
 						</div>
 					</div>
 				</div>
@@ -111,10 +111,16 @@ html,body {
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-							<input type="text" id="password" name="password" class="form-control">
+							<input type="text" id="password" name="password" placeholder="请输入密码" class="form-control">
 						</div>
 					</div>
 				</div>
+				<div  class="inputSect checkCodeSect">
+					<span class="input-group-addon">检验码</span>
+					<input type="input"  class="input checkCode" name="code" id="code" maxlength="4" placeholder="请输入检验码"> 
+					<img class="checkCodeImg" src="${mediaHost}/login/getCheckCode" alt="验证码" onclick="this.src='${mediaHost}/login/getCheckCode?rand='+Math.random()">
+				</div>	
+
 				<div class="form-group form-actions">
 					<div class="col-xs-4 col-xs-offset-4 ">
 						<button type="submit" class="btn btn-sm btn-info">登录</button>
@@ -129,8 +135,8 @@ html,body {
 				<div class="form-group">
 					<div class="col-xs-12 link">
 						<p class="text-center remove-margin">
-						<a href="/sendPass" ><small>找回密码</small>
-						<a href="/chPwd/${userId}" ><small>更改密码</small></a>
+						<a href="${mediaHost}/login/forgetPassword" ><small>找回密码</small>
+						<a href="${mediaHost}/login/chPwd" ><small>更改密码</small></a>
 						</p>
 					</div>
 				</div>
