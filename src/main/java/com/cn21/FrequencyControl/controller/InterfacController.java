@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cn21.FrequencyControl.module.Application;
 import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.service.ApplicationService;
 import com.cn21.FrequencyControl.service.InterfacService;
 import com.google.gson.JsonObject;
 
@@ -28,6 +30,8 @@ import com.google.gson.JsonObject;
 public class InterfacController {
 	@Autowired
 	private InterfacService interfacService;
+	@Autowired
+	private ApplicationService applicationService;
     
 	/**
 	 * 获取app interface列表
@@ -150,10 +154,11 @@ public class InterfacController {
 		 * @param app_id
 		 * @return
 		 */
-		@RequestMapping("/pull/{userId}/{appId}")
+		@RequestMapping("/pull/{appKey}")
 		@ResponseBody
-		public String pull(HttpServletRequest request,@PathVariable long userId, @PathVariable long appId) {
-			List<Interfac> interfaces = interfacService.getInterfacListByAppId(appId);
+		public String pull(HttpServletRequest request, @PathVariable String appKey) {
+			Application application = applicationService.getApplicationByAppKey(appKey);
+			List<Interfac> interfaces = interfacService.getInterfacListByAppId(application.getApp_id());
 			Interfac overAllControl = interfacService.getOverAllControl(interfaces);
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("overallControl", overAllControl);

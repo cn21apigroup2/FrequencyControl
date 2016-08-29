@@ -124,22 +124,21 @@ public class UserController {
 	 * @throws ServletException 
 	 */
 	@RequestMapping(value="/validate")
-	public ModelAndView validateLogin(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+	public void validateLogin(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		String username = request.getParameter("userName");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
 		ModelAndView modelAndView = new ModelAndView();
 		if(userService.hasMatchUser(username,password)){
 			User user = userService.getUserInfoByUserName(username);
-			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
-			session.setAttribute("username", username);
-			return null;
+			response.sendRedirect("/app/list/"+user.getUser_id());
+//			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
+//			session.setAttribute("username", username);
 		}
 		else{
 			request.getRequestDispatcher("/login/index").forward(request, response);
 			modelAndView.addObject("msg", "用户不存在或密码错误！");
 		}
-		return modelAndView;
 	}
 	
 	
@@ -275,14 +274,14 @@ public class UserController {
 	 */
 	@RequestMapping(value="/registersuccess")
 	public ModelAndView userRegister(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
-		String username = request.getParameter("userName");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		ModelAndView modelAndView = new ModelAndView();
 		if(!userService.hasMatchUsername(username)){
 			userService.register(username,password,email,request);		
 			User user = userService.getUserInfoByUserName(username);
-			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
+			response.sendRedirect("/app/list/"+user.getUser_id());
 			return null;
 		}
 		else{
