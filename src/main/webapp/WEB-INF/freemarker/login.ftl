@@ -16,6 +16,7 @@
     <div id="body">
         	<div id=login_windows>
             	<div class="header">登录</div>
+				<form action="${mediaHost}/login/validate" method="post">
                 <div class="text">
                 	<input type="text" name="userName" placeholder="用户名" /><br />
                     <input type="password" name="password" placeholder="密码"/><br />
@@ -27,11 +28,12 @@
                 	<input type="submit"  value="登录" id="submit" />
                 </div>
                 <div class="create_propt" >
-                	<a href="register.html">没有账号?</a>
+                	<a href="${mediaHost}/login/toRegister">没有账号?</a>
                 </div>
                 <div class="forget_password">
-                	<a href="">忘记密码</a>
+                	<a href="${mediaHost}/login/sendPass">忘记密码</a>
                 </div>
+			</form>
             </div>
     </div>
     <div id="footer">

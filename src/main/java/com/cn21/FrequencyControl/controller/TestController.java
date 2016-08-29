@@ -33,7 +33,7 @@ public class TestController {
 	@RequestMapping(value = "")
 	public ModelAndView welcome() {
 		Example example = exampleService.showExample("陈小锋");//获取例子
-		ModelAndView modelAndView = new ModelAndView("/welcome");
+		ModelAndView modelAndView = new ModelAndView("/login");
 		modelAndView.addObject("example", example);
 		return modelAndView;
 	}

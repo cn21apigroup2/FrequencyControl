@@ -94,16 +94,16 @@ html,body {
 <div class="box">
 		<div class="login-box">
 			<div class="login-title text-center">
-				<h1><small>登录</small></h1>
+				<h1><small>更改密码</small></h1>
 			</div>
 			<div class="login-content ">
 			<div class="form">
-			<form action="/savePwd" method="post">
+			<form action="${mediaHost}/login/savePwd" method="post">
 				<div class="form-group">
 					<div class="col-xs-12">
 						<div class="input-group">
 							<span class="input-group-addon">用户名</span>
-							<input type="text" id="userName" name="userName" class="form-control" value="${error}">
+							<input type="text" id="userName" name="userName" placeholder="请输入用户名" class="form-control" value="${error}">
 						</div>
 					</div>
 				</div>
@@ -111,7 +111,7 @@ html,body {
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon">密&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-							<input type="text" id="password" name="password" class="form-control">
+							<input type="text" id="password" name="password" placeholder="请输入更改密码" class="form-control">
 						</div>
 					</div>
 				</div>
