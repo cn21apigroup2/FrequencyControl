@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<link type="text/css" rel="stylesheet" href="/css/register.css">
+<link type="text/css" rel="stylesheet" href="${cssRoot}/register.css">
 <title>Register</title>
 
 </head>
