@@ -39,14 +39,7 @@
                     重新输入密码<br>
                     <input type="password" name="confirm"><br>
                 </div>
-                <div class="input_date">
-                    日期<br>
-                    <input type="date" name="registerDate"><br>
-                </div>
-                <div class="input_phone">
-                    电话号码<br>
-                    <input type="text" name="phoneNumber"><br>
-                </div>
+       
                 <div class="confirm_checkbox">
             		 <input id="confirm_checkbox" type="checkbox" value="true" /><label id="confirm_checkbox_lable" style="vertical-align:middle;">&nbsp;&nbsp;请阅读并同意<a style="color:#0078DF;">相关协议</a></label> <br />
                 </div>

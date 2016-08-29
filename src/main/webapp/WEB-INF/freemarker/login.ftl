@@ -20,6 +20,8 @@
                 <div class="text">
                 	<input type="text" name="userName" placeholder="用户名" /><br />
                     <input type="password" name="password" placeholder="密码"/><br />
+                    <input type="input"  class="input checkCode" name="code" id="code" maxlength="4" placeholder="请输入检验码"> 
+					<img class="checkCodeImg" src="${mediaHost}/login/getCheckCode" alt="验证码" onclick="this.src='${mediaHost}/login/getCheckCode?rand='+Math.random()">
                 </div>
                 <div class="checkbox">
             		 <input id="keep_login" type="checkbox" value="true" /><label id="keep_login_lable">&nbsp;&nbsp;保持登录状态</label> <br />
@@ -31,7 +33,7 @@
                 	<a href="${mediaHost}/login/toRegister">没有账号?</a>
                 </div>
                 <div class="forget_password">
-                	<a href="${mediaHost}/login/sendPass">忘记密码</a>
+                	<a href="${mediaHost}/login/forgetPassword">忘记密码</a>
                 </div>
 			</form>
             </div>
