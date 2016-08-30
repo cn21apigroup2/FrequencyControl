@@ -27,22 +27,22 @@
     
     <insert id="add" parameterType="Blacklist">
     	insert into blacklist values(null,#{appKey},#{customerId},#{limitedIp},#{times},#{firDate},
-    	#{secDate},#{thrDate},#{absoulteDate})
+    	#{secDate},#{thrDate},#{absoluteDate})
     </insert>
     
     <update id="reset">
     	update blacklist set times=0,fir_date=NULL ,
-    	sec_date=NULL , thr_date=NULL , absoulte_date=NULL where app_key=#{0} and customer_id=#{1}
+    	sec_date=NULL , thr_date=NULL , absolute_date=NULL where app_key=#{0} and customer_id=#{1}
     </update>
 
     <update id="resetByIp">
         update blacklist set times=0,fir_date=NULL ,
-        sec_date=NULL , thr_date=NULL , absoulte_date=NULL where app_key=#{0} and limited_ip=#{1}
+        sec_date=NULL , thr_date=NULL , absolute_date=NULL where app_key=#{0} and limited_ip=#{1}
     </update>
     
     <update id="modify" parameterType="Blacklist">
     	update blacklist set
-    	times=#{times}, fir_date=#{firDate}, sec_date=#{secDate}, thr_date=#{thrDate}, absoulte_date=#{absoulteDate} 
+    	times=#{times}, fir_date=#{firDate}, sec_date=#{secDate}, thr_date=#{thrDate}, absolute_date=#{absoulteDate}
     	where app_key=#{appKey} 
     </update>
     
@@ -59,7 +59,7 @@
         <result property="firDate" column="fir_date"/>
         <result property="secDate" column="sec_date"/>
         <result property="thrDate" column="thr_date"/>
-        <result property="absoulteDate" column="absoulte_date"/>
+        <result property="absoluteDate" column="absolute_date"/>
     </resultMap>
     
     <resultMap type="java.util.HashMap" id="dateMap">

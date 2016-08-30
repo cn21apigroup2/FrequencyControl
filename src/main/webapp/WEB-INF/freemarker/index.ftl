@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<input type="hidden" value="${imageRoot}" id="imageRoot"/>
 	<div id="header">
     	<div class="top">
         	欢迎使用API接口频次控制系统
@@ -27,7 +28,7 @@
                 <input type="hidden" id ="APP_ID" />
                 <input type="hidden" id = "APP_KEY" />
                	<div id="bar_dropdown_icon">
-               		<img id="dropdown_icon" src="image/dropdown_icon.png" width="13px;" style="margin-top: 24px; margin-left: 25px;" />
+               		<img id="dropdown_icon" src="${imageRoot}/dropdown_icon.png" width="13px;" style="margin-top: 24px; margin-left: 25px;" />
                	</div>
             </ul>
         </div>
@@ -109,7 +110,7 @@
        					<tr>
        						<td>应用描述</td><td><input type="text"; name="appDescription"/></td>
        					<tr>
-         					<td>平台</td><td><input type="text"; name="paltform"/></td>
+         					<td>平台</td><td><input type="text"; name="appPlatform"/></td>
          				</table>
          				<input id="app_add_confirm" type="button" value="确认"/> 
          				<input id="app_add_cancle" type="button" value="取消"/> 

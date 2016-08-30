@@ -9,7 +9,7 @@
 	values(#{user_id},#{app_name},#{app_key},#{secret},#{app_description},#{platform});
 	</insert>
     <select id="getAppListByUserId" parameterType="long" resultMap="application">
-    	select * from application where user_id=#{userId} and deleted=0;
+    	select * from application where user_id=#{userId} and deleted=0 ORDER BY app_id DESC ;
     </select>
     <select id="getApplicationByAppId" parameterType="long" resultMap="application">
     	select * from application where app_id=#{appId};

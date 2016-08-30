@@ -2,6 +2,7 @@ package com.cn21.FrequencyControl.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -36,11 +37,12 @@ public class BlacklistController {
      * @param appKey
      * @return
      */
-    @RequestMapping(value = "/show",method = RequestMethod.POST)
-    public ModelAndView show(String appKey){
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("result",bs.query(appKey));
-                return  modelAndView;
+    @RequestMapping(value = "/show",method = RequestMethod.GET)
+	@ResponseBody
+    public String show(String appKey){
+		JSONArray resultJson = new JSONArray();
+		resultJson.add(bs.query(appKey));
+        return  resultJson.toString();
 
     }
 
@@ -51,11 +53,14 @@ public class BlacklistController {
      * @param username
      * @return
      */
-    @RequestMapping(value = "/showByUsername",method = RequestMethod.POST)
-    public ModelAndView showByUsername(String appKey,String username){
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("result",bs.queryByUsername(appKey,username));
-        return  modelAndView;
+    @RequestMapping(value = "/showByUsername",method = RequestMethod.GET)
+	@ResponseBody
+    public String showByUsername(String appKey,String username){
+		JSONArray resultJson = new JSONArray();
+		List<Blacklist> list = new ArrayList<Blacklist>();
+		list.add(bs.queryByUsername(appKey,username));
+		resultJson.add(list);
+        return  resultJson.toString();
 
     }
 
@@ -65,12 +70,14 @@ public class BlacklistController {
      * @param ip
      * @return
      */
-    @RequestMapping(value = "/showByIp",method = RequestMethod.POST)
-    public ModelAndView showByIp(String appKey,String ip){
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("result",bs.query(appKey));
-        return  modelAndView;
-
+    @RequestMapping(value = "/showByIp",method = RequestMethod.GET)
+	@ResponseBody
+    public String showByIp(String appKey,String ip){
+		JSONArray resultJson = new JSONArray();
+		List<Blacklist> list = new ArrayList<Blacklist>();
+		list.add(bs.queryByIp(appKey,ip));
+		resultJson.add(list);
+        return  resultJson.toString();
     }
 
     /**
@@ -81,6 +88,7 @@ public class BlacklistController {
      * @return
      */
     @RequestMapping(value = "/reset" , method = RequestMethod.POST)
+	@ResponseBody
     public String reset(String appKey,String username,String ip){
         bs.reset(appKey,username,ip);
         return null;
@@ -91,7 +99,7 @@ public class BlacklistController {
   		/**
   		 * 客户端jar包拉取黑名单接口
   		 * 
-  		 * @param app_id
+  		 * @param appKey
   		 * @return
   		 */
   		@RequestMapping("/pull/{appKey}")
@@ -106,7 +114,7 @@ public class BlacklistController {
   		/**
   		 * 客户端jar同步黑名单接口
   		 * 
-  		 * @param app_id
+  		 * @param appKey
   		 * @return
   		 */
   		@RequestMapping("/update/{appKey}/")
