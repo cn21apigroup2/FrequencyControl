@@ -28,12 +28,13 @@ public class ParameterController {
 	 * 获取参数列表
 	 * @return void
 	 */
-	@RequestMapping(value = "/list/{userId}/{interId}")
-	public ModelAndView showAllParameter(@PathVariable long userId,@PathVariable long interId) {
+	@RequestMapping(value = "/list/{userId}/{appId}/{interId}")
+	public ModelAndView showAllParameter(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId) {
 		List<Parameter> parameters = parameterService.getParameterListByInterId(interId);//获取例子
 		ModelAndView modelAndView = new ModelAndView("/parameter/parameterList");
 		modelAndView.addObject("interId", interId);
 		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("appId", appId);
 		modelAndView.addObject("parameters", parameters);
 		return modelAndView;
 	}
@@ -42,13 +43,14 @@ public class ParameterController {
 	 * 保存参数
 	 * @return void
 	 */
-	@RequestMapping(value = "/save/{userId}/{interfaceId}")
-	public ModelAndView saveParameter(@PathVariable long interfaceId,@PathVariable long userId,
+	@RequestMapping(value = "/save/{userId}/{appId}/{interfaceId}")
+	public ModelAndView saveParameter(@PathVariable long interfaceId,@PathVariable long appId,@PathVariable long userId,
 			HttpServletRequest request, HttpServletResponse respons) {
 		Parameter parameter=parameterService.generateParameter(request, interfaceId);//根据用户提交表单生成app
 		parameterService.createParameter(parameter);//持久化到数据库
 		ModelAndView modelAndView = new ModelAndView("/parameter/parameterSave");
 		modelAndView.addObject("userId", userId);	
+		modelAndView.addObject("appId", appId);
 		modelAndView.addObject("interfaceId", interfaceId);		
 		return modelAndView;
 	}
@@ -56,11 +58,12 @@ public class ParameterController {
 	 * 添加参数
 	 * @return void
 	 */
-	@RequestMapping(value = "/create/{userId}/{interId}")
-	public ModelAndView createParameters(@PathVariable long userId,@PathVariable long interId) {
+	@RequestMapping(value = "/create/{userId}/{appId}/{interId}")
+	public ModelAndView createParameters(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId) {
 		ModelAndView modelAndView = new ModelAndView("/parameter/createParameter");
 		modelAndView.addObject("interId", interId);
 		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("appId", appId);
 		return modelAndView;
 	}
 
@@ -68,21 +71,22 @@ public class ParameterController {
 	 * 修改参数
 	 * @return void
 	 */
-	@RequestMapping(value = "/modify/{userId}/{interId}/{paraId}")
-	public ModelAndView modifyParameter(@PathVariable long userId,@PathVariable long interId,@PathVariable long paraId) {
+	@RequestMapping(value = "/modify/{userId}/{appId}/{interId}/{paraId}")
+	public ModelAndView modifyParameter(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId,@PathVariable long paraId) {
 		Parameter parameter = parameterService.getParameterByParaId(paraId);//获取例子
 		ModelAndView modelAndView = new ModelAndView("/parameter/modifyParameter");
 		modelAndView.addObject("parameter", parameter);
 		modelAndView.addObject("interId", interId);
 		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("appId", appId);
 		return modelAndView;
 	}
 	/**
 	 * 保存修改后的参数
 	 * @return void
 	 */
-	@RequestMapping(value="/modifySave/{userId}/{interId}/{paraId}")
-	public ModelAndView saveModifyParameter(@PathVariable long userId,@PathVariable long interId,@PathVariable long paraId,
+	@RequestMapping(value="/modifySave/{userId}/{appId}/{interId}/{paraId}")
+	public ModelAndView saveModifyParameter(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId,@PathVariable long paraId,
 			HttpServletRequest request,HttpServletResponse response ) {
 		Parameter parameter = parameterService.getParameterByParaId(paraId);//获取例子		
 		parameter.setParameter_key(request.getParameter("parameterKey"));
@@ -91,21 +95,23 @@ public class ParameterController {
 		
 		ModelAndView modelAndView = new ModelAndView("/parameter/parameterSave");
 		modelAndView.addObject("interfaceId", interId);	
-		modelAndView.addObject("userId", userId);	
+		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("appId", appId);
 		return modelAndView;
 	}
 	/**
 	 * 删除参数
 	 * @return void
 	 */
-	@RequestMapping(value = "/delete/{userId}/{interId}/{paraId}")
-	public ModelAndView deleteParameter(@PathVariable long userId,@PathVariable long interId,@PathVariable long paraId) {
+	@RequestMapping(value = "/delete/{userId}/{appId}/{interId}/{paraId}")
+	public ModelAndView deleteParameter(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId,@PathVariable long paraId) {
 		parameterService.deleteParameter(paraId);
 		List<Parameter> parameters = parameterService.getParameterListByInterId(interId);
 		ModelAndView modelAndView = new ModelAndView("/parameter/parameterList");
 		modelAndView.addObject("parameters", parameters);
 		modelAndView.addObject("interId", interId);		
-		modelAndView.addObject("userId", userId);	
+		modelAndView.addObject("userId", userId);
+		modelAndView.addObject("appId", appId);
 		return modelAndView;
 	} 
 }

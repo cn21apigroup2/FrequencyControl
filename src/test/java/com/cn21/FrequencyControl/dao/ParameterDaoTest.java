@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.InterfaceControl;
 import com.cn21.FrequencyControl.module.Parameter;
 
 /**

@@ -3,12 +3,15 @@ package com.cn21.FrequencyControl.dao;
 import com.cn21.FrequencyControl.dto.BlacklistDto;
 import com.cn21.FrequencyControl.module.Blacklist;
 import com.cn21.FrequencyControl.service.BlacklistService;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +34,7 @@ public class BlacklistServiceTest {
         blacklist.setLimitedIp("192.168.199.4");
         short times = 1;
         blacklist.setTimes(times);
-        blacklist.setFirDate(new Date());
+        blacklist.setFirDate(new Timestamp(System.currentTimeMillis()));
         blacklistService.add(blacklist);
     }
     //@Test

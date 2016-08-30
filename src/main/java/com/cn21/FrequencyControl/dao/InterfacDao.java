@@ -4,27 +4,27 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.InterfaceControl;
 import com.cn21.FrequencyControl.module.Parameter;
 @Repository
 public interface InterfacDao {
-	int addInterfac(Interfac interfac);
+	int addInterfac(InterfaceControl interfac);
 
-	List<Interfac> getInterfacListByAppId(long appId) ;
+	List<InterfaceControl> getInterfacListByAppId(long appId) ;
 		
-	List<Interfac> getDeletedInterfacListByAppId(long appId);	
+	List<InterfaceControl> getDeletedInterfacListByAppId(long appId);	
 
-	Interfac getInterfacByInterId(long interId);
+	InterfaceControl getInterfacByInterId(long interId);
 	
-	Interfac getOverallControl(long appId,String apiName);
+	InterfaceControl getOverallControl(long appId,String apiName);
 
-	int updateInterfac(Interfac interfac);
+	int updateInterfac(InterfaceControl interfac);
 
-	int updateInterFrequency(Interfac interfac);
+	int updateInterFrequency(InterfaceControl interfac);
 	
-	int updateInterTimeout(Interfac interfac);
+	int updateInterTimeout(InterfaceControl interfac);
 	
-	int updateInterUnit(Interfac interfac);
+	int updateInterUnit(InterfaceControl interfac);
 	
 	int deleteInterfac(long interId);
 

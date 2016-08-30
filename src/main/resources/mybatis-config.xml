@@ -24,7 +24,7 @@
     <typeAlias alias="Example"  type="com.cn21.FrequencyControl.module.Example"/>
     <typeAlias alias="Blacklist"  type="com.cn21.FrequencyControl.module.Blacklist"/>
     <typeAlias alias="Application"  type="com.cn21.FrequencyControl.module.Application"/>
-    <typeAlias alias="Interfac"  type="com.cn21.FrequencyControl.module.Interfac"/>
+    <typeAlias alias="InterfaceControl"  type="com.cn21.FrequencyControl.module.InterfaceControl"/>
     <typeAlias alias="Parameter"  type="com.cn21.FrequencyControl.module.Parameter"/>
     </typeAliases>
 </configuration>

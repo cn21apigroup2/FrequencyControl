@@ -2,7 +2,7 @@ package com.cn21.FrequencyControl.module;
 
 import java.util.List;
 
-public class Interfac {
+public class InterfaceControl {
     
 	private long interface_id;
     private long app_id;

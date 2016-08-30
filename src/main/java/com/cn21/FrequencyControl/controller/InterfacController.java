@@ -16,7 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cn21.FrequencyControl.module.Application;
-import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.InterfaceControl;
 import com.cn21.FrequencyControl.service.ApplicationService;
 import com.cn21.FrequencyControl.service.InterfacService;
 import com.google.gson.JsonObject;
@@ -39,8 +39,8 @@ public class InterfacController {
 	 */
 	@RequestMapping(value = "/list/{userId}/{appId}")
 	public ModelAndView showAllInterfac(@PathVariable long userId, @PathVariable long appId) {
-		List<Interfac> interfacs = interfacService.getInterfacListByAppId(appId);//获取例子
-		Interfac overallControl = interfacService.getOverAllControl(interfacs);
+		List<InterfaceControl> interfacs = interfacService.getInterfacListByAppId(appId);//获取例子
+		InterfaceControl overallControl = interfacService.getOverAllControl(interfacs);
 		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
 		modelAndView.addObject("appId", appId);
 		modelAndView.addObject("userId", userId);
@@ -55,7 +55,7 @@ public class InterfacController {
 	@RequestMapping(value = "/save/{userId}/{appId}")
 	public ModelAndView saveUserApps(@PathVariable long appId,@PathVariable long userId,
 			HttpServletRequest request, HttpServletResponse respons) {
-		Interfac interfac=interfacService.generateInterfac(request, appId);//根据用户提交表单生成app
+		InterfaceControl interfac=interfacService.generateInterfac(request, appId);//根据用户提交表单生成app
 		interfacService.createInterfac(interfac);//持久化到数据库
 		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
 		modelAndView.addObject("appId", appId);	
@@ -79,7 +79,7 @@ public class InterfacController {
 	 */
 	@RequestMapping(value = "/modify/{userId}/{appId}/{interId}")
 	public ModelAndView modifyInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId) {
-		Interfac interfac = interfacService.getInterfacByInterId(interId);//获取例子
+		InterfaceControl interfac = interfacService.getInterfacByInterId(interId);//获取例子
 		ModelAndView modelAndView = new ModelAndView("/interface/modifyInterface");
 		modelAndView.addObject("interfac", interfac);
 		modelAndView.addObject("userId", userId);
@@ -93,7 +93,7 @@ public class InterfacController {
 	@RequestMapping(value="/modifySave/{userId}/{appId}/{interId}")
 	public ModelAndView saveModifyInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId,
 			HttpServletRequest request,HttpServletResponse response ) {
-		Interfac interfac = interfacService.getInterfacByInterId(interId);//获取例子		
+		InterfaceControl interfac = interfacService.getInterfacByInterId(interId);//获取例子		
 		String apiFrequency = request.getParameter("apiFrequency");
 		String timeout = request.getParameter("timeout");
 		interfac.setFrequency(Integer.parseInt(apiFrequency));
@@ -125,7 +125,7 @@ public class InterfacController {
 	 */
 	@RequestMapping(value = "/listDel/{userId}/{appId}")
 	public ModelAndView showAlldeletedInterfacs(@PathVariable long userId,@PathVariable long appId) {
-		List<Interfac> interfacs = interfacService.getDeletedInterfacListByAppId(appId);//获取例子
+		List<InterfaceControl> interfacs = interfacService.getDeletedInterfacListByAppId(appId);//获取例子
 		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
 		modelAndView.addObject("interfacs", interfacs);
 		modelAndView.addObject("appId",appId);
@@ -158,8 +158,8 @@ public class InterfacController {
 		@ResponseBody
 		public String pull(HttpServletRequest request, @PathVariable String appKey) {
 			Application application = applicationService.getApplicationByAppKey(appKey);
-			List<Interfac> interfaces = interfacService.getInterfacListByAppId(application.getApp_id());
-			Interfac overAllControl = interfacService.getOverAllControl(interfaces);
+			List<InterfaceControl> interfaces = interfacService.getInterfacListByAppId(application.getApp_id());
+			InterfaceControl overAllControl = interfacService.getOverAllControl(interfaces);
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("overallControl", overAllControl);
 			JSONArray jSonArray = new JSONArray();
