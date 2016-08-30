@@ -65,10 +65,10 @@ CREATE TABLE blacklist (
   customer_id VARCHAR(30) NOT NULL COMMENT '每个APP下的用户名',
   limited_ip BINARY(16) NOT NULL COMMENT '被禁IP地址',
   times TINYINT NOT NULL COMMENT '被加入黑名单次数',
-  fir_date DATETIME COMMENT '第一次加入黑民单时间',
-  sec_date DATETIME COMMENT '第二次加入黑名单时间',
-  thr_date DATETIME COMMENT '第三次加入黑名单时间',
-  absoulte_date DATETIME COMMENT  '完全冻结时间'
+  fir_date TIMESTAMP COMMENT '第一次加入黑民单时间',
+  sec_date TIMESTAMP COMMENT '第二次加入黑名单时间',
+  thr_date TIMESTAMP COMMENT '第三次加入黑名单时间',
+  absolute_date TIMESTAMP COMMENT  '完全冻结时间'
 )ENGINE = INNODB DEFAULT CHARSET = UTF8 COMMENT '黑名单信息记录表' ;
 
 CREATE INDEX APP_KEY_INDEX ON blacklist(app_key);

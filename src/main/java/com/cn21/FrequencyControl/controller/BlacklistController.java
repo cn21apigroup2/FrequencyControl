@@ -1,12 +1,17 @@
 package com.cn21.FrequencyControl.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,9 +99,10 @@ public class BlacklistController {
   		 * @param app_id
   		 * @return
   		 */
-  		@RequestMapping("/pull/{appKey}")
+  		@RequestMapping("/pull")
   		@ResponseBody
-  		public String pull(HttpServletRequest request,@PathVariable String appKey) {
+  		public String pull(HttpServletRequest request) {
+  			String appKey = request.getParameter("appKey");
   			List<Blacklist> query = bs.query(appKey);
   			JSONArray result = new JSONArray();
   			result.addAll(query);
@@ -109,32 +115,34 @@ public class BlacklistController {
   		 * @param app_id
   		 * @return
   		 */
-  		@RequestMapping("/update/{appKey}/")
+  		@RequestMapping("/update")
   		@ResponseBody
-  		public String update(HttpServletRequest request,@PathVariable String appKey) {
-  			String customerId = request.getParameter("customerId");
-  			String limitedIp = request.getParameter("limitedIp");
-  			String firDate = request.getParameter("firDate");
-  			String secDate = request.getParameter("secDate");
-  			String thrDate = request.getParameter("thrDate");
-  			String times = request.getParameter("times");
-  			String state = request.getParameter("state");
-  			String absoluteDate = request.getParameter("absoluteDate");
-  			Blacklist blackList = bs.queryByUsername(appKey, customerId);
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-  			try {
-  				if(absoluteDate!=null && !absoluteDate.equals(""))blackList.setAbsoulteDate(simpleDateFormat.parse(absoluteDate));
-				if(firDate!=null && !firDate.equals(""))blackList.setFirDate(simpleDateFormat.parse(firDate));;
-				if(secDate!=null && !secDate.equals(""))blackList.setSecDate(simpleDateFormat.parse(secDate));;
-				if(thrDate!=null && !thrDate.equals(""))blackList.setThrDate(simpleDateFormat.parse(thrDate));;
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+  		public String update(HttpServletRequest request) {
+  			String blist = request.getParameter("blacklists");
+  			String appKey = request.getParameter("appKey");
+  			List<Blacklist> blacklists=new ArrayList<Blacklist>();
+  			JSONArray parseArray = JSONArray.parseArray(blist);
+  			ObjectMapper objectMapper = new ObjectMapper();
+  			for(int i=0;i<parseArray.size();i++){
+  				try {
+  					blacklists.add(objectMapper.readValue(parseArray.getString(i), Blacklist.class));
+  				} catch (JsonParseException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				} catch (JsonMappingException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				} catch (IOException e) {
+  					// TODO Auto-generated catch block
+  					e.printStackTrace();
+  				}
+  			}
+  			boolean success=true;
+  			for (Blacklist blacklist : blacklists) {
+  				Blacklist fromDb = bs.queryByUsername(blacklist.getAppKey(), blacklist.getCustomerId());
+  				if(fromDb!=null) bs.update(blacklist);
+  				else bs.add(blacklist);
 			}
-  			if(limitedIp!=null && !limitedIp.equals(""))blackList.setLimitedIp(limitedIp);
-  			if(times!=null && !times.equals(""))blackList.setTimes(Short.parseShort(times));
-  			if(state!=null && !state.equals(""))blackList.setState(Short.parseShort(state));
-  			boolean success=bs.update(blackList);
   			JSONObject result = new JSONObject();
   			result.put("success", success?1:0);
   			return result.toJSONString();

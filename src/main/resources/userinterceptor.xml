@@ -31,9 +31,9 @@
      					<value>/login/isEmailUsed</value>
      					<value>/login/sendPass</value>
      					<value>/login/forgetPassword</value>
-     					<value>/interface/pull/**</value>
-     					<value>/blacklis/pull/**</value>
-     					<value>/blacklis/update/**</value>
+     					<value>/interface/pull</value>
+     					<value>/blacklist/pull</value>
+     					<value>/blacklist/update</value>
      				</list>
      			
      			</property>
