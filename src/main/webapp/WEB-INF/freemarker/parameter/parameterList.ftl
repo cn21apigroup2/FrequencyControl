@@ -15,7 +15,8 @@ body {margin-top: 20px}
 	<input type="hidden" name="interId" id="interId" value="${interId}"/>
 	
 	    <div align="center">		 
-		    <a href="${mediaHost}/parameter/create/${userId}/${interId}"></span>添加参数</span></a>
+	        <a href="${mediaHost}/interface/list/${userId}/${appId}"><span>接口列表</span></a>
+		    <a href="${mediaHost}/parameter/create/${userId}/${appId}/${interId}"></span>添加参数</span></a>
  		</div>
  		
 		<tr >
@@ -29,12 +30,10 @@ body {margin-top: 20px}
 					<input type="hidden" name="interId" id="interId" value="${parameter.interface_id}">
 					    <td id="parameterKey">${parameter.parameter_key }</td>
 						<td id="parameterValue">${parameter.parameter_value }</td>												
-						<td>
-						     
-						     <a href="${mediaHost}/parameter/modify/${userId}/${interId}/${parameter.parameter_id}">编辑</a>
-						     <a href="${mediaHost}/parameter/delete/${userId}/${interId}/${parameter.parameter_id}">删除</a>						     
-						</td>
-						
+						<td>						   
+						     <a href="${mediaHost}/parameter/modify/${userId}/${appId}/${interId}/${parameter.parameter_id}">编辑</a>
+						     <a href="${mediaHost}/parameter/delete/${userId}/${appId}/${interId}/${parameter.parameter_id}">删除</a>						     
+						</td>						
 					</tr>
 		        </#list>
 		        <tbody>
