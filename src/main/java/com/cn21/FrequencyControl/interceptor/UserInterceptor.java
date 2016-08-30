@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cn21.FrequencyControl.util.CookieUtil;
+
 public class UserInterceptor implements HandlerInterceptor {
 
 	//不用拦截的url请求
@@ -38,14 +40,14 @@ public class UserInterceptor implements HandlerInterceptor {
 		}
 		else
 		{	
-			//从session里面获取用户名的信息，判断如果没有取到用户信息，就跳转到登录页面，提示用户登录
-			if(request.getSession().getAttribute("username")!=null)
+			//从cookie里面获取用户名的信息，判断如果没有取到用户信息，就跳转到登录页面，提示用户登录
+			if(CookieUtil.getCookie(request, "username")!=null)
 			{
 				return true;
 			}
 			else
 			{
-				response.sendRedirect("/login");
+				response.sendRedirect("/login/index");
 				return false;
 			}
 		}

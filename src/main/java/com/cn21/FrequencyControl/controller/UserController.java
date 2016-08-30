@@ -28,8 +28,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 
+
 import com.cn21.FrequencyControl.module.User;
 import com.cn21.FrequencyControl.service.UserService;
+import com.cn21.FrequencyControl.util.CookieUtil;
 import com.cn21.FrequencyControl.util.EmailInfo;
 import com.cn21.FrequencyControl.util.EmailSender;
 import com.google.gson.JsonObject;
@@ -52,7 +54,7 @@ public class UserController {
 	@RequestMapping(value="index")
 	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView modelAndView = new ModelAndView();
-			modelAndView.setViewName("/login");
+			modelAndView.setViewName("/login/login");
 		return modelAndView;
 	}
 	/**
@@ -131,9 +133,9 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView();
 		if(userService.hasMatchUser(username,password)){
 			User user = userService.getUserInfoByUserName(username);
+			CookieUtil.setCookie(response, "username", username);
 			response.sendRedirect("/app/list/"+user.getUser_id());
 //			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
-//			session.setAttribute("username", username);
 		}
 		else{
 			request.getRequestDispatcher("/login/index").forward(request, response);
@@ -261,7 +263,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/toRegister")
 	public ModelAndView toRegister(HttpServletRequest request,HttpServletResponse response){
-		ModelAndView modelAndView = new ModelAndView("/register");
+		ModelAndView modelAndView = new ModelAndView("/login/register");
 		return modelAndView;
 	}
 	/**
@@ -281,11 +283,12 @@ public class UserController {
 		if(!userService.hasMatchUsername(username)){
 			userService.register(username,password,email,request);		
 			User user = userService.getUserInfoByUserName(username);
+			CookieUtil.setCookie(response, "username", username);
 			response.sendRedirect("/app/list/"+user.getUser_id());
 			return null;
 		}
 		else{
-			modelAndView.setViewName("/register");
+			modelAndView.setViewName("/login/register");
 			modelAndView.addObject("msg", "用户名已存在！");
 		}
 		return modelAndView;
@@ -444,9 +447,8 @@ public class UserController {
 	@RequestMapping("/loginOff")
 	public ModelAndView loginOff(HttpServletRequest req, HttpServletResponse resp)
 	{
-		ModelAndView modelAndView = new ModelAndView("/login/loginByAccount");
-		HttpSession session = req.getSession();
-		session.removeAttribute("username");
+		ModelAndView modelAndView = new ModelAndView("/login/login");
+		CookieUtil.deleteCookie(resp, "username");
 		return modelAndView;
 	}
 	

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cn21.FrequencyControl.module.Example;
 import com.cn21.FrequencyControl.service.ExampleService;
 
 /**
@@ -32,9 +31,7 @@ public class TestController {
 	 */
 	@RequestMapping(value = "")
 	public ModelAndView welcome() {
-		Example example = exampleService.showExample("陈小锋");//获取例子
-		ModelAndView modelAndView = new ModelAndView("/login/login");
-		modelAndView.addObject("example", example);
+		ModelAndView modelAndView = new ModelAndView("/index");
 		return modelAndView;
 	}
 

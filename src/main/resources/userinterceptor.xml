@@ -10,10 +10,12 @@
         <mvc:interceptors>
 <mvc:interceptor>
      	
-     		<mvc:mapping path="/addition/**"/>
+     		<mvc:mapping path="/app/**"/>
      		<mvc:mapping path="/login/**"/>
-     		<mvc:mapping path="/userAct/**"/>
-     		<mvc:mapping path="/userTemplate/**"/>
+     		<mvc:mapping path="/blacklist/**"/>
+     		<mvc:mapping path="/interface/**"/>
+     		<mvc:mapping path="/parameter/**"/>
+     		<mvc:mapping path="/interface/**"/>
      	
      		<bean class="com.cn21.FrequencyControl.interceptor.UserInterceptor">
      			<!-- 不用拦截的URL请求 -->
@@ -21,7 +23,7 @@
      				<list>
      					<value>/login/getCheckCode</value>
      					<value>/login/validateCheckCode</value>
-     					<value>/login</value>
+     					<value>/login/index</value>
      					<value>/login/validate</value>
      					<value>/login/isUsed</value>
      					<value>/login/toRegister</value>
@@ -29,6 +31,9 @@
      					<value>/login/isEmailUsed</value>
      					<value>/login/sendPass</value>
      					<value>/login/forgetPassword</value>
+     					<value>/interface/pull/**</value>
+     					<value>/blacklis/pull/**</value>
+     					<value>/blacklis/update/**</value>
      				</list>
      			
      			</property>
