@@ -21,10 +21,10 @@ public class Blacklist {
     private String customerId;
     private String limitedIp;
     private short times;
-    private Timestamp firDate;
-    private Timestamp secDate;
-    private Timestamp thrDate;
-    private Timestamp absoluteDate;
+    private Date firDate;
+    private Date secDate;
+    private Date thrDate;
+    private Date absoluteDate;
     private short state;
 
     public int getBlacklistId() {
@@ -75,27 +75,27 @@ public class Blacklist {
         this.times = times;
     }
 
-    public Timestamp getFirDate() {
+    public Date getFirDate() {
         return firDate;
     }
 
-    public void setFirDate(Timestamp firDate) {
+    public void setFirDate(Date firDate) {
         this.firDate = firDate;
     }
 
-    public Timestamp getSecDate() {
+    public Date getSecDate() {
         return secDate;
     }
 
-    public void setSecDate(Timestamp secDate) {
+    public void setSecDate(Date secDate) {
         this.secDate = secDate;
     }
 
-    public Timestamp getThrDate() {
+    public Date getThrDate() {
         return thrDate;
     }
 
-    public void setThrDate(Timestamp thrDate) {
+    public void setThrDate(Date thrDate) {
         this.thrDate = thrDate;
     }
 
