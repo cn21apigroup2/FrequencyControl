@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.InterfaceControl;
 
 /**
  * @author zhangqingxiang
@@ -23,8 +23,8 @@ public class InterfacDaoTest {
 
 	@Autowired
 	private InterfacDao interfacDao;
-	private Interfac getInterfac(){
-		Interfac interfac = new Interfac();
+	private InterfaceControl getInterfac(){
+		InterfaceControl interfac = new InterfaceControl();
 		interfac.setApp_id(2);
 		interfac.setApi_name("大头1");
 		interfac.setFrequency(1234);
@@ -34,7 +34,7 @@ public class InterfacDaoTest {
 		return interfac;
 	}
 	/**
-	 * Test method for {@link com.cn21.FrequencyControl.dao.InterfacDao#addInterfac(com.cn21.FrequencyControl.module.Interfac)}.
+	 * Test method for {@link com.cn21.FrequencyControl.dao.InterfacDao#addInterfac(com.cn21.FrequencyControl.module.InterfaceControl)}.
 	 */
 	@Test
 	public void testAddInterfac() {
@@ -49,10 +49,10 @@ public class InterfacDaoTest {
 	public void testGetInterfacListByAppId() {
 		int expected=4;
 		int expectedAppId=2;
-		List<Interfac> actual = interfacDao.getInterfacListByAppId(expectedAppId);
+		List<InterfaceControl> actual = interfacDao.getInterfacListByAppId(expectedAppId);
 		assertEquals(expected,actual.size());
-		Interfac actualInterfac = actual.get(3);
-		Interfac expectedInterfac = getInterfac();	
+		InterfaceControl actualInterfac = actual.get(3);
+		InterfaceControl expectedInterfac = getInterfac();	
 		assertTrue(expectedInterfac.getFrequency()==actualInterfac.getFrequency());
 		assertTrue(expectedInterfac.getApi_name().equals(actualInterfac.getApi_name()));
 		assertTrue(expectedInterfac.getApp_id()==actualInterfac.getApp_id());
@@ -66,8 +66,8 @@ public class InterfacDaoTest {
 	 */
 	@Test
 	public void testGetInterfacByInterId() {
-		Interfac expected=getInterfac();
-		Interfac actual = interfacDao.getInterfacByInterId(expected.getInterface_id());
+		InterfaceControl expected=getInterfac();
+		InterfaceControl actual = interfacDao.getInterfacByInterId(expected.getInterface_id());
 		assertTrue(expected.getApi_name().equals(actual.getApi_name()));
 		assertTrue(expected.getFrequency()==actual.getFrequency());
 		assertTrue(expected.getApp_id()==actual.getApp_id());
@@ -76,11 +76,11 @@ public class InterfacDaoTest {
 	}
 
 	/**
-	 * Test method for {@link com.cn21.FrequencyControl.dao.InterfacDao#updateInterFrequency(com.cn21.FrequencyControl.module.Interfac)}.
+	 * Test method for {@link com.cn21.FrequencyControl.dao.InterfacDao#updateInterFrequency(com.cn21.FrequencyControl.module.InterfaceControl)}.
 	 */
 	@Test
 	public void testUpdateInterFrequency() {
-		Interfac interfacByInterId = interfacDao.getInterfacByInterId(getInterfac().getInterface_id());
+		InterfaceControl interfacByInterId = interfacDao.getInterfacByInterId(getInterfac().getInterface_id());
 		String newFrequency="1232";
 		interfacByInterId.setFrequency(Integer.parseInt(newFrequency));
 		int actual = interfacDao.updateInterFrequency(interfacByInterId);

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cn21.FrequencyControl.dao.InterfacDao;
-import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.InterfaceControl;
 import com.cn21.FrequencyControl.service.InterfacService;
 
 @Service
@@ -20,11 +20,11 @@ public class InterfacServiceImpl implements InterfacService{
 	 * @param appId
 	 * @return
 	 */
-	public List<Interfac> getInterfacListByAppId(long appId){
+	public List<InterfaceControl> getInterfacListByAppId(long appId){
 		 return interfacDao.getInterfacListByAppId(appId);
 	}
 	@Override
-	public List<Interfac> getDeletedInterfacListByAppId(long appId) {
+	public List<InterfaceControl> getDeletedInterfacListByAppId(long appId) {
 		// TODO Auto-generated method stub
 		return interfacDao.getDeletedInterfacListByAppId(appId);
 	}
@@ -43,31 +43,31 @@ public class InterfacServiceImpl implements InterfacService{
 		return false;
 	}
 	@Override
-	public boolean updateInterfac(Interfac interfac) {
+	public boolean updateInterfac(InterfaceControl interfac) {
 		// TODO Auto-generated method stub
 		int successCount=interfacDao.updateInterfac(interfac);
 		if(successCount==1)return true;
 		return false;
 	}
 	@Override
-	public Interfac getInterfacByInterId(long interId) {
+	public InterfaceControl getInterfacByInterId(long interId) {
 		// TODO Auto-generated method stub		
 		return interfacDao.getInterfacByInterId(interId);
 	}
 	@Override
-	public boolean createInterfac(Interfac interfac) {
+	public boolean createInterfac(InterfaceControl interfac) {
 		// TODO Auto-generated method stub
 		int successCount = interfacDao.addInterfac(interfac);
 		if(successCount==1) return true;
 		return false;
 	}
 	@Override
-	public Interfac generateInterfac(HttpServletRequest request, long appId) {
+	public InterfaceControl generateInterfac(HttpServletRequest request, long appId) {
 		String apiName = request.getParameter("apiName");
 		String apiFrequency = request.getParameter("apiFrequency");
 		String timeout = request.getParameter("timeout");
 		String unit = request.getParameter("unit");
-		Interfac interfac = new Interfac();
+		InterfaceControl interfac = new InterfaceControl();
 		interfac.setApi_name(apiName);
 		interfac.setFrequency(Integer.parseInt(apiFrequency));
 		interfac.setTimeout(Integer.parseInt(timeout));
@@ -76,28 +76,28 @@ public class InterfacServiceImpl implements InterfacService{
 		return interfac;
 	}
 	@Override
-	public boolean modifyInterFrequency(Interfac interfac) {
+	public boolean modifyInterFrequency(InterfaceControl interfac) {
 		// TODO Auto-generated method stub
 		int successCount = interfacDao.updateInterFrequency(interfac);
 		if(successCount==1) return true;
 		return false;
 	}
 	@Override
-	public boolean modifyInterTimeout(Interfac interfac) {
+	public boolean modifyInterTimeout(InterfaceControl interfac) {
 		// TODO Auto-generated method stub
 		int successCount = interfacDao.updateInterTimeout(interfac);
 		if(successCount==1) return true;
 		return false;
 	}
 	@Override
-	public boolean modifyInterUnit(Interfac interfac) {
+	public boolean modifyInterUnit(InterfaceControl interfac) {
 		// TODO Auto-generated method stub
 		int successCount = interfacDao.updateInterUnit(interfac);
 		if(successCount==1) return true;
 		return false;
 	}
 	@Override
-	public boolean modifyInterfac(Interfac interfac) {
+	public boolean modifyInterfac(InterfaceControl interfac) {
 		// TODO Auto-generated method stub
 		int successCount = interfacDao.updateInterfac(interfac);
 		if(successCount==1) return true;
@@ -105,7 +105,7 @@ public class InterfacServiceImpl implements InterfacService{
 	}
 	@Override
 	public void createOverallControl(long appId) {
-		Interfac interfac = new Interfac();
+		InterfaceControl interfac = new InterfaceControl();
 		interfac.setApi_name(OVERALL_CONTROL);
 		interfac.setFrequency(-1);
 		interfac.setTimeout(1);
@@ -115,9 +115,9 @@ public class InterfacServiceImpl implements InterfacService{
 		
 	}
 	@Override
-	public Interfac getOverAllControl(List<Interfac> interfacs) {
-		Interfac overallControl=null;
-		for (Interfac interfac : interfacs) {//获取全局控制接口
+	public InterfaceControl getOverAllControl(List<InterfaceControl> interfacs) {
+		InterfaceControl overallControl=null;
+		for (InterfaceControl interfac : interfacs) {//获取全局控制接口
 			if(interfac.getApi_name().equals(InterfacService.OVERALL_CONTROL)){
 				overallControl=interfac;
 				interfacs.remove(interfac);

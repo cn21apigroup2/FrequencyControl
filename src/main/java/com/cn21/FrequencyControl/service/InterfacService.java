@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.cn21.FrequencyControl.module.Interfac;
+import com.cn21.FrequencyControl.module.InterfaceControl;
 
 
 /**
@@ -19,13 +19,13 @@ public interface InterfacService {
 	 * @param appId
 	 * @return
 	 */
-	List<Interfac> getInterfacListByAppId(long appId);
+	List<InterfaceControl> getInterfacListByAppId(long appId);
 	/**
 	 * 根据appId获取已删除接口列表
 	 * @param appId
 	 * @return
 	 */
-	List<Interfac> getDeletedInterfacListByAppId(long appId);
+	List<InterfaceControl> getDeletedInterfacListByAppId(long appId);
 	/**
 	 * 根据interface_id恢复被删除的应用
 	 * @param appId
@@ -37,44 +37,44 @@ public interface InterfacService {
 	 * @param interface
 	 * @return
 	 */
-	boolean createInterfac(Interfac interfac);
+	boolean createInterfac(InterfaceControl interfac);
 	/**
 	 * 修改接口次数
 	 * @param interface
 	 * @return
 	 */
-	boolean modifyInterFrequency(Interfac interfac);
+	boolean modifyInterFrequency(InterfaceControl interfac);
 
 	/**
 	 * 修改控制时间
 	 * @param interface
 	 * @return
 	 */
-	boolean modifyInterTimeout(Interfac interfac);
+	boolean modifyInterTimeout(InterfaceControl interfac);
 	
 	/**
 	 * 修改时间单位
 	 * @param interface
 	 * @return
 	 */
-	boolean modifyInterUnit(Interfac interfac);
+	boolean modifyInterUnit(InterfaceControl interfac);
 	
 	/**
 	 * 更新接口
 	 * @param interface
 	 * @return
 	 */
-	boolean modifyInterfac(Interfac interfac);
+	boolean modifyInterfac(InterfaceControl interfac);
 	
 	boolean deleteInterfac(long interId);
 	
-	boolean updateInterfac(Interfac interfac);
+	boolean updateInterfac(InterfaceControl interfac);
 	
-	Interfac getInterfacByInterId(long interId);
+	InterfaceControl getInterfacByInterId(long interId);
 	
-	Interfac generateInterfac(HttpServletRequest request,long appId);
+	InterfaceControl generateInterfac(HttpServletRequest request,long appId);
 	
 	void createOverallControl(long appId);
 	
-	Interfac getOverAllControl(List<Interfac> interfacs);
+	InterfaceControl getOverAllControl(List<InterfaceControl> interfacs);
 }
