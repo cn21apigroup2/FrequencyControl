@@ -6,12 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cn21.FrequencyControl.dao.InterfacDao;
 import com.cn21.FrequencyControl.module.InterfaceControl;
 import com.cn21.FrequencyControl.service.InterfacService;
 
 @Service
+@Transactional
 public class InterfacServiceImpl implements InterfacService{
 	@Autowired
 	private InterfacDao interfacDao;
@@ -62,6 +65,7 @@ public class InterfacServiceImpl implements InterfacService{
 		return false;
 	}
 	@Override
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public InterfaceControl generateInterfac(HttpServletRequest request, long appId) {
 		String apiName = request.getParameter("apiName");
 		String apiFrequency = request.getParameter("apiFrequency");
@@ -115,6 +119,7 @@ public class InterfacServiceImpl implements InterfacService{
 		
 	}
 	@Override
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public InterfaceControl getOverAllControl(List<InterfaceControl> interfacs) {
 		InterfaceControl overallControl=null;
 		for (InterfaceControl interfac : interfacs) {//获取全局控制接口
