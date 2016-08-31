@@ -4,6 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link type="text/css" rel="stylesheet" href="${cssRoot}/login.css" />
 <script type="text/javascript" src="${jsRoot}/login.js"></script>
+<script type="text/javascript" src="${jsRoot}/register.js"></script>
 <title>Login</title>
 </head>
 <body>
@@ -19,9 +20,7 @@
 				<form action="${mediaHost}/login/validate" method="post">
                 <div class="text">
                 	<input type="text" name="userName" placeholder="用户名" /><br />
-                    <input type="password" name="password" placeholder="密码"/><br />
-                    <input type="input"  class="input checkCode" name="code" id="code" maxlength="4" placeholder="请输入检验码"> 
-					<img class="checkCodeImg" src="${mediaHost}/login/getCheckCode" alt="验证码" onclick="this.src='${mediaHost}/login/getCheckCode?rand='+Math.random()">
+                    <input type="password" name="password" placeholder="密码"/><br />                    
                 </div>
                 <div class="checkbox">
             		 <input id="keep_login" type="checkbox" value="true" /><label id="keep_login_lable">&nbsp;&nbsp;保持登录状态</label> <br />

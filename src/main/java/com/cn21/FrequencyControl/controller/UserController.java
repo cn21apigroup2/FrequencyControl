@@ -274,7 +274,7 @@ public class UserController {
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
-	@RequestMapping(value="/registersuccess")
+	@RequestMapping(value="/register")
 	public ModelAndView userRegister(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -284,7 +284,8 @@ public class UserController {
 			userService.register(username,password,email,request);		
 			User user = userService.getUserInfoByUserName(username);
 			CookieUtil.setCookie(response, "username", username);
-			response.sendRedirect("/app/list/"+user.getUser_id());
+			modelAndView.addObject("msg", "注册成功！");
+			modelAndView.setViewName("/login/login");
 			return null;
 		}
 		else{
