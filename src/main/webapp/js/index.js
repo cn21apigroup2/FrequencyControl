@@ -47,10 +47,10 @@ window.onload=function(){
 	 * icon 式样切换事件
 	 */
 	document.getElementById('dropdown_icon').onmouseover=function(){
-		this.src="image/dropdown_click_icon.png";
+		this.src="/FrequencyControl/image/dropdown_click_icon.png";
 	}
 	document.getElementById('dropdown_icon').onmouseout=function(){
-		this.src="image/dropdown_icon.png";
+		this.src="/FrequencyControl/image/dropdown_icon.png";
 	}
 
 }
@@ -64,7 +64,7 @@ window.onload=function(){
 	 */
 	 function readAppList(){
 		var request = new XMLHttpRequest();
-		request.open("GET","/AjaxDemo/APPTest?userId=101");
+		request.open("GET","/FrequencyControl/app/list/1");
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -74,26 +74,26 @@ window.onload=function(){
 					var colunm="";
 					var num = 1;
 
-					for(var j=0;j<date.length;j++){
+					for(var j=0;j<date[0].length;j++){
 						if(j%2!=0){
 							colunm="odd";
 						}else{
 							colunm="even";
 						}
 						str=str+"<tr class=\""+colunm+"\">" +
-							"<td style=\"display: none;\"><input id=\"appId\" type=\"hidden\" value=\""+date[j].appId+"\"/>" +
+							"<td style=\"display: none;\"><input id=\"appId\" type=\"hidden\" value=\""+date[0][j].app_id+"\"/>" +
 								"<input id=\"appPage\" type=\"hidden\" value=\"1\" />" +
 								"<input id=\"appPageSize\" type=\"hidden\" value=\"10\" /></td>"+
 							"<td>"+num+"</td>" +
-							"<td>"+date[j].appName+"</td>" +
-							"<td>"+date[j].appKey+"</td>" +
-							"<td>"+date[j].appDescription+"</td>" +
-							"<td>"+date[j].appPlatform+"</td>" +
-							"<td>"+date[j].appSecre+"</td>" +
-							"<td>"+date[j].appStatus+"</td>" +
-							"<td><img class=\"app_switch\" src=\"image/switch_icon.png\" />" +
-							"<img class=\"app_edit\" src=\"image/edit_icon.png\" />" +
-							"<img class=\"app_delete\" src=\"image/delete_icon.png\" /></td>";
+							"<td>"+date[0][j].app_name+"</td>" +
+							"<td>"+date[0][j].app_key+"</td>" +
+							"<td>"+date[0][j].app_description+"</td>" +
+							"<td>"+date[0][j].platform+"</td>" +
+							"<td>"+date[0][j].secret+"</td>" +
+							"<td>"+date[0][j].is_reviewed+"</td>" +
+							"<td><img class=\"app_switch\" src=\""+document.getElementById('imageRoot').value+"/switch_icon.png\" />" +
+							"<img class=\"app_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
+							"<img class=\"app_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
 						num++;
 						
 					}
@@ -127,7 +127,7 @@ window.onload=function(){
 							}
 							app_delete.item(k).onclick=function(){
 								var request = new XMLHttpRequest();
-								request.open("GET","/AjaxDemo/ApcControl?appKey=ADSDI2NNGR00ASD8");
+								request.open("GET","/FrequencyControl/app/delete/1/"+document.getElementById('appId').value);
 								request.send();
 								table.deleteRow(this.parentNode.parentNode.rowIndex);
 								//编号重排序
@@ -144,8 +144,8 @@ window.onload=function(){
 							app_edit.item(k).onclick=function(){
 								var app_edit_propmt=document.getElementsByClassName('app_edit_propmt').item(0);
 								app_edit_propmt.style.display="block";
-								app_edit_propmt.getElementsByTagName('input').item(0).value=
-									this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
+								document.getElementById('app_edit_appId').value=
+									this.parentNode.parentNode.getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value;
 								app_edit_propmt.getElementsByTagName('input').item(1).value=
 									this.parentNode.parentNode.getElementsByTagName('td')[2].innerHTML;
 								app_edit_propmt.getElementsByTagName('input').item(2).value=
@@ -165,7 +165,7 @@ window.onload=function(){
 	 */
 	function readApiList(){
 		var request = new XMLHttpRequest();
-		request.open("GET","/AjaxDemo/ApcControl?appKey=ADSDI2NNGR00ASD8");
+		request.open("GET","/FrequencyControl/ApcControl?appKey=ADSDI2NNGR00ASD8");
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -256,16 +256,16 @@ window.onload=function(){
 		if(document.getElementById('username_search').value==""){
 			if(document.getElementById('ip_search').value==""){
 				//没有输入查询条件，查询所有结果
-				request.open("GET","/AjaxDemo/Query?appKey="+storage.APP_KEY);
+				request.open("GET","/FrequencyControl/blacklist/show?appKey="+storage.APP_KEY);
 			}else{
 				//通过IP地址查询结果
-				request.open("GET","/AjaxDemo/Query?appKey="+storage.APP_KEY+
-						"&ipAddress="+document.getElementById('ip_search').value);
+				request.open("GET","/FrequencyControl/blacklist/showByIp?appKey="+storage.APP_KEY+
+						"&ip="+document.getElementById('ip_search').value);
 			}
 		}else{
 			//通过用户名查询结果
-			request.open("GET","/AjaxDemo/Query?appKey="+storage.APP_KEY+
-					"userName="+document.getElementById('username_search').value);
+			request.open("GET","/FrequencyControl/blacklist/showByUsername?appKey="+storage.APP_KEY+
+					"&username="+document.getElementById('username_search').value);
 		}
 		request.send();		
 		request.onreadystatechange=function(){
@@ -275,48 +275,63 @@ window.onload=function(){
 					var str = "";
 					var colunm="";
 					var num = 1;
-					for(var i=0;i<date.length;i++){
-					
-						if(i%2!=0){
-							colunm="odd";
-						}else{
-							colunm="even";
+					if(date[0][0]==null){
+						alert('没有结果');
+					}else {
+						for (var i = 0; i < date[0].length; i++) {
+
+							if (i % 2 != 0) {
+								colunm = "odd";
+							} else {
+								colunm = "even";
+							}
+							if (!date[0][i].customerId)
+								date[0][i].customerId = "";
+							if (!date[0][i].limitedIp)
+								date[0][i].limitedIp = "";
+							if (!date[0][i].firDate)
+								date[0][i].firDate = "";
+							if (!date[0][i].secDate)
+								date[0][i].secDate = "";
+							if (!date[0][i].thrDate)
+								date[0][i].thrDate = "";
+							if (!date[0][i].absoluateDate)
+								date[0][i].absoluateDate = "";
+							str = str + "<tr class=\"" + colunm + "\">" +
+							"<td>" + num + "</td>" +
+							"<td>" + date[0][i].appKey + "</td>" +
+							"<td>" + date[0][i].customerId + "</td>" +
+							"<td>" + date[0][i].limitedIp + "</td>" +
+							"<td>" + date[0][i].firDate + "</td>" +
+							"<td>" + date[0][i].secDate + "</td>" +
+							"<td>" + date[0][i].thrDate + "</td>" +
+							"<td>" + date[0][i].absoluateDate + "</td>" +
+							"<td><img class=\"blacklist_reset\" src=\"" + document.getElementById('imageRoot').value + "/reset_icon.png\" /></td>";
+							num++;
 						}
-						str=str+"<tr class=\""+colunm+"\">" +
-							"<td>"+num+"</td>" +
-							"<td>"+date[i].appKey+"</td>" +
-							"<td>"+date[i].userName+"</td>" +
-							"<td>"+date[i].ipAddr+"</td>" +
-							"<td>"+date[i].firDate+"</td>" +
-							"<td>"+date[i].secDate+"</td>" +
-							"<td>"+date[i].thiDate+"</td>" +
-							"<td>"+date[i].absoualteDate+"</td>"+
-							"<td><img class=\"blacklist_reset\" src=\"image/reset_icon.png\" /></td>";
-						num++;
+						document.getElementById("blacklist_table_content").innerHTML = "<th style=\"width:50px;\">序号</th>" +
+						"<th>APP序列号</th> " +
+						"<th>用户名</th>" +
+						"<th>IP地址</th>" +
+						"<th>第一次封号时间</th>" +
+						"<th>第二次封号时间</th>" +
+						"<th>第三次封号时间</th>" +
+						"<th>冻结时间</th>" +
+						"<th>操作</th>" + str;
 					}
-					document.getElementById("blacklist_table_content").innerHTML="<th style=\"width:50px;\">序号</th>" +
-							"<th>APP序列号</th> " +
-							"<th>用户名</th>" +
-							"<th>IP地址</th>" +
-							"<th>第一次封号时间</th>" +
-							"<th>第二次封号时间</th>" +
-							"<th>第三次封号时间</th>" +
-							"<th>冻结时间</th>" +
-							"<th>操作</th>"+str;
 					//重置记录事件监听
 					var blacklist_reset = document.getElementsByClassName("blacklist_reset");
 					for(var k=0;k<blacklist_reset.length;k++){
 						(function(k){
 							blacklist_reset.item(k).onclick=function(){
 								var request = new XMLHttpRequest();
-								request.open("POST","/AjaxDemo/Update");
+								request.open("POST","/FrequencyControl/blacklist/reset");
 								var date = "appKey="+storage.APP_KEY+
-									"&userName="+this.parentNode.parentNode.getElementsByTagName('td').item(2).innerHTML+
-									"&ipAddress="+this.parentNode.parentNode.getElementsByTagName('td').item(3).innerHTML;
+									"&username="+this.parentNode.parentNode.getElementsByTagName('td').item(2).innerHTML+
+									"&ip="+this.parentNode.parentNode.getElementsByTagName('td').item(3).innerHTML;
 								request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 								request.send(date);
 								var row = this.parentNode.parentNode;
-								alert(row.getElementsByTagName('td').item(4).innerHTML);
 								request.onreadystatechange=function(){
 									if(request.readyState===4){
 										if(request.status===200){
@@ -385,6 +400,7 @@ window.onload=function(){
 					document.getElementsByClassName('apiController').item(0).style.display="none";
 					document.getElementsByClassName('blacklist').item(0).style.display="none";
 					document.getElementsByClassName('app').item(0).style.display="block";
+					readAppList();
 				}
 			}
 		}
@@ -396,7 +412,8 @@ window.onload=function(){
 	function appPropmtEventListener(){
 		document.getElementById('app_edit_confirm').onclick=function(){
 			var request = new XMLHttpRequest();
-			request.open("POST","/AjaxDemo/Update");
+			var appId =document.getElementById('app_edit_appId').value;
+			request.open("POST","/FrequencyControl/app/saveModify/1/"+appId);
 			var date=createTransformData(document.getElementById('app_edit_table'));
 			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			request.send(date);
@@ -408,12 +425,12 @@ window.onload=function(){
 						var table = document.getElementById('app_table_content');
 						for(var i=1;i<table.rows.length;i++){
 							if(table.rows[i].getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value!=
-								responseDate.appId){
+								appId){
 								continue;
 							}else{
-								table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate.appName;
-								table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate.appDescription;
-								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate.appPlatform;
+								table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate[0].appName;
+								table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate[0].appDescription;
+								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].appPlatform;
 							}
 						}
 						alert("success");
@@ -524,7 +541,7 @@ window.onload=function(){
 				alert("应用名或者平台不能为空");
 			}else{
 				var request = new XMLHttpRequest();
-				request.open("POST","/AjaxDemo/Update");
+				request.open("POST","/FrequencyControl/app/save/1");
 				var date=createTransformData(document.getElementById('app_add_table'));
 				request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				request.send(date);

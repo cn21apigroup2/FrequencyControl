@@ -38,6 +38,6 @@
 	<mvc:annotation-driven />    
 	<mvc:default-servlet-handler/>	
     <import resource="classpath:freemarker-config.xml" /> 
-    <import resource="classpath:userinterceptor.xml" /> 
-    
+   <!-- <import resource="classpath:userinterceptor.xml" />
+    -->
 </beans>
