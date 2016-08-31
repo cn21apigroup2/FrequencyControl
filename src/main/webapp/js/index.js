@@ -165,7 +165,7 @@ window.onload=function(){
 	 */
 	function readApiList(){
 		var request = new XMLHttpRequest();
-		request.open("GET","/AjaxDemo/ApcControl?appKey=ADSDI2NNGR00ASD8");
+		request.open("GET","/FrequencyControl/ApcControl?appKey=ADSDI2NNGR00ASD8");
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
