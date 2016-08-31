@@ -1,7 +1,6 @@
 package com.cn21.FrequencyControl.module;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,7 +102,7 @@ public class Blacklist {
         return absoluteDate;
     }
 
-    public void setAbsoluteDate(Timestamp absoluteDate) {
+    public void setAbsoluteDate(Date absoluteDate) {
         this.absoluteDate = absoluteDate;
     }
 

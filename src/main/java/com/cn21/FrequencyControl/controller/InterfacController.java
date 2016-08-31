@@ -39,7 +39,7 @@ public class InterfacController {
 	 */
 	@RequestMapping(value = "/list/{userId}/{appId}")
 	public ModelAndView showAllInterfac(@PathVariable long userId, @PathVariable long appId) {
-		List<InterfaceControl> interfacs = interfacService.getInterfacListByAppId(appId);//获取例子
+		List<InterfaceControl> interfacs = interfacService.getInterfacListByAppId(appId);//获取接口
 		InterfaceControl overallControl = interfacService.getOverAllControl(interfacs);
 		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
 		modelAndView.addObject("appId", appId);

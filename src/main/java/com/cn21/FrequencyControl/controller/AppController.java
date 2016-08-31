@@ -8,16 +8,24 @@
  */
 package com.cn21.FrequencyControl.controller;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cn21.FrequencyControl.controller.common.Page;
@@ -43,13 +51,14 @@ public class AppController {
 	 * @return void
 	 */
 	@RequestMapping(value = "/list/{userId}")
-	public ModelAndView showAllUserApps(@PathVariable Long userId) {
+	@ResponseBody
+	public String showAllUserApps(@PathVariable Long userId) {
 		List<Application> applications = applicationService.getApplicationListByUserId(userId);//获取用户应用列表
 		logger.info("get Application List By UserId");
-		ModelAndView modelAndView = new ModelAndView("/app/appList");
-		modelAndView.addObject("userId", userId);
-		modelAndView.addObject("applications", applications);
-		return modelAndView;
+		JSONArray resultJson = new JSONArray();
+		resultJson.add(applications);
+		System.out.println(resultJson.toString());
+		return resultJson.toString();
 	}
 	/**
 	 * 按页获取获取用户app列表 
@@ -68,15 +77,14 @@ public class AppController {
 	 * @return void
 	 */
 	@RequestMapping(value = "/save/{userId}")
-	public ModelAndView saveUserApps(@PathVariable long userId,
+	@ResponseBody
+	public String saveUserApps(@PathVariable long userId,
 			HttpServletRequest request, HttpServletResponse respons) {
 		Application application=applicationService.generateApp(request,userId);//根据用户提交表单生成app
 		applicationService.createApplication(application);//持久化到数据库
 		application=applicationService.getApplicationByAppKey(application.getApp_key());
 		interfacService.createOverallControl(application.getApp_id());//增加默认的全局频次控制
-		ModelAndView modelAndView = new ModelAndView("/app/appSave");
-		modelAndView.addObject("userId", userId);
-		return modelAndView;
+		return null;
 	}
 	
 	/**
@@ -107,16 +115,21 @@ public class AppController {
 	 * @return void
 	 */
 	@RequestMapping(value = "/saveModify/{userId}/{appId}")
-	public ModelAndView saveModifyApps(@PathVariable long userId,@PathVariable long appId,
+	@ResponseBody
+	public String saveModifyApps(@PathVariable long userId,@PathVariable long appId,
 			HttpServletRequest request, HttpServletResponse respons) {
 		Application application=applicationService.getApplicationByAppId(appId);
 		application.setApp_description(request.getParameter("appDescription"));
 		application.setApp_name(request.getParameter("appName"));
 		application.setPlatform(request.getParameter("appPlatform"));
 		applicationService.modifyApplication(application);//保存修改
-		ModelAndView modelAndView = new ModelAndView("/app/appSave");
-		modelAndView.addObject("userId", userId);
-		return modelAndView;
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("appName",request.getParameter("appName"));
+		map.put("appDescription",request.getParameter("appDescription"));
+		map.put("appPlatform",request.getParameter("appPlatform"));
+		JSONArray resultJson = new JSONArray();
+		resultJson.add(map);
+		return resultJson.toString();
 	}
 	/**
 	 * 删除app
