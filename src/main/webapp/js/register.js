@@ -16,7 +16,7 @@
 					checkAccountRequest.onreadystatechange = function(){
 						if( checkAccountRequest.readyState === 4 && checkAccountRequest.status === 200 ){
 							var response = JSON.parse(checkAccountRequest.responseText);
-						  //  alert(response.isUsed);
+						//    alert(response.isUsed);
 							if(response.isUsed=='0'){
 								accountUnavailableIcon.style.display = "none";
 								accountAvailableIcon.style.display = "inline-block";

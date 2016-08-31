@@ -51,7 +51,7 @@ public class UserController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="index")
+	@RequestMapping(value="/index")
 	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("/login/login");
@@ -127,7 +127,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/validate")
 	public void validateLogin(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
-		String username = request.getParameter("userName");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
 		ModelAndView modelAndView = new ModelAndView();
