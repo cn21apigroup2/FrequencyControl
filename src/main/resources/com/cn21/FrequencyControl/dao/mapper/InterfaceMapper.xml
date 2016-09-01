@@ -16,7 +16,7 @@
 		from
 		interface_control LEFT JOIN parameter ON interface_control.interface_id=parameter.interface_id 
 		where
-		interface_control.app_id=#{app_id} and deleted=0;
+		interface_control.app_id=#{app_id} and deleted=0 ORDER by interface_id DESC ;
     </select>
     <select id="getDeletedInterfacListByAppId" parameterType="long" resultMap="interfac">
     	select * from interface_control where app_id=#{appId} and deleted=1;

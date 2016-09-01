@@ -1,6 +1,8 @@
 package com.cn21.FrequencyControl.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,30 +39,27 @@ public class InterfacController {
 	 * 获取app interface列表
 	 * @return void
 	 */
-	@RequestMapping(value = "/list/{userId}/{appId}")
-	public ModelAndView showAllInterfac(@PathVariable long userId, @PathVariable long appId) {
+	@RequestMapping(value = "/list/{appId}")
+	@ResponseBody
+	public String showAllInterfac(@PathVariable long appId) {
 		List<InterfaceControl> interfacs = interfacService.getInterfacListByAppId(appId);//获取例子
 		InterfaceControl overallControl = interfacService.getOverAllControl(interfacs);
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceList");
-		modelAndView.addObject("appId", appId);
-		modelAndView.addObject("userId", userId);
-		modelAndView.addObject("interfacs", interfacs);
-		modelAndView.addObject("overallControl", overallControl);
-		return modelAndView;
+		JSONArray resultJson = new JSONArray();
+		resultJson.add(overallControl);
+		resultJson.add(interfacs);
+		return resultJson.toString();
 	}
 	/**
 	 * 保存interface
 	 * @return void
 	 */
-	@RequestMapping(value = "/save/{userId}/{appId}")
-	public ModelAndView saveUserApps(@PathVariable long appId,@PathVariable long userId,
+	@RequestMapping(value = "/save/{appId}")
+	@ResponseBody
+	public String saveUserApps(@PathVariable long appId,
 			HttpServletRequest request, HttpServletResponse respons) {
 		InterfaceControl interfac=interfacService.generateInterfac(request, appId);//根据用户提交表单生成app
 		interfacService.createInterfac(interfac);//持久化到数据库
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
-		modelAndView.addObject("appId", appId);	
-		modelAndView.addObject("userId", userId);	
-		return modelAndView;
+		return null;
 	}
 	/**
 	 * 创建interface
@@ -90,34 +89,31 @@ public class InterfacController {
 	 * 保存修改后的interface
 	 * @return void
 	 */
-	@RequestMapping(value="/modifySave/{userId}/{appId}/{interId}")
-	public ModelAndView saveModifyInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId,
+	@RequestMapping(value="/modifySave/{appId}/{interfaceId}")
+	@ResponseBody
+	public String saveModifyInterfac(@PathVariable long appId,@PathVariable long interfaceId,
 			HttpServletRequest request,HttpServletResponse response ) {
-		InterfaceControl interfac = interfacService.getInterfacByInterId(interId);//获取例子		
+		InterfaceControl interfac = interfacService.getInterfacByInterId(interfaceId);//获取例子
 		String apiFrequency = request.getParameter("apiFrequency");
 		String timeout = request.getParameter("timeout");
 		interfac.setFrequency(Integer.parseInt(apiFrequency));
 		interfac.setTimeout(Integer.parseInt(timeout));
 		interfac.setApi_name(request.getParameter("apiName"));
 		interfac.setUnit(request.getParameter("unit").charAt(0));
-		interfacService.modifyInterfac(interfac);	
-		
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
-		modelAndView.addObject("appId", appId);	
-		modelAndView.addObject("userId", userId);	
-		return modelAndView;
+		interfacService.modifyInterfac(interfac);
+		JSONArray jsonArray = new JSONArray();
+		jsonArray.add(interfac);
+		return jsonArray.toString();
 	}
 	/**
 	 * 删除interface
 	 * @return void
 	 */
-	@RequestMapping(value = "/delete/{userId}/{appId}/{interId}")
-	public ModelAndView deleteInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId) {
-		interfacService.deleteInterfac(interId);
-		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
-		modelAndView.addObject("appId",appId);
-		modelAndView.addObject("userId",userId);
-		return modelAndView;
+	@RequestMapping(value = "/delete/{appId}/{interfaceId}")
+	@ResponseBody
+	public String deleteInterfac(@PathVariable long appId,@PathVariable long interfaceId) {
+		interfacService.deleteInterfac(interfaceId);
+		return null;
 	} 
 	/**
 	 * 列出已删除的interface
@@ -151,7 +147,7 @@ public class InterfacController {
 		/**
 		 * 客户端jar包拉取数据接口
 		 * 
-		 * @param app_id
+		 * @param appKey
 		 * @return
 		 */
 		@RequestMapping("/pull/{appKey}")

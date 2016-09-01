@@ -45,7 +45,9 @@ public class BlacklistController {
 	@ResponseBody
     public String show(String appKey){
 		JSONArray resultJson = new JSONArray();
+		Blacklist blacklist = bs.query(appKey).get(0);
 		resultJson.add(bs.query(appKey));
+		System.out.print(resultJson.toString());
         return  resultJson.toString();
 
     }

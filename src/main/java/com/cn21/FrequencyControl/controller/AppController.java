@@ -57,7 +57,6 @@ public class AppController {
 		logger.info("get Application List By UserId");
 		JSONArray resultJson = new JSONArray();
 		resultJson.add(applications);
-		System.out.println(resultJson.toString());
 		return resultJson.toString();
 	}
 	/**

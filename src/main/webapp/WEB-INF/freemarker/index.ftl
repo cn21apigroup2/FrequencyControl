@@ -15,7 +15,7 @@
         </div>
         <div class="bottom">
         	<img src="${imageRoot}/21cn_icon.png"  width="40px;" style="padding-top:18px; padding-left:120px;"/>
-        	<a href="${mediaHost}/login/index">登录</a>
+        	<a href="${mediaHost}/login/index" id="loginStatus">登录</a>
         </div>
     </div>
     <div id="body">
@@ -91,7 +91,7 @@
        					<tr>
        						<td>API名称</td><td><input type="text"; name="apiName"/></td>
        					<tr>
-       						<td>控制频次</td><td><input type="text"; name="frequency"/></td>
+       						<td>控制频次</td><td><input type="text"; name="apiFrequency"/></td>
        					<tr>
          					<td>时间长度</td><td><input type="text"; name="timeout"/></td>
          				<tr>
@@ -123,7 +123,7 @@
        					<tr>
        						<td>API名称</td><td><input type="text"; name="apiName"/></td>
        					<tr>
-       						<td>控制频次</td><td><input type="text"; name="frequency"/></td>
+       						<td>控制频次</td><td><input type="text"; name="apiFrequency"/></td>
        					<tr>
          					<td>时间长度</td><td><input type="text"; name="timeout"/></td>
          				<tr>
@@ -137,11 +137,26 @@
          			<div class="api_param_tittle" style="margin-top: 20px; color:#0078DF;">参数列表</div>
          			<div class="api_param_table">
 	         			<table id = "api_param_table" cellspacing="0";cellpadding="0">
-	         				
 	         			</table>
          			</div>
-         			<input style="margin-top: 20px;" id="api_param_close" type="button" value="关闭"/> 
-         		</div>
+                	<input id="api_param_add" type="button" value="添加"/>
+         			<input id="api_param_close" type="button" value="关闭"/>
+         	</div>
+            <div class="api_param_add_propmt" >
+                <div class="api_param_add_tittle" style="margin-top: 20px; color:#0078DF;">添加参数</div>
+                <div class="api_param_add_table">
+                    <table id = "api_param_add_table" cellspacing="0";cellpadding="0" style="margin-top: 40px;">
+						<tr style="display: none">
+							<td></td><td><input style="hidden" id="interfaceId" /></td>
+                        <tr >
+                            <td>参数名</td><td><input type="text"; name="parameterKey"/></td>
+						<tr >
+                            <td>参数值</td><td><input type="text"; name="parameterValue"/></td>
+                    </table>
+                </div>
+                <input id="api_param_add_confirm" type="button" value="确认" style="margin-bottom: 40px;"/>
+                <input id="api_param_add_cancle" type="button" value="取消" style="margin-bottom: 40px;"/>
+            </div>
         </div>
     </div>
     <div id="footer"></div>

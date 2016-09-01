@@ -134,7 +134,8 @@ public class UserController {
 		if(userService.hasMatchUser(username,password)){
 			User user = userService.getUserInfoByUserName(username);
 			CookieUtil.setCookie(response, "username", username);
-			response.sendRedirect("/app/list/"+user.getUser_id());
+			CookieUtil.setCookie(response, "userId", Integer.toString(user.getUser_id()));
+			response.sendRedirect("/FrequencyControl");
 //			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
 		}
 		else{

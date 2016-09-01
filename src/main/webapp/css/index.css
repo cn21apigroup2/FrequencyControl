@@ -198,7 +198,8 @@ a:hover{
 	text-align:justify; text-justify:distribute-all-lines; text-align-last:justify;
 	text-align:Justify;
 }
-#api_edit_confirm, #api_edit_cancle,#app_add_confirm,#app_add_cancle,#api_add_confirm,#api_add_cancle,#api_param_close{
+#api_edit_confirm, #api_edit_cancle,#app_add_confirm,#app_add_cancle,#api_add_confirm,
+#api_add_cancle,#api_param_close,#api_param_add,#api_param_add_confirm,#api_param_add_cancle{
 	background:#0078DF;
 	border:none;
 	height:40px;
@@ -209,7 +210,8 @@ a:hover{
 	margin-left:4px;
 }
 #api_edit_confirm:hover,#app_add_confirm:hover,#app_add_cancle:hover,#api_edit_cancle:hover,
-#api_add_cancle:hover,#api_add_confirm:hover,#api_param_close:hover{
+#api_add_cancle:hover,#api_add_confirm:hover,#api_param_close:hover,#api_param_add:hover,#api_param_add_confirm:hover,
+#api_param_add_cancle:hover{
 	border:3px solid #03F;
 }
 .addApi,.addApp{
@@ -218,7 +220,7 @@ a:hover{
 	float: left;
 	color:#0078DF;
 }
-.app_add_propmt,.api_add_propmt,.api_param_propmt{
+.app_add_propmt,.api_add_propmt,.api_param_propmt,.api_param_add_propmt{
 	border:1px solid #0078DF;
 	position:fixed;
 	width:40%;
@@ -230,29 +232,27 @@ a:hover{
 	font-size: 24px;
 	display: none;
 }
-#app_add_table,#api_add_table{
+#app_add_table,#api_add_table,#api_param_add_table{
 	margin:30px auto;
 	font-size:18px;
 }
-#app_add_table input,#api_add_table input{
+#app_add_table input,#api_add_table input,#api_param_add_table input{
 	border-color:#ccc;
 	border-style:solid;
 	margin-left:30px;
 	height:20px;
 }
 .api_param_table{
-	border-collapse:collapse; 
-	width:auto;
-	margin: 0 auto;
-	margin-top:5px;
-	//border:1px solid #CCC;
-	//box-shadow:0px 0px 6px #000000;
-	//border-top-left-radius:10px;
-	//border-top-right-radius:10px;
+	width: 100%;
+	height: 60%;
+	overflow: auto;
+	margin-top:10px;
 }
-.api_param_table td{
-	width:130px;
-	//border:1px solid #0078DF;
+#api_param_table{
+	width: 100%;
+}
+#api_param_table td,th{
+	width:25%;
 }
 .api_param_table img{
 	width:20px;
@@ -261,4 +261,7 @@ a:hover{
 	border:none;
 	outline:none;
 	width:50px;
+}
+.api_param_delete,.api_param_edit{
+	cursor: pointer;
 }

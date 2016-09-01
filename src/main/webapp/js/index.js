@@ -40,7 +40,11 @@ window.onload=function(){
 	 * API添加窗口事件监听
 	 */
 	apiAddPropmtEventListener();
-	
+
+	/**
+	 * API参数添加事件监听
+	 */
+	apiParamAddEventListener();
 	
 	apiParamButtonEventListener();
 	/**
@@ -53,6 +57,14 @@ window.onload=function(){
 		this.src="/FrequencyControl/image/dropdown_icon.png";
 	}
 
+
+	/**
+	 * 读取登录状态
+	 */
+	if(getCookie('username')){
+		document.getElementById('loginStatus').innerHTML='欢迎您! '+getCookie('username');
+		document.getElementById('loginStatus').href="";
+	}
 }
 
 
@@ -64,7 +76,7 @@ window.onload=function(){
 	 */
 	 function readAppList(){
 		var request = new XMLHttpRequest();
-		request.open("GET","/FrequencyControl/app/list/1");
+		request.open("GET","/FrequencyControl/app/list/"+getCookie('userId'));
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -91,9 +103,9 @@ window.onload=function(){
 							"<td>"+date[0][j].platform+"</td>" +
 							"<td>"+date[0][j].secret+"</td>" +
 							"<td>"+date[0][j].is_reviewed+"</td>" +
-							"<td><img class=\"app_switch\" src=\""+document.getElementById('imageRoot').value+"/switch_icon.png\" />" +
-							"<img class=\"app_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
-							"<img class=\"app_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
+							"<td><img title=\'切换当前APP\' class=\"app_switch\" src=\""+document.getElementById('imageRoot').value+"/switch_icon.png\" />" +
+							"<img title=\'修改\' class=\"app_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
+							"<img title=\'删除\' class=\"app_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
 						num++;
 						
 					}
@@ -126,18 +138,20 @@ window.onload=function(){
 								alert("设置成功");
 							}
 							app_delete.item(k).onclick=function(){
-								var request = new XMLHttpRequest();
-								request.open("GET","/FrequencyControl/app/delete/1/"+document.getElementById('appId').value);
-								request.send();
-								table.deleteRow(this.parentNode.parentNode.rowIndex);
-								//编号重排序
-								for(var l=0;l<table.rows.length;l++){
-									var SZ_col = table.rows[l+1].getElementsByTagName("td");
-									SZ_col[1].innerHTML=l+1;
-									if((l+1)%2==0){
-										table.rows[l+1].className="odd";
-									}else{
-										table.rows[l+1].className="even";
+								if(confirm('确认删除？')){
+									var request = new XMLHttpRequest();
+									request.open("GET","/FrequencyControl/app/delete/"+getCookie('userId')+"/"+document.getElementById('appId').value);
+									request.send();
+									table.deleteRow(this.parentNode.parentNode.rowIndex);
+									//编号重排序
+									for(var l=0;l<table.rows.length;l++){
+										var SZ_col = table.rows[l+1].getElementsByTagName("td");
+										SZ_col[1].innerHTML=l+1;
+										if((l+1)%2==0){
+											table.rows[l+1].className="odd";
+										}else{
+											table.rows[l+1].className="even";
+										}
 									}
 								}
 							}
@@ -165,7 +179,8 @@ window.onload=function(){
 	 */
 	function readApiList(){
 		var request = new XMLHttpRequest();
-		request.open("GET","/FrequencyControl/ApcControl?appKey=ADSDI2NNGR00ASD8");
+		var stroage = window.sessionStorage;
+		request.open("GET","/FrequencyControl/interface/list/"+stroage.APP_ID);
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -174,7 +189,7 @@ window.onload=function(){
 					var str = "";
 					var colunm="";
 					var num = 1;
-					for(var j=0;j<date.length;j++){
+					for(var j=0;j<date.length-1;j++){
 					
 						if(j%2!=0){
 							colunm="odd";
@@ -183,17 +198,35 @@ window.onload=function(){
 						}
 						
 						str=str+"<tr class=\""+colunm+"\">" +
-							"<td style=\"display: none;\"><input type=\"hidden\" value=\""+date[j].apiId+"\"/></td>"+
+							"<td style=\"display: none;\"><input type=\"hidden\" value=\""+date[j].interface_id+"\"/></td>"+
 							"<td>"+num+"</td>" +
-							"<td>"+date[j].apiName+"</td>" +
-							"<td>"+date[j].frenquency+"</td>" +
+							"<td>"+date[j].api_name+"</td>" +
+							"<td>"+date[j].frequency+"</td>" +
 							"<td>"+date[j].timeout+"</td>" +
 							"<td>"+date[j].unit+"</td>" +
-							"<td class=\"api_param\" style=\"cursor: pointer;text-decoration: underline;\">"+"控制参数"+"</td>" +
-							"<td><img class=\"api_edit\" src=\"image/edit_icon.png\" />"+
-							"<img class=\"api_delete\" src=\"image/delete_icon.png\" /></td>";
+							"<td></td>" +
+							"<td><img title=\'编辑\' class=\"api_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" /></td>";
 						num++;
 						
+					}
+					for(var j=0;j<date[1].length;j++){
+						if(j%2!=0){
+							colunm="even";
+						}else{
+							colunm="odd";
+						}
+						str=str+"<tr class=\""+colunm+"\">" +
+						"<td style=\"display: none;\"><input type=\"hidden\" value=\""+date[1][j].interface_id+"\"/></td>"+
+						"<td>"+num+"</td>" +
+						"<td>"+date[1][j].api_name+"</td>" +
+						"<td>"+date[1][j].frequency+"</td>" +
+						"<td>"+date[1][j].timeout+"</td>" +
+						"<td>"+date[1][j].unit+"</td>" +
+						"<td class=\"api_param\" style=\"cursor: pointer;text-decoration: underline;\">"+"控制参数"+"</td>" +
+						"<td><img title=\'编辑\' class=\"api_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />"+
+						"<img title=\'删除\' class=\"api_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
+						num++;
+
 					}
 					document.getElementById("api_table_content").innerHTML="<th style=\"width:50px;\">序号</th>" +
 							"<th>API名称</th> " +
@@ -206,17 +239,18 @@ window.onload=function(){
 					var api_edit = document.getElementsByClassName('api_edit');
 					var api_param = document.getElementsByClassName('api_param');
 					var table = document.getElementById("api_table_content");
-		 			for(var k=0;k<table.rows.length;k++){
+		 			for(var k=0;k<table.rows.length-1;k++){
 		 				(function(k){
-		 					
-		 					
-		 					
-		 					api_delete.item(k).onclick = function(){
-		 						var node=this.parentNode.parentNode.getElementsByTagName('input').item(0).value
-		 						apiDelete(this.parentNode.parentNode);
-		 					}
-		 					
-		 					
+							if(k<table.rows.length-2){
+								api_delete.item(k).onclick=function(){
+									if(confirm('确认删除？')){
+										var node=this.parentNode.parentNode;
+										apiDelete(node);
+									}
+								}
+
+							}
+
 		 					api_edit.item(k).onclick=function(){
 		 						var api_edit_propmt=document.getElementsByClassName('api_edit_propmt').item(0);
 								api_edit_propmt.style.display="block";
@@ -230,16 +264,15 @@ window.onload=function(){
 									this.parentNode.parentNode.getElementsByTagName('td')[4].innerHTML;
 								api_edit_propmt.getElementsByTagName('input').item(4).value=
 									this.parentNode.parentNode.getElementsByTagName('td')[5].innerHTML;
-								alert(this.parentNode.parentNode.getElementsByTagName('input').item(0).value)
 		 					}
 
-
-		 					api_param.item(k).onclick=function(){
-		 						document.getElementsByClassName('api_param_propmt').item(0).style.display="block";
-		 						var interfaceId=this.parentNode.getElementsByTagName('input').item(0).value;
-		 						apiParamConfig(interfaceId);
-		 					}	
-
+							if(k<table.rows.length-2){
+								api_param.item(k).onclick=function(){
+									document.getElementsByClassName('api_param_propmt').item(0).style.display="block";
+									var interfaceId=this.parentNode.getElementsByTagName('input').item(0).value;
+									readApiParam(interfaceId);
+								}
+							}
 		 				})(k);
 					}	
 				}
@@ -302,11 +335,11 @@ window.onload=function(){
 							"<td>" + date[0][i].appKey + "</td>" +
 							"<td>" + date[0][i].customerId + "</td>" +
 							"<td>" + date[0][i].limitedIp + "</td>" +
-							"<td>" + date[0][i].firDate + "</td>" +
-							"<td>" + date[0][i].secDate + "</td>" +
-							"<td>" + date[0][i].thrDate + "</td>" +
-							"<td>" + date[0][i].absoluateDate + "</td>" +
-							"<td><img class=\"blacklist_reset\" src=\"" + document.getElementById('imageRoot').value + "/reset_icon.png\" /></td>";
+							"<td>" + (new Date(date[0][i].firDate)).Format("yyyy-MM-dd hh:mm:ss") + "</td>" +
+							"<td>" + (new Date(date[0][i].secDate)).Format("yyyy-MM-dd hh:mm:ss") + "</td>" +
+							"<td>" + (new Date(date[0][i].thrDate)).Format("yyyy-MM-dd hh:mm:ss")+ "</td>" +
+							"<td>" + (new Date(date[0][i].absoluteDate)).Format("yyyy-MM-dd hh:mm:ss")+ "</td>" +
+							"<td><img title=\'解除黑名单冻结\' class=\"blacklist_reset\" src=\"" + document.getElementById('imageRoot').value + "/reset_icon.png\" /></td>";
 							num++;
 						}
 						document.getElementById("blacklist_table_content").innerHTML = "<th style=\"width:50px;\">序号</th>" +
@@ -339,6 +372,7 @@ window.onload=function(){
 											row.getElementsByTagName('td').item(5).innerHTML="";
 											row.getElementsByTagName('td').item(6).innerHTML="";
 											row.getElementsByTagName('td').item(7).innerHTML="";
+											alert("操作成功");
 										}
 									}
 								}
@@ -450,8 +484,10 @@ window.onload=function(){
 	 */
 	function apiPropmtEventListener(){
 		  document.getElementById('api_edit_confirm').onclick=function(){
+			var stroage = window.sessionStorage;
+			  var interfceId=this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
 			var request = new XMLHttpRequest();
-			request.open("POST","/AjaxDemo/Update");
+			request.open("POST","/FrequencyControl/interface/modifySave/"+stroage.APP_ID+"/"+interfceId);
 			var date=createTransformData(document.getElementById('api_edit_table'));
 			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			request.send(date);
@@ -462,13 +498,13 @@ window.onload=function(){
 						var table = document.getElementById('api_table_content');
 						for(var i=1;i<table.rows.length;i++){
 							if(table.rows[i].getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value!=
-								responseDate.interfaceId){
+								responseDate[0].interface_id){
 								continue;
 							}else{
-								table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate.apiName;
-								table.rows[i].getElementsByTagName('td').item(3).innerHTML=responseDate.frequency;
-								table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate.timeout;
-								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate.unit;
+								table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate[0].api_name;
+								table.rows[i].getElementsByTagName('td').item(3).innerHTML=responseDate[0].frequency;
+								table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate[0].timeout;
+								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].unit;
 							}
 						}
 						alert("success");
@@ -593,21 +629,21 @@ window.onload=function(){
 			if(transform==1){
 				alert("输入不能为空");
 			}else{
+				var storage = window.sessionStorage;
 				var request = new XMLHttpRequest();
-				request.open("POST","/AjaxDemo/Update");
+				request.open("POST","/FrequencyControl/interface/save/"+storage.APP_ID);
 				var date=createTransformData(document.getElementById('api_add_table'));
 				request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				alert(date);
 				request.send(date);
 				request.onreadystatechange=function(){
 					if(request.readyState===4){
 						if(request.status===200){
 							if(confirm('是否进行参数配置')){
 								
-							}else{
-								
 							}
 							var bar_buttons = document.getElementsByClassName('bar_button');
-							bar_buttons.item(2).click();
+							bar_buttons.item(0).click();
 						}
 					}
 				}
@@ -631,47 +667,90 @@ window.onload=function(){
 	}
 /*******************************************************************************************************************************/
 	/**
-	 * API添加事件监听
+	 * API参数读取
 	 */
-	function apiParamConfig(interfaceId){
+	function readApiParam(interfaceId){
 		var request = new XMLHttpRequest();
-		request.open("GET","/AjaxDemo/ParamConfig?interface="+interfaceId);
-		var date=createTransformData(document.getElementById('api_add_table'));
+		var storage = window.sessionStorage;
+		request.open("GET","/FrequencyControl/parameter/list/"+interfaceId);
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
 				if(request.status===200){
-					var date = JSON.parse(request.responseText);
+					var resultDate = JSON.parse(request.responseText);
 					var str = "";
 					var colunm="";
 					var num = 1;
-					for(var i=0;i<date.length;i++){
-						
+					for(var i=0;i<resultDate[0].length;i++){
 						if(i%2!=0){
 							colunm="odd";
 						}else{
 							colunm="even";
 						}
 						str=str+"<tr class=\""+colunm+"\">" +
-							"<td style=\"display: none;\"><input id=\"appId\" type=\"hidden\" value=\""+date[i].interfaceId+"\"/>"
+							"<td style=\"display: none;\"><input type=\'hidden\' value=\""+resultDate[0][i].parameter_id+"\"></td>"+
 							"<td>"+num+"</td>" +
-							"<td><input type=\"text\" value=\""+date[i].param+"\"</td>" +
-							"<td><input type=\"text\" value=\""+date[i].value+"\"</td>" +
-							"<td><img class=\"api_param_edit\" src=\"image/edit_icon.png\" /></td>";
+							"<td><input type=\"text\" value=\""+resultDate[0][i].parameter_key+"\"</td>" +
+							"<td><input type=\"text\" value=\""+resultDate[0][i].parameter_value+"\"</td>" +
+							"<td><img class=\"api_param_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
+							"<img class=\"api_param_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
 						num++;
 					}
 					
-					document.getElementById("api_param_table").innerHTML="<th style=\"width:50px;\">序号</th>" +
+					document.getElementById("api_param_table").innerHTML="<input type=\"hidden\" value=\'"+interfaceId+"\'><th style=\"width:50px;\">序号</th>" +
 					"<th>参数名</th> " +
 					"<th>参数值</th>" +
 					"<th>操作</th>"+str;
 					
 					var api_param_edit=document.getElementsByClassName('api_param_edit');
+					var api_param_delete=document.getElementsByClassName('api_param_delete');
 					var table = document.getElementById('api_param_table');
 					for(var k=0;k<table.rows.length;k++){
 						(function(k){
 							api_param_edit.item(k).onclick=function(){
-								saveApiParam(this.parentNode.parentNode);
+								var node = this.parentNode.parentNode;
+								var parameterId = node.getElementsByTagName('input').item(0).value;
+								var data = "parameterKey="+node.getElementsByTagName('input').item(1).value+
+									"&parameterValue="+node.getElementsByTagName('input').item(2).value;
+								var request =  new XMLHttpRequest();
+								request.open("POST","/FrequencyControl/parameter/modifySave/"+parameterId);
+								request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+								request.send(data);
+								request.onreadystatechange=function() {
+									if (request.readyState === 4) {
+										if (request.status === 200) {
+											alert("修改成功");
+										}
+									}
+								}
+							}
+
+							api_param_delete.item(k).onclick=function(){
+								if(confirm("确认删除？")){
+									var request =  new XMLHttpRequest();
+									var node = this.parentNode.parentNode;
+									var parameterId = node.getElementsByTagName('input').item(0).value;
+									request.open("GET","/FrequencyControl/parameter/delete/"+parameterId);
+									request.send();
+									request.onreadystatechange=function() {
+										if (request.readyState === 4) {
+											if (request.status === 200) {
+												var table = document.getElementById('api_param_table');
+												table.deleteRow(node.rowIndex);
+												for(var l=0;l<table.rows.length;l++){
+													var SZ_col = table.rows[l+1].getElementsByTagName("td");
+													SZ_col[1].innerHTML=l+1;
+													if((l+1)%2==0){
+														table.rows[l+1].className="odd";
+													}else{
+														table.rows[l+1].className="even";
+													}
+												}
+											}
+										}
+									}
+								}
+
 							}
 						})(k);
 					}
@@ -692,8 +771,9 @@ window.onload=function(){
 	function apiDelete(node){
 		var table = document.getElementById('api_table_content');
 		var request =  new XMLHttpRequest();
-
-		request.open("GET","/AjaxDemo/ApcControl?appKey=ADSDI2NNGR00ASD8");
+		var storage = window.sessionStorage;
+		request.open("GET","/FrequencyControl/interface/delete/"+storage.APP_ID+"/"+
+		node.getElementsByTagName('input').item(0).value);
 		request.send();	
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -713,15 +793,89 @@ window.onload=function(){
 			}
 		}
 	}
-/****************************************************************************************************************/
-	/**
-	 *保存API参数
-	 */
-	function saveApiParam(node){
-		var request =  new XMLHttpRequest();
-		request.open("GET","/AjaxDemo/ApcControl?appKey=ADSDI2NNGR00ASD8");
-		request.send();	
+/*****************************************************************************************************************************/
+/**
+ * 日期格式化
+ */
+Date.prototype.Format = function (fmt) { //author: meizz
+	if(this!='Invalid Date') {
+		var o = {
+			"M+": this.getMonth() + 1, //月份
+			"d+": this.getDate(), //日
+			"h+": this.getHours(), //小时
+			"m+": this.getMinutes(), //分
+			"s+": this.getSeconds(), //秒
+			"q+": Math.floor((this.getMonth() + 3) / 3), //季度
+			"S": this.getMilliseconds() //毫秒
+		};
+		if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+		for (var k in o)
+			if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+		return fmt;
 	}
-	
-	
+	return "";
+}
+/*****************************************************************************************************************************/
+	/**
+	 * API参数添加事件监听
+	 */
+	function apiParamAddEventListener(){
+		document.getElementById('api_param_add').onclick=function(){
+			document.getElementsByClassName('api_param_add_propmt').item(0).style.display='block';
+		}
+
+		document.getElementById('api_param_add_cancle').onclick=function(){
+			var table=document.getElementById('api_param_add_table');
+			//清空文本框内容
+			for(var i =0;i<table.rows.length;i++){
+				table.rows[i].getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value="";
+			}
+			document.getElementsByClassName('api_param_add_propmt').item(0).style.display='none';
+		}
+
+		document.getElementById('api_param_add_confirm').onclick=function(){
+			var request =  new XMLHttpRequest();
+			var interfaceId=document.getElementById('api_param_table').getElementsByTagName('input').item(0).value;
+			request.open("POST","/FrequencyControl/parameter/save/"+interfaceId);
+			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			var table = document.getElementById('api_param_add_table');
+			var date=createTransformData(table);
+			request.send(date);
+			request.onreadystatechange=function(){
+				if(request.readyState===4){
+					if(request.status===200){
+						var table=document.getElementById('api_param_add_table');
+						//清空文本框内容
+						for(var i =0;i<table.rows.length;i++){
+							table.rows[i].getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value="";
+						}
+						document.getElementsByClassName('api_param_add_propmt').item(0).style.display='none';
+						var paramTable = document.getElementById('api_table_content');
+						alert(paramTable.rows.length);
+						for(var i=1;i<paramTable.rows.length;i++){
+							if(paramTable.rows[i].getElementsByTagName('input').item(0).value===request.responseText){
+								document.getElementsByClassName('api_param').item(i-2).click();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+function getCookie(c_name)
+{
+	if (document.cookie.length>0)
+	{
+		c_start=document.cookie.indexOf(c_name + "=")
+		if (c_start!=-1)
+		{
+			c_start=c_start + c_name.length+1
+			c_end=document.cookie.indexOf(";",c_start)
+			if (c_end==-1) c_end=document.cookie.length
+			return unescape(document.cookie.substring(c_start,c_end))
+		}
+	}
+	return ""
+}
 	
