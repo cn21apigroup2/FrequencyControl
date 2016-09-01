@@ -4,6 +4,7 @@ window.onload=function(){
 	 * 导航栏事件监听
 	 */
 	barClickEventListener();
+
 	
 	/**
 	 * 加载会话参数
