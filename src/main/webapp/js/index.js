@@ -1,5 +1,11 @@
-window.onload=function(){
+var storage;
+var imageRoot;
+var Host;
 
+window.onload=function(){
+	storage=window.sessionStorage;
+	imageRoot=document.getElementById('imageRoot').value;
+	Host=document.getElementById('mediaHost').value;
 	/**
 	 * 导航栏事件监听
 	 */
@@ -69,110 +75,16 @@ window.onload=function(){
 }
 
 
-var storage=window.sessionStorage;
-
 /*************************************************************************************************************/
 	/**
 	 * AJAX异步加载APP列表
 	 */
 	 function readAppList(){
-		var request = new XMLHttpRequest();
-		request.open("GET",document.getElementById('mediaHost').value+"/app/list/"+getCookie('userId'));
-		request.send();
-		request.onreadystatechange=function(){
-			if(request.readyState===4){
-				if(request.status===200){
-					var date = JSON.parse(request.responseText);
-					var str = "";
-					var colunm="";
-					var num = 1;
-
-					for(var j=0;j<date[0].length;j++){
-						if(j%2!=0){
-							colunm="odd";
-						}else{
-							colunm="even";
-						}
-						str=str+"<tr class=\""+colunm+"\">" +
-							"<td style=\"display: none;\"><input id=\"appId\" type=\"hidden\" value=\""+date[0][j].app_id+"\"/>" +
-								"<input id=\"appPage\" type=\"hidden\" value=\"1\" />" +
-								"<input id=\"appPageSize\" type=\"hidden\" value=\"10\" /></td>"+
-							"<td>"+num+"</td>" +
-							"<td>"+date[0][j].app_name+"</td>" +
-							"<td>"+date[0][j].app_key+"</td>" +
-							"<td>"+date[0][j].app_description+"</td>" +
-							"<td>"+date[0][j].platform+"</td>" +
-							"<td>"+date[0][j].secret+"</td>" +
-							"<td>"+date[0][j].is_reviewed+"</td>" +
-							"<td><img title=\'切换当前APP\' class=\"app_switch\" src=\""+document.getElementById('imageRoot').value+"/switch_icon.png\" />" +
-							"<img title=\'修改\' class=\"app_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
-							"<img title=\'删除\' class=\"app_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
-						num++;
-						
-					}
-
-					document.getElementById("app_table_content").innerHTML="<th style=\"width:50px;\">序号</th>" +
-							"<th>APP名称</th> " +
-							"<th>APP序列号</th>" +
-							"<th>应用描述</th>" +
-							"<th>平台</th>" +
-							"<th>密匙</th>" +
-							"<th>状态</th>" +
-							"<th>操作</th>"+str;
-					var app_edit = document.getElementsByClassName('app_edit');
-					var app_switch = document.getElementsByClassName('app_switch');
-					var app_delete = document.getElementsByClassName('app_delete');
-					var table = document.getElementById('app_table_content');
-					for(var k=0;k<app_switch.length;k++){
-						(function(k){
-							//切换APP
-							app_switch.item(k).onclick=function(){
-								var child_row = table.getElementsByTagName("tr")[k+1];
-								var SZ_col = child_row.getElementsByTagName("td");
-								var storage=window.sessionStorage;
-								storage.APP_ID=SZ_col[0].getElementsByTagName('input').item(0).value;
-								storage.APP_NAME=SZ_col[2].innerHTML;
-								storage.APP_KEY=SZ_col[3].innerHTML;
-								document.getElementById('APP_ID').value=storage.APP_ID;
-								document.getElementById('APP_KEY').value=storage.APP_KEY;
-								document.getElementById('APP_NAME').innerHTML=storage.APP_NAME;
-								alert("设置成功");
-							}
-							app_delete.item(k).onclick=function(){
-								if(confirm('确认删除？')){
-									var request = new XMLHttpRequest();
-									request.open("GET",document.getElementById('mediaHost').value+"/app/delete/"+getCookie('userId')+"/"+document.getElementById('appId').value);
-									request.send();
-									table.deleteRow(this.parentNode.parentNode.rowIndex);
-									//编号重排序
-									for(var l=0;l<table.rows.length;l++){
-										var SZ_col = table.rows[l+1].getElementsByTagName("td");
-										SZ_col[1].innerHTML=l+1;
-										if((l+1)%2==0){
-											table.rows[l+1].className="odd";
-										}else{
-											table.rows[l+1].className="even";
-										}
-									}
-								}
-							}
-							app_edit.item(k).onclick=function(){
-								var app_edit_propmt=document.getElementsByClassName('app_edit_propmt').item(0);
-								app_edit_propmt.style.display="block";
-								document.getElementById('app_edit_appId').value=
-									this.parentNode.parentNode.getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value;
-								app_edit_propmt.getElementsByTagName('input').item(1).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[2].innerHTML;
-								app_edit_propmt.getElementsByTagName('input').item(2).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[4].innerHTML;
-								app_edit_propmt.getElementsByTagName('input').item(3).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[5].innerHTML;
-							}
-						})(k);
-					}
-				}	
-			}
-		}
+		var url = Host+"/app/list/"+getCookie('userId');
+		interactiveByGet(url,function(responseText){
+			var date = JSON.parse(responseText);
+			createAppTable(date)
+		});
 	 }
 /***************************************************************************************************************/
 	/**
@@ -878,4 +790,121 @@ function getCookie(c_name)
 	}
 	return ""
 }
+
+	//ajax异步通信方法封装
+	function interactiveByGet(url,responseBody){
+		var request = new XMLHttpRequest();
+		request.open("GET",url);
+		request.send();
+		request.onreadystatechange=function (){
+			if(request.readyState===4){
+				if(request.status===200){
+					responseBody(request.responseText);
+				}
+			}
+		}
+	}
+	function interactiveByPost(url,data,responseBody){
+		var request = new XMLHttpRequest();
+		request.open('POST',url);
+		request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		request.send(data);
+		request.onreadystatechange=function (){
+			if(request.readyState===4){
+				if(request.status===200){
+					responseBody(request.responseText);
+				}
+			}
+		}
+	}
+	//生成APP表
+	function createAppTable(date){
+		var str = "";
+		var colunm="";
+		var num = 1;
+		for(var j=0;j<date[0].length;j++){
+			if(j%2!=0){
+				colunm="odd";
+			}else{
+				colunm="even";
+			}
+			str=str+"<tr class=\""+colunm+"\">" +
+			"<td style=\"display: none;\"><input id=\"appId\" type=\"hidden\" value=\""+date[0][j].app_id+"\"/>" +
+			"<input id=\"appPage\" type=\"hidden\" value=\"1\" />" +
+			"<input id=\"appPageSize\" type=\"hidden\" value=\"10\" /></td>"+
+			"<td>"+num+"</td>" +
+			"<td>"+date[0][j].app_name+"</td>" +
+			"<td>"+date[0][j].app_key+"</td>" +
+			"<td>"+date[0][j].app_description+"</td>" +
+			"<td>"+date[0][j].platform+"</td>" +
+			"<td>"+date[0][j].secret+"</td>" +
+			"<td>"+date[0][j].is_reviewed+"</td>" +
+			"<td><img title=\'切换当前APP\' class=\"app_switch\" src=\""+document.getElementById('imageRoot').value+"/switch_icon.png\" />" +
+			"<img title=\'修改\' class=\"app_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
+			"<img title=\'删除\' class=\"app_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
+			num++;
+
+		}
+
+		document.getElementById("app_table_content").innerHTML="<th style=\"width:50px;\">序号</th>" +
+		"<th>APP名称</th> " +
+		"<th>APP序列号</th>" +
+		"<th>应用描述</th>" +
+		"<th>平台</th>" +
+		"<th>密匙</th>" +
+		"<th>状态</th>" +
+		"<th>操作</th>"+str;
+		var app_edit = document.getElementsByClassName('app_edit');
+		var app_switch = document.getElementsByClassName('app_switch');
+		var app_delete = document.getElementsByClassName('app_delete');
+		var table = document.getElementById('app_table_content');
+		for(var k=0;k<app_switch.length;k++){
+			(function(k){
+				//切换APP
+				app_switch.item(k).onclick=function(){
+					var child_row = table.getElementsByTagName("tr")[k+1];
+					var SZ_col = child_row.getElementsByTagName("td");
+					var storage=window.sessionStorage;
+					storage.APP_ID=SZ_col[0].getElementsByTagName('input').item(0).value;
+					storage.APP_NAME=SZ_col[2].innerHTML;
+					storage.APP_KEY=SZ_col[3].innerHTML;
+					document.getElementById('APP_ID').value=storage.APP_ID;
+					document.getElementById('APP_KEY').value=storage.APP_KEY;
+					document.getElementById('APP_NAME').innerHTML=storage.APP_NAME;
+					alert("设置成功");
+				}
+				app_delete.item(k).onclick=function(){
+					if(confirm('确认删除？')){
+						var request = new XMLHttpRequest();
+						request.open("GET",document.getElementById('mediaHost').value+"/app/delete/"+getCookie('userId')+"/"+document.getElementById('appId').value);
+						request.send();
+						table.deleteRow(this.parentNode.parentNode.rowIndex);
+						//编号重排序
+						for(var l=0;l<table.rows.length;l++){
+							var SZ_col = table.rows[l+1].getElementsByTagName("td");
+							SZ_col[1].innerHTML=l+1;
+							if((l+1)%2==0){
+								table.rows[l+1].className="odd";
+							}else{
+								table.rows[l+1].className="even";
+							}
+						}
+					}
+				}
+				app_edit.item(k).onclick=function(){
+					var app_edit_propmt=document.getElementsByClassName('app_edit_propmt').item(0);
+					app_edit_propmt.style.display="block";
+					document.getElementById('app_edit_appId').value=
+						this.parentNode.parentNode.getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value;
+					app_edit_propmt.getElementsByTagName('input').item(1).value=
+						this.parentNode.parentNode.getElementsByTagName('td')[2].innerHTML;
+					app_edit_propmt.getElementsByTagName('input').item(2).value=
+						this.parentNode.parentNode.getElementsByTagName('td')[4].innerHTML;
+					app_edit_propmt.getElementsByTagName('input').item(3).value=
+						this.parentNode.parentNode.getElementsByTagName('td')[5].innerHTML;
+				}
+			})(k);
+		}
+	}
+
 	

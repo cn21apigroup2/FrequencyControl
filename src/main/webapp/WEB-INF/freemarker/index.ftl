@@ -6,7 +6,6 @@
 <script type="text/javascript" src="${jsRoot}/index.js"></script>
 <title>欢迎使用API接口频次控制平台</title>
 </head>
-
 <body>
 <input type="hidden" value="${imageRoot}" id="imageRoot"/>
 <input type="hidden" value="${mediaHost}" id="mediaHost"/>
