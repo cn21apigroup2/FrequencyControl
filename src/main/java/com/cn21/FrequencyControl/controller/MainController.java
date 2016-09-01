@@ -8,12 +8,9 @@
  */
 package com.cn21.FrequencyControl.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.cn21.FrequencyControl.service.ExampleService;
 
 /**
  * @author chenxiaofeng
@@ -21,10 +18,7 @@ import com.cn21.FrequencyControl.service.ExampleService;
  */
 @Controller
 @RequestMapping("/")
-public class TestController {
-	@Autowired
-	private ExampleService exampleService;
-
+public class MainController {
 	/**
 	 * 欢迎页面
 	 * @return void

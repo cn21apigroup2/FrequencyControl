@@ -1,8 +1,6 @@
 package com.cn21.FrequencyControl.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,14 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cn21.FrequencyControl.module.Application;
 import com.cn21.FrequencyControl.module.InterfaceControl;
 import com.cn21.FrequencyControl.service.ApplicationService;
 import com.cn21.FrequencyControl.service.InterfacService;
-import com.google.gson.JsonObject;
+import com.cn21.FrequencyControl.socket.ServerThread;
 
 /**
  * @author zhangqingxiang
@@ -34,6 +31,8 @@ public class InterfacController {
 	private InterfacService interfacService;
 	@Autowired
 	private ApplicationService applicationService;
+	@Autowired
+	private ServerThread serverThread;
     
 	/**
 	 * 获取app interface列表
@@ -59,6 +58,9 @@ public class InterfacController {
 			HttpServletRequest request, HttpServletResponse respons) {
 		InterfaceControl interfac=interfacService.generateInterfac(request, appId);//根据用户提交表单生成app
 		interfacService.createInterfac(interfac);//持久化到数据库
+		//通知客户端更新
+		Application application = applicationService.getApplicationByAppId(appId);
+		serverThread.notifyPullApiLimited(application.getApp_key());
 		return null;
 	}
 	/**
@@ -101,6 +103,9 @@ public class InterfacController {
 		interfac.setApi_name(request.getParameter("apiName"));
 		interfac.setUnit(request.getParameter("unit").charAt(0));
 		interfacService.modifyInterfac(interfac);
+		//通知客户端更新
+		Application application = applicationService.getApplicationByAppId(appId);
+		serverThread.notifyPullApiLimited(application.getApp_key());
 		JSONArray jsonArray = new JSONArray();
 		jsonArray.add(interfac);
 		return jsonArray.toString();
@@ -113,6 +118,9 @@ public class InterfacController {
 	@ResponseBody
 	public String deleteInterfac(@PathVariable long appId,@PathVariable long interfaceId) {
 		interfacService.deleteInterfac(interfaceId);
+		//通知客户端更新
+		Application application = applicationService.getApplicationByAppId(appId);
+		serverThread.notifyPullApiLimited(application.getApp_key());
 		return null;
 	} 
 	/**
@@ -136,6 +144,9 @@ public class InterfacController {
 	@RequestMapping(value = "/resume/{userId}/{appId}/{interId}")
 	public ModelAndView resumeDeletedInterfac(@PathVariable long userId,@PathVariable long appId,@PathVariable long interId){
 		interfacService.regainInterfac(interId);
+		//通知客户端更新
+		Application application = applicationService.getApplicationByAppId(appId);
+		serverThread.notifyPullApiLimited(application.getApp_key());
 		ModelAndView modelAndView = new ModelAndView("/interface/interfaceSave");
 		modelAndView.addObject("appId",appId);
 		modelAndView.addObject("userId",userId);

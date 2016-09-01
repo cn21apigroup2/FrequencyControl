@@ -9,6 +9,7 @@
 
 <body>
 <input type="hidden" value="${imageRoot}" id="imageRoot"/>
+<input type="hidden" value="${mediaHost}" id="mediaHost"/>
 	<div id="header">
     	<div class="top">
         	欢迎使用API接口频次控制系统

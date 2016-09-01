@@ -18,7 +18,7 @@
             	<div class="header">登录</div>
 				<form action="${mediaHost}/login/validate" method="post">
                 <div class="text">
-                	<input type="text" name="userName" placeholder="用户名" /><br />
+                	<input type="text" name="username" placeholder="用户名" /><br />
                     <input type="password" name="password" placeholder="密码"/><br />                    
                 </div>
                 <div class="checkbox">

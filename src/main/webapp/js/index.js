@@ -52,10 +52,10 @@ window.onload=function(){
 	 * icon 式样切换事件
 	 */
 	document.getElementById('dropdown_icon').onmouseover=function(){
-		this.src="/FrequencyControl/image/dropdown_click_icon.png";
+		this.src=document.getElementById('imageRoot').value+"/dropdown_click_icon.png";
 	}
 	document.getElementById('dropdown_icon').onmouseout=function(){
-		this.src="/FrequencyControl/image/dropdown_icon.png";
+		this.src=document.getElementById('imageRoot').value+"/dropdown_icon.png";
 	}
 
 
@@ -69,7 +69,7 @@ window.onload=function(){
 }
 
 
-
+var storage=window.sessionStorage;
 
 /*************************************************************************************************************/
 	/**
@@ -77,7 +77,7 @@ window.onload=function(){
 	 */
 	 function readAppList(){
 		var request = new XMLHttpRequest();
-		request.open("GET","/FrequencyControl/app/list/"+getCookie('userId'));
+		request.open("GET",document.getElementById('mediaHost').value+"/app/list/"+getCookie('userId'));
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -141,7 +141,7 @@ window.onload=function(){
 							app_delete.item(k).onclick=function(){
 								if(confirm('确认删除？')){
 									var request = new XMLHttpRequest();
-									request.open("GET","/FrequencyControl/app/delete/"+getCookie('userId')+"/"+document.getElementById('appId').value);
+									request.open("GET",document.getElementById('mediaHost').value+"/app/delete/"+getCookie('userId')+"/"+document.getElementById('appId').value);
 									request.send();
 									table.deleteRow(this.parentNode.parentNode.rowIndex);
 									//编号重排序
@@ -181,7 +181,7 @@ window.onload=function(){
 	function readApiList(){
 		var request = new XMLHttpRequest();
 		var stroage = window.sessionStorage;
-		request.open("GET","/FrequencyControl/interface/list/"+stroage.APP_ID);
+		request.open("GET",document.getElementById('mediaHost').value+"/interface/list/"+stroage.APP_ID);
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -290,15 +290,15 @@ window.onload=function(){
 		if(document.getElementById('username_search').value==""){
 			if(document.getElementById('ip_search').value==""){
 				//没有输入查询条件，查询所有结果
-				request.open("GET","/FrequencyControl/blacklist/show?appKey="+storage.APP_KEY);
+				request.open("GET",document.getElementById('mediaHost').value+"/blacklist/show?appKey="+storage.APP_KEY);
 			}else{
 				//通过IP地址查询结果
-				request.open("GET","/FrequencyControl/blacklist/showByIp?appKey="+storage.APP_KEY+
+				request.open("GET",document.getElementById('mediaHost').value+"/blacklist/showByIp?appKey="+storage.APP_KEY+
 						"&ip="+document.getElementById('ip_search').value);
 			}
 		}else{
 			//通过用户名查询结果
-			request.open("GET","/FrequencyControl/blacklist/showByUsername?appKey="+storage.APP_KEY+
+			request.open("GET",document.getElementById('mediaHost').value+"/blacklist/showByUsername?appKey="+storage.APP_KEY+
 					"&username="+document.getElementById('username_search').value);
 		}
 		request.send();		
@@ -359,7 +359,7 @@ window.onload=function(){
 						(function(k){
 							blacklist_reset.item(k).onclick=function(){
 								var request = new XMLHttpRequest();
-								request.open("POST","/FrequencyControl/blacklist/reset");
+								request.open("POST",document.getElementById('mediaHost').value+"/blacklist/reset");
 								var date = "appKey="+storage.APP_KEY+
 									"&username="+this.parentNode.parentNode.getElementsByTagName('td').item(2).innerHTML+
 									"&ip="+this.parentNode.parentNode.getElementsByTagName('td').item(3).innerHTML;
@@ -448,7 +448,7 @@ window.onload=function(){
 		document.getElementById('app_edit_confirm').onclick=function(){
 			var request = new XMLHttpRequest();
 			var appId =document.getElementById('app_edit_appId').value;
-			request.open("POST","/FrequencyControl/app/saveModify/1/"+appId);
+			request.open("POST",document.getElementById('mediaHost').value+"/app/saveModify/"+getCookie('userId')+"/"+appId);
 			var date=createTransformData(document.getElementById('app_edit_table'));
 			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			request.send(date);
@@ -468,7 +468,7 @@ window.onload=function(){
 								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].appPlatform;
 							}
 						}
-						alert("success");
+						alert("修改成功");
 					}
 				}
 			}
@@ -488,7 +488,7 @@ window.onload=function(){
 			var stroage = window.sessionStorage;
 			  var interfceId=this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
 			var request = new XMLHttpRequest();
-			request.open("POST","/FrequencyControl/interface/modifySave/"+stroage.APP_ID+"/"+interfceId);
+			request.open("POST",document.getElementById('mediaHost').value+"/interface/modifySave/"+stroage.APP_ID+"/"+interfceId);
 			var date=createTransformData(document.getElementById('api_edit_table'));
 			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			request.send(date);
@@ -578,7 +578,7 @@ window.onload=function(){
 				alert("应用名或者平台不能为空");
 			}else{
 				var request = new XMLHttpRequest();
-				request.open("POST","/FrequencyControl/app/save/1");
+				request.open("POST",document.getElementById('mediaHost').value+"/app/save/"+getCookie('userId'));
 				var date=createTransformData(document.getElementById('app_add_table'));
 				request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				request.send(date);
@@ -632,10 +632,9 @@ window.onload=function(){
 			}else{
 				var storage = window.sessionStorage;
 				var request = new XMLHttpRequest();
-				request.open("POST","/FrequencyControl/interface/save/"+storage.APP_ID);
+				request.open("POST",document.getElementById('mediaHost').value+"/interface/save/"+storage.APP_ID);
 				var date=createTransformData(document.getElementById('api_add_table'));
 				request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				alert(date);
 				request.send(date);
 				request.onreadystatechange=function(){
 					if(request.readyState===4){
@@ -673,7 +672,7 @@ window.onload=function(){
 	function readApiParam(interfaceId){
 		var request = new XMLHttpRequest();
 		var storage = window.sessionStorage;
-		request.open("GET","/FrequencyControl/parameter/list/"+interfaceId);
+		request.open("GET",document.getElementById('mediaHost').value+"/parameter/list/"+interfaceId);
 		request.send();
 		request.onreadystatechange=function(){
 			if(request.readyState===4){
@@ -714,7 +713,7 @@ window.onload=function(){
 								var data = "parameterKey="+node.getElementsByTagName('input').item(1).value+
 									"&parameterValue="+node.getElementsByTagName('input').item(2).value;
 								var request =  new XMLHttpRequest();
-								request.open("POST","/FrequencyControl/parameter/modifySave/"+parameterId);
+								request.open("POST",document.getElementById('mediaHost').value+"/parameter/modifySave/"+storage.APP_ID+"/"+parameterId);
 								request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 								request.send(data);
 								request.onreadystatechange=function() {
@@ -731,7 +730,7 @@ window.onload=function(){
 									var request =  new XMLHttpRequest();
 									var node = this.parentNode.parentNode;
 									var parameterId = node.getElementsByTagName('input').item(0).value;
-									request.open("GET","/FrequencyControl/parameter/delete/"+parameterId);
+									request.open("GET",document.getElementById('mediaHost').value+"/parameter/delete/"+storage.APP_ID+"/"+parameterId);
 									request.send();
 									request.onreadystatechange=function() {
 										if (request.readyState === 4) {
@@ -773,7 +772,7 @@ window.onload=function(){
 		var table = document.getElementById('api_table_content');
 		var request =  new XMLHttpRequest();
 		var storage = window.sessionStorage;
-		request.open("GET","/FrequencyControl/interface/delete/"+storage.APP_ID+"/"+
+		request.open("GET",document.getElementById('mediaHost').value+"/interface/delete/"+storage.APP_ID+"/"+
 		node.getElementsByTagName('input').item(0).value);
 		request.send();	
 		request.onreadystatechange=function(){
@@ -836,8 +835,9 @@ Date.prototype.Format = function (fmt) { //author: meizz
 
 		document.getElementById('api_param_add_confirm').onclick=function(){
 			var request =  new XMLHttpRequest();
+			
 			var interfaceId=document.getElementById('api_param_table').getElementsByTagName('input').item(0).value;
-			request.open("POST","/FrequencyControl/parameter/save/"+interfaceId);
+			request.open("POST",document.getElementById('mediaHost').value+"/parameter/save/"+storage.APP_ID+"/"+interfaceId);
 			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			var table = document.getElementById('api_param_add_table');
 			var date=createTransformData(table);
@@ -852,7 +852,6 @@ Date.prototype.Format = function (fmt) { //author: meizz
 						}
 						document.getElementsByClassName('api_param_add_propmt').item(0).style.display='none';
 						var paramTable = document.getElementById('api_table_content');
-						alert(paramTable.rows.length);
 						for(var i=1;i<paramTable.rows.length;i++){
 							if(paramTable.rows[i].getElementsByTagName('input').item(0).value===request.responseText){
 								document.getElementsByClassName('api_param').item(i-2).click();

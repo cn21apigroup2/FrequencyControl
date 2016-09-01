@@ -25,6 +25,7 @@
 
 	<context:component-scan base-package="com.cn21.FrequencyControl.service"></context:component-scan>
 	<context:component-scan base-package="com.cn21.FrequencyControl.dao"></context:component-scan>
+	<context:component-scan base-package="com.cn21.FrequencyControl.socket"></context:component-scan>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="configLocation" value="classpath:mybatis-config.xml" />

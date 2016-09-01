@@ -21,7 +21,6 @@
      			<!-- 不用拦截的URL请求 -->
      			<property name="unCheckUrls">
      				<list>
-						<value>/image/**</value>
      					<value>/login/getCheckCode</value>
      					<value>/login/validateCheckCode</value>
      					<value>/login/index</value>
