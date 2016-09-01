@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cn21.FrequencyControl.controller.common.Page;
 import com.cn21.FrequencyControl.dao.ApplicationDao;
@@ -30,6 +32,7 @@ import com.cn21.FrequencyControl.service.ApplicationService;
  * @date 2016年8月8日
  */
 @Service
+@Transactional
 public class ApplicationServiceImpl implements ApplicationService{
 	@Autowired
 	private ApplicationDao applicationDao;
@@ -129,6 +132,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 	 * @see com.cn21.FrequencyControl.service.ApplicationService#generateApp(javax.servlet.http.HttpServletRequest, long)
 	 */
 	@Override
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public Application generateApp(HttpServletRequest request,long userId) {
 		String appName = request.getParameter("appName");
 		String appDescription = request.getParameter("appDescription");
@@ -148,6 +152,7 @@ public class ApplicationServiceImpl implements ApplicationService{
 	 * @param userId
 	 * @return
 	 */
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	private Map<String,String> generateAppKeyAndSecret(long userId){
 		Map<String, String> result = new HashMap<String, String>();
 		userId = userId % 1000000000;// userId控制在9位数以内

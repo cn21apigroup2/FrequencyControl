@@ -10,6 +10,7 @@ package com.cn21.FrequencyControl.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cn21.FrequencyControl.dao.ExampleDao;
 import com.cn21.FrequencyControl.module.Example;
@@ -20,6 +21,7 @@ import com.cn21.FrequencyControl.service.ExampleService;
  * @date 2016年8月8日
  */
 @Service
+@Transactional
 public class ExampleServiceImpl implements ExampleService{
 	@Autowired
 	private ExampleDao exampleDao;

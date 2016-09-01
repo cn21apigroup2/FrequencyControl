@@ -51,7 +51,7 @@ public class UserController {
 	 * @param response
 	 * @return
 	 */
-	@RequestMapping(value="index")
+	@RequestMapping(value="/index")
 	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
 		ModelAndView modelAndView = new ModelAndView();
 			modelAndView.setViewName("/login/login");
@@ -127,7 +127,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/validate")
 	public void validateLogin(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
-		String username = request.getParameter("userName");
+		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		HttpSession session = request.getSession();
 		ModelAndView modelAndView = new ModelAndView();
@@ -275,7 +275,7 @@ public class UserController {
 	 * @throws IOException 
 	 * @throws ServletException 
 	 */
-	@RequestMapping(value="/registersuccess")
+	@RequestMapping(value="/register")
 	public ModelAndView userRegister(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -285,7 +285,8 @@ public class UserController {
 			userService.register(username,password,email,request);		
 			User user = userService.getUserInfoByUserName(username);
 			CookieUtil.setCookie(response, "username", username);
-			response.sendRedirect("/app/list/"+user.getUser_id());
+			modelAndView.addObject("msg", "注册成功！");
+			modelAndView.setViewName("/login/login");
 			return null;
 		}
 		else{

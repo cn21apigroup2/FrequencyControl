@@ -4,15 +4,19 @@ import com.cn21.FrequencyControl.dao.BlacklistDao;
 import com.cn21.FrequencyControl.dto.BlacklistDto;
 import com.cn21.FrequencyControl.module.Blacklist;
 import com.cn21.FrequencyControl.service.BlacklistService;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
 import java.util.List;
 
 /**
  * Created by steven on 2016/8/17.
  */
 @Service
+@Transactional
 public class BlacklistServiceImpl implements BlacklistService {
     @Resource
     private BlacklistDao bd;

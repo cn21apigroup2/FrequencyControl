@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cn21.FrequencyControl.dao.UserDao;
 import com.cn21.FrequencyControl.module.User;
@@ -13,6 +14,7 @@ import com.cn21.FrequencyControl.service.UserService;
  * @date 2016年8月18日
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 	@Autowired
 	protected UserDao userdao;

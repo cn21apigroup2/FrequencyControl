@@ -1,15 +1,20 @@
 package com.cn21.FrequencyControl.service.impl;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cn21.FrequencyControl.dao.ParameterDao;
 import com.cn21.FrequencyControl.module.Parameter;
 import com.cn21.FrequencyControl.service.ParameterService;
 
 @Service
+@Transactional
 public class ParameterServiceImpl implements ParameterService{
 
 	@Autowired
@@ -74,6 +79,7 @@ public class ParameterServiceImpl implements ParameterService{
 	}
 
 	@Override
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public Parameter generateParameter(HttpServletRequest request, long interId) {
 		// TODO Auto-generated method stub
 		String parameterKey = request.getParameter("parameterKey");
