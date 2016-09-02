@@ -21,6 +21,8 @@ public class SpringPostInitiationProcessor implements  ApplicationListener<Conte
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		 if (event.getApplicationContext().getParent() == null) {
+			 logger.info("若已开启 先关闭socket线程!");
+			 serverThread.close();
 			 logger.info("启动socket线程!");
 			 serverThread.start();
 	        }
