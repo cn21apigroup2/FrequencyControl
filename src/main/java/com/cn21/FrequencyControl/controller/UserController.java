@@ -135,7 +135,7 @@ public class UserController {
 			User user = userService.getUserInfoByUserName(username);
 			CookieUtil.setCookie(response, "username", username);
 			CookieUtil.setCookie(response, "userId", Integer.toString(user.getUser_id()));
-			response.sendRedirect("/");
+			response.sendRedirect("/FrequencyControl");
 //			request.getRequestDispatcher("/app/list/"+user.getUser_id()).forward(request, response);
 		}
 		else{

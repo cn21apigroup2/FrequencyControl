@@ -64,14 +64,24 @@ window.onload=function(){
 		this.src=document.getElementById('imageRoot').value+"/dropdown_icon.png";
 	}
 
-
 	/**
 	 * 读取登录状态
 	 */
 	if(getCookie('username')){
-		document.getElementById('loginStatus').innerHTML='欢迎您! '+getCookie('username');
-		document.getElementById('loginStatus').href="";
+		document.getElementById('loginStatus').removeAttribute('href');
+		document.getElementById('loginStatus').innerHTML='欢迎您! '+getCookie('username')+"<a style=\'margin-left: 20px;\' id=\"logout\">登出</a>";
+		document.getElementById('loginStatus').style.color='black';
+		document.getElementById('logout').style.cursor="pointer";
+		document.getElementById('logout').onclick=function(){
+			DelCookie('username');
+			DelCookie('userId');
+			storage.clear();
+			window.location.href=Host+"/login/index";
+
+		}
 	}
+
+
 }
 
 
@@ -82,8 +92,8 @@ window.onload=function(){
 	 function readAppList(){
 		var url = Host+"/app/list/"+getCookie('userId');
 		interactiveByGet(url,function(responseText){
-			var date = JSON.parse(responseText);
-			createAppTable(date)
+			var data = JSON.parse(responseText);
+			createAppTable(data)
 		});
 	 }
 /***************************************************************************************************************/
@@ -91,210 +101,104 @@ window.onload=function(){
 	 *AJAX异步加载API控制列表
 	 */
 	function readApiList(){
-		var request = new XMLHttpRequest();
-		var stroage = window.sessionStorage;
-		request.open("GET",document.getElementById('mediaHost').value+"/interface/list/"+stroage.APP_ID);
-		request.send();
-		request.onreadystatechange=function(){
-			if(request.readyState===4){
-				if(request.status===200){
-					var date = JSON.parse(request.responseText);
-					var str = "";
-					var colunm="";
-					var num = 1;
-					for(var j=0;j<date.length-1;j++){
-					
-						if(j%2!=0){
-							colunm="odd";
-						}else{
-							colunm="even";
-						}
-						
-						str=str+"<tr class=\""+colunm+"\">" +
-							"<td style=\"display: none;\"><input type=\"hidden\" value=\""+date[j].interface_id+"\"/></td>"+
-							"<td>"+num+"</td>" +
-							"<td>"+date[j].api_name+"</td>" +
-							"<td>"+date[j].frequency+"</td>" +
-							"<td>"+date[j].timeout+"</td>" +
-							"<td>"+date[j].unit+"</td>" +
-							"<td></td>" +
-							"<td><img title=\'编辑\' class=\"api_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" /></td>";
-						num++;
-						
-					}
-					for(var j=0;j<date[1].length;j++){
-						if(j%2!=0){
-							colunm="even";
-						}else{
-							colunm="odd";
-						}
-						str=str+"<tr class=\""+colunm+"\">" +
-						"<td style=\"display: none;\"><input type=\"hidden\" value=\""+date[1][j].interface_id+"\"/></td>"+
-						"<td>"+num+"</td>" +
-						"<td>"+date[1][j].api_name+"</td>" +
-						"<td>"+date[1][j].frequency+"</td>" +
-						"<td>"+date[1][j].timeout+"</td>" +
-						"<td>"+date[1][j].unit+"</td>" +
-						"<td class=\"api_param\" style=\"cursor: pointer;text-decoration: underline;\">"+"控制参数"+"</td>" +
-						"<td><img title=\'编辑\' class=\"api_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />"+
-						"<img title=\'删除\' class=\"api_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
-						num++;
-
-					}
-					document.getElementById("api_table_content").innerHTML="<th style=\"width:50px;\">序号</th>" +
-							"<th>API名称</th> " +
-							"<th>控制频次</th>" +
-							"<th>时间长度</th>" +
-							"<th>时间单位</th>" +
-							"<th>参数列表</th>" +
-							"<th>操作</th>"+str;
-					var api_delete = document.getElementsByClassName('api_delete');
-					var api_edit = document.getElementsByClassName('api_edit');
-					var api_param = document.getElementsByClassName('api_param');
-					var table = document.getElementById("api_table_content");
-		 			for(var k=0;k<table.rows.length-1;k++){
-		 				(function(k){
-							if(k<table.rows.length-2){
-								api_delete.item(k).onclick=function(){
-									if(confirm('确认删除？')){
-										var node=this.parentNode.parentNode;
-										apiDelete(node);
-									}
-								}
-
-							}
-
-		 					api_edit.item(k).onclick=function(){
-		 						var api_edit_propmt=document.getElementsByClassName('api_edit_propmt').item(0);
-								api_edit_propmt.style.display="block";
-								api_edit_propmt.getElementsByTagName('input').item(0).value=
-									this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
-								api_edit_propmt.getElementsByTagName('input').item(1).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[2].innerHTML;
-								api_edit_propmt.getElementsByTagName('input').item(2).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[3].innerHTML;
-								api_edit_propmt.getElementsByTagName('input').item(3).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[4].innerHTML;
-								api_edit_propmt.getElementsByTagName('input').item(4).value=
-									this.parentNode.parentNode.getElementsByTagName('td')[5].innerHTML;
-		 					}
-
-							if(k<table.rows.length-2){
-								api_param.item(k).onclick=function(){
-									document.getElementsByClassName('api_param_propmt').item(0).style.display="block";
-									var interfaceId=this.parentNode.getElementsByTagName('input').item(0).value;
-									readApiParam(interfaceId);
-								}
-							}
-		 				})(k);
-					}	
-				}
-			}				 
-		}
+		var url=Host+"/interface/list/"+storage.APP_ID;
+		interactiveByGet(url,function(responseText){
+			var data = JSON.parse(responseText);
+			createApiTable(data);
+			createApiEvent();
+		});
 	}
 /*****************************************************************************************************************/
 	/**
 	 * AJAX异步查询黑名单列表
 	 */	
 	function readBlacklistList(){
-		var request = new XMLHttpRequest();
-		var storage=window.sessionStorage;
+		var url="";
 		if(document.getElementById('username_search').value==""){
 			if(document.getElementById('ip_search').value==""){
 				//没有输入查询条件，查询所有结果
-				request.open("GET",document.getElementById('mediaHost').value+"/blacklist/show?appKey="+storage.APP_KEY);
+				url=Host+"/blacklist/show?appKey="+storage.APP_KEY;
 			}else{
 				//通过IP地址查询结果
-				request.open("GET",document.getElementById('mediaHost').value+"/blacklist/showByIp?appKey="+storage.APP_KEY+
-						"&ip="+document.getElementById('ip_search').value);
+				url=Host+"/blacklist/showByIp?appKey="+storage.APP_KEY+
+				"&ip="+document.getElementById('ip_search').value;
 			}
 		}else{
 			//通过用户名查询结果
-			request.open("GET",document.getElementById('mediaHost').value+"/blacklist/showByUsername?appKey="+storage.APP_KEY+
-					"&username="+document.getElementById('username_search').value);
+			url=Host+"/blacklist/showByUsername?appKey="+storage.APP_KEY+
+			"&username="+document.getElementById('username_search').value;
 		}
-		request.send();		
-		request.onreadystatechange=function(){
-			if(request.readyState===4){
-				if(request.status===200){
-					var date = JSON.parse(request.responseText);
-					var str = "";
-					var colunm="";
-					var num = 1;
-					if(date[0][0]==null){
-						alert('没有结果');
-					}else {
-						for (var i = 0; i < date[0].length; i++) {
+		interactiveByGet(url,function(responseText){
+			var date = JSON.parse(responseText);
+			var str = "";
+			var colunm="";
+			var num = 1;
+			if(date[0][0]==null){
+				alert('没有结果');
+			}else {
+				for (var i = 0; i < date[0].length; i++) {
 
-							if (i % 2 != 0) {
-								colunm = "odd";
-							} else {
-								colunm = "even";
-							}
-							if (!date[0][i].customerId)
-								date[0][i].customerId = "";
-							if (!date[0][i].limitedIp)
-								date[0][i].limitedIp = "";
-							if (!date[0][i].firDate)
-								date[0][i].firDate = "";
-							if (!date[0][i].secDate)
-								date[0][i].secDate = "";
-							if (!date[0][i].thrDate)
-								date[0][i].thrDate = "";
-							if (!date[0][i].absoluateDate)
-								date[0][i].absoluateDate = "";
-							str = str + "<tr class=\"" + colunm + "\">" +
-							"<td>" + num + "</td>" +
-							"<td>" + date[0][i].appKey + "</td>" +
-							"<td>" + date[0][i].customerId + "</td>" +
-							"<td>" + date[0][i].limitedIp + "</td>" +
-							"<td>" + (new Date(date[0][i].firDate)).Format("yyyy-MM-dd hh:mm:ss") + "</td>" +
-							"<td>" + (new Date(date[0][i].secDate)).Format("yyyy-MM-dd hh:mm:ss") + "</td>" +
-							"<td>" + (new Date(date[0][i].thrDate)).Format("yyyy-MM-dd hh:mm:ss")+ "</td>" +
-							"<td>" + (new Date(date[0][i].absoluteDate)).Format("yyyy-MM-dd hh:mm:ss")+ "</td>" +
-							"<td><img title=\'解除黑名单冻结\' class=\"blacklist_reset\" src=\"" + document.getElementById('imageRoot').value + "/reset_icon.png\" /></td>";
-							num++;
-						}
-						document.getElementById("blacklist_table_content").innerHTML = "<th style=\"width:50px;\">序号</th>" +
-						"<th>APP序列号</th> " +
-						"<th>用户名</th>" +
-						"<th>IP地址</th>" +
-						"<th>第一次封号时间</th>" +
-						"<th>第二次封号时间</th>" +
-						"<th>第三次封号时间</th>" +
-						"<th>冻结时间</th>" +
-						"<th>操作</th>" + str;
+					if (i % 2 != 0) {
+						colunm = "odd";
+					} else {
+						colunm = "even";
 					}
-					//重置记录事件监听
-					var blacklist_reset = document.getElementsByClassName("blacklist_reset");
-					for(var k=0;k<blacklist_reset.length;k++){
-						(function(k){
-							blacklist_reset.item(k).onclick=function(){
-								var request = new XMLHttpRequest();
-								request.open("POST",document.getElementById('mediaHost').value+"/blacklist/reset");
-								var date = "appKey="+storage.APP_KEY+
-									"&username="+this.parentNode.parentNode.getElementsByTagName('td').item(2).innerHTML+
-									"&ip="+this.parentNode.parentNode.getElementsByTagName('td').item(3).innerHTML;
-								request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-								request.send(date);
-								var row = this.parentNode.parentNode;
-								request.onreadystatechange=function(){
-									if(request.readyState===4){
-										if(request.status===200){
-											row.getElementsByTagName('td').item(4).innerHTML="";
-											row.getElementsByTagName('td').item(5).innerHTML="";
-											row.getElementsByTagName('td').item(6).innerHTML="";
-											row.getElementsByTagName('td').item(7).innerHTML="";
-											alert("操作成功");
-										}
-									}
-								}
-							}
-						})(k);
-					}
+					if (!date[0][i].customerId)
+						date[0][i].customerId = "";
+					if (!date[0][i].limitedIp)
+						date[0][i].limitedIp = "";
+					if (!date[0][i].firDate)
+						date[0][i].firDate = "";
+					if (!date[0][i].secDate)
+						date[0][i].secDate = "";
+					if (!date[0][i].thrDate)
+						date[0][i].thrDate = "";
+					if (!date[0][i].absoluateDate)
+						date[0][i].absoluateDate = "";
+					str = str + "<tr class=\"" + colunm + "\">" +
+					"<td>" + num + "</td>" +
+					"<td>" + date[0][i].appKey + "</td>" +
+					"<td>" + date[0][i].customerId + "</td>" +
+					"<td>" + date[0][i].limitedIp + "</td>" +
+					"<td>" + (new Date(date[0][i].firDate)).Format("yyyy-MM-dd hh:mm:ss") + "</td>" +
+					"<td>" + (new Date(date[0][i].secDate)).Format("yyyy-MM-dd hh:mm:ss") + "</td>" +
+					"<td>" + (new Date(date[0][i].thrDate)).Format("yyyy-MM-dd hh:mm:ss")+ "</td>" +
+					"<td>" + (new Date(date[0][i].absoluteDate)).Format("yyyy-MM-dd hh:mm:ss")+ "</td>" +
+					"<td><img title=\'解除黑名单冻结\' class=\"blacklist_reset\" src=\"" + document.getElementById('imageRoot').value + "/reset_icon.png\" /></td>";
+					num++;
 				}
+				document.getElementById("blacklist_table_content").innerHTML = "<th style=\"width:50px;\">序号</th>" +
+				"<th>APP序列号</th> " +
+				"<th>用户名</th>" +
+				"<th>IP地址</th>" +
+				"<th>第一次封号时间</th>" +
+				"<th>第二次封号时间</th>" +
+				"<th>第三次封号时间</th>" +
+				"<th>冻结时间</th>" +
+				"<th>操作</th>" + str;
 			}
-		}
+			//重置记录事件监听
+			var blacklist_reset = document.getElementsByClassName("blacklist_reset");
+			for(var k=0;k<blacklist_reset.length;k++){
+				(function(k){
+					blacklist_reset.item(k).onclick=function(){
+						var url=Host+"/blacklist/reset";
+						var data = "appKey="+storage.APP_KEY+
+							"&username="+this.parentNode.parentNode.getElementsByTagName('td').item(2).innerHTML+
+							"&ip="+this.parentNode.parentNode.getElementsByTagName('td').item(3).innerHTML;
+						var row = this.parentNode.parentNode;
+						interactiveByPost(url,data, function () {
+							row.getElementsByTagName('td').item(4).innerHTML="";
+							row.getElementsByTagName('td').item(5).innerHTML="";
+							row.getElementsByTagName('td').item(6).innerHTML="";
+							row.getElementsByTagName('td').item(7).innerHTML="";
+							alert("操作成功");
+						});
+					}
+				})(k);
+			}
+
+		});
 	}
 /******************************************************************************************************************/
 	/**
@@ -358,32 +262,24 @@ window.onload=function(){
 	 */
 	function appPropmtEventListener(){
 		document.getElementById('app_edit_confirm').onclick=function(){
-			var request = new XMLHttpRequest();
 			var appId =document.getElementById('app_edit_appId').value;
-			request.open("POST",document.getElementById('mediaHost').value+"/app/saveModify/"+getCookie('userId')+"/"+appId);
-			var date=createTransformData(document.getElementById('app_edit_table'));
-			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			request.send(date);
-			request.onreadystatechange=function(){
-				if(request.readyState===4){
-					if(request.status===200){
-						var responseDate = JSON.parse(request.responseText);
-						
-						var table = document.getElementById('app_table_content');
-						for(var i=1;i<table.rows.length;i++){
-							if(table.rows[i].getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value!=
-								appId){
-								continue;
-							}else{
-								table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate[0].appName;
-								table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate[0].appDescription;
-								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].appPlatform;
-							}
-						}
-						alert("修改成功");
+			var url=Host+"/app/saveModify/"+getCookie('userId')+"/"+appId;
+			var data=createTransformData(document.getElementById('app_edit_table'));
+			interactiveByPost(url,data,function(responseText){
+				var responseDate = JSON.parse(responseText);
+				var table = document.getElementById('app_table_content');
+				for(var i=1;i<table.rows.length;i++){
+					if(table.rows[i].getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value!=
+						appId){
+						continue;
+					}else{
+						table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate[0].appName;
+						table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate[0].appDescription;
+						table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].appPlatform;
 					}
 				}
-			}
+				alert("修改成功");
+			});
 			document.getElementsByClassName('app_edit_propmt').item(0).style.display="none";
 		}
 		
@@ -397,33 +293,29 @@ window.onload=function(){
 	 */
 	function apiPropmtEventListener(){
 		  document.getElementById('api_edit_confirm').onclick=function(){
-			var stroage = window.sessionStorage;
 			  var interfceId=this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
-			var request = new XMLHttpRequest();
-			request.open("POST",document.getElementById('mediaHost').value+"/interface/modifySave/"+stroage.APP_ID+"/"+interfceId);
-			var date=createTransformData(document.getElementById('api_edit_table'));
-			request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			request.send(date);
-			request.onreadystatechange=function(){
-				if(request.readyState===4){
-					if(request.status===200){
-						var responseDate = JSON.parse(request.responseText);
-						var table = document.getElementById('api_table_content');
-						for(var i=1;i<table.rows.length;i++){
-							if(table.rows[i].getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value!=
-								responseDate[0].interface_id){
-								continue;
-							}else{
-								table.rows[i].getElementsByTagName('td').item(2).innerHTML=responseDate[0].api_name;
-								table.rows[i].getElementsByTagName('td').item(3).innerHTML=responseDate[0].frequency;
-								table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate[0].timeout;
-								table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].unit;
-							}
-						}
-						alert("success");
-					}
-				}
-			}
+			  var url=Host+"/interface/modifySave/"+storage.APP_ID+"/"+interfceId;
+			  var data=createTransformData(document.getElementById('api_edit_table'));
+			  interactiveByPost(url,data,function(responseText){
+				  var responseDate = JSON.parse(responseText);
+				  var table = document.getElementById('api_table_content');
+				  for(var i=1;i<table.rows.length;i++){
+					  if(table.rows[i].getElementsByTagName('td').item(0).getElementsByTagName('input').item(0).value!=
+						  responseDate[0].interface_id){
+						  continue;
+					  }else{
+						  if(i===1){
+							  table.rows[i].getElementsByTagName('td').item(2).innerHTML='全局控制';
+						  }else {
+							  table.rows[i].getElementsByTagName('td').item(2).innerHTML = responseDate[0].api_name;
+						  }
+						  table.rows[i].getElementsByTagName('td').item(3).innerHTML=responseDate[0].frequency;
+						  table.rows[i].getElementsByTagName('td').item(4).innerHTML=responseDate[0].timeout;
+						  table.rows[i].getElementsByTagName('td').item(5).innerHTML=responseDate[0].unit;
+					  }
+				  }
+				  alert("修改成功");
+			  })
 			document.getElementsByClassName('api_edit_propmt').item(0).style.display="none";
 		}
 		
@@ -451,20 +343,9 @@ window.onload=function(){
 	}
 /*******************************************************************************************************************************/
 	/**
-	 * 设置Cookies
-	 */
-	function setCookie(cname, cvalue, exdays) {
-	    var d = new Date();
-	    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-	    var expires = "expires="+d.toUTCString();
-	    document.cookie = cname + "=" + cvalue + "; " + expires;
-	}
-/*******************************************************************************************************************************/
-	/**
 	 * 加载会话参数
 	 */
 	function loadSessionParam(){
-		var storage=window.sessionStorage;
 		document.getElementById('APP_ID').value=storage.APP_ID;
 		document.getElementById('APP_KEY').value=storage.APP_KEY;
 		if(storage.APP_NAME){
@@ -489,19 +370,14 @@ window.onload=function(){
 					table.rows[2].getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value==""){
 				alert("应用名或者平台不能为空");
 			}else{
-				var request = new XMLHttpRequest();
-				request.open("POST",document.getElementById('mediaHost').value+"/app/save/"+getCookie('userId'));
-				var date=createTransformData(document.getElementById('app_add_table'));
-				request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				request.send(date);
-				request.onreadystatechange=function(){
-					if(request.readyState===4){
-						if(request.status===200){
-							var bar_buttons = document.getElementsByClassName('bar_button');
-							bar_buttons.item(2).click();
-						}
-					}
-				}
+				var url=Host+"/app/save/"+getCookie('userId');
+				var data=createTransformData(document.getElementById('app_add_table'));
+				interactiveByPost(url,data,function(){
+					var bar_buttons = document.getElementsByClassName('bar_button');
+					bar_buttons.item(2).click();
+				});
+
+
 				//清空文本框内容
 				for(var i =0;i<table.rows.length;i++){
 					table.rows[i].getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value="";
@@ -518,9 +394,9 @@ window.onload=function(){
 				table.rows[i].getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value="";
 			}
 			document.getElementsByClassName('app_add_propmt').item(0).style.display="none";
-			
+
 		}
-		
+
 	}
 /*******************************************************************************************************************************/
 	/**
@@ -542,23 +418,12 @@ window.onload=function(){
 			if(transform==1){
 				alert("输入不能为空");
 			}else{
-				var storage = window.sessionStorage;
-				var request = new XMLHttpRequest();
-				request.open("POST",document.getElementById('mediaHost').value+"/interface/save/"+storage.APP_ID);
-				var date=createTransformData(document.getElementById('api_add_table'));
-				request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				request.send(date);
-				request.onreadystatechange=function(){
-					if(request.readyState===4){
-						if(request.status===200){
-							if(confirm('是否进行参数配置')){
-								
-							}
-							var bar_buttons = document.getElementsByClassName('bar_button');
-							bar_buttons.item(0).click();
-						}
-					}
-				}
+				var url=Host+"/interface/save/"+storage.APP_ID;
+				var data=createTransformData(document.getElementById('api_add_table'));
+				interactiveByPost(url,data,function(){
+					var bar_buttons = document.getElementsByClassName('bar_button');
+					bar_buttons.item(0).click();
+				});
 				//清空文本框内容
 				for(var i =0;i<table.rows.length;i++){
 					table.rows[i].getElementsByTagName('td').item(1).getElementsByTagName('input').item(0).value="";
@@ -817,43 +682,39 @@ function getCookie(c_name)
 			}
 		}
 	}
-	//生成APP表
+
+
+
+
+	//生APP成表
 	function createAppTable(date){
-		var str = "";
-		var colunm="";
-		var num = 1;
-		for(var j=0;j<date[0].length;j++){
-			if(j%2!=0){
-				colunm="odd";
-			}else{
-				colunm="even";
-			}
-			str=str+"<tr class=\""+colunm+"\">" +
-			"<td style=\"display: none;\"><input id=\"appId\" type=\"hidden\" value=\""+date[0][j].app_id+"\"/>" +
+		var tr="<tr class=\"\">" +
+			"<td class=\"app_id\" style=\"display: none;\"><input id=\"appId\" type=\"hidden\" />"+
 			"<input id=\"appPage\" type=\"hidden\" value=\"1\" />" +
 			"<input id=\"appPageSize\" type=\"hidden\" value=\"10\" /></td>"+
-			"<td>"+num+"</td>" +
-			"<td>"+date[0][j].app_name+"</td>" +
-			"<td>"+date[0][j].app_key+"</td>" +
-			"<td>"+date[0][j].app_description+"</td>" +
-			"<td>"+date[0][j].platform+"</td>" +
-			"<td>"+date[0][j].secret+"</td>" +
-			"<td>"+date[0][j].is_reviewed+"</td>" +
-			"<td><img title=\'切换当前APP\' class=\"app_switch\" src=\""+document.getElementById('imageRoot').value+"/switch_icon.png\" />" +
-			"<img title=\'修改\' class=\"app_edit\" src=\""+document.getElementById('imageRoot').value+"/edit_icon.png\" />" +
-			"<img title=\'删除\' class=\"app_delete\" src=\""+document.getElementById('imageRoot').value+"/delete_icon.png\" /></td>";
-			num++;
+			"<td class=\"index\"></td>" +
+			"<td class=\"app_name\"></td>" +
+			"<td class=\"app_key\"></td>" +
+			"<td class=\"app_description\"></td>" +
+			"<td class=\"platform\"></td>" +
+			"<td class=\"secret\"></td>" +
+			"<td class=\"is_reviewed\"></td>" +
+			"<td><img title=\'切换当前APP\' class=\"app_switch\" src=\""+imageRoot+"/switch_icon.png\" />" +
+			"<img title=\'修改\' class=\"app_edit\" src=\""+imageRoot+"/edit_icon.png\" />" +
+			"<img title=\'删除\' class=\"app_delete\" src=\""+imageRoot+"/delete_icon.png\" /></td>";
+		var th="<th style=\"width:50px;\">序号</th>" +
+			"<th>APP名称</th> " +
+			"<th>APP序列号</th>" +
+			"<th>应用描述</th>" +
+			"<th>平台</th>" +
+			"<th>密匙</th>" +
+			"<th>状态</th>" +
+			"<th>操作</th>";
+		createTableContent(date[0],"",tr,th,'app_table_content');
+		createAppEvent();
+	}
 
-		}
-
-		document.getElementById("app_table_content").innerHTML="<th style=\"width:50px;\">序号</th>" +
-		"<th>APP名称</th> " +
-		"<th>APP序列号</th>" +
-		"<th>应用描述</th>" +
-		"<th>平台</th>" +
-		"<th>密匙</th>" +
-		"<th>状态</th>" +
-		"<th>操作</th>"+str;
+	function createAppEvent(){
 		var app_edit = document.getElementsByClassName('app_edit');
 		var app_switch = document.getElementsByClassName('app_switch');
 		var app_delete = document.getElementsByClassName('app_delete');
@@ -875,20 +736,13 @@ function getCookie(c_name)
 				}
 				app_delete.item(k).onclick=function(){
 					if(confirm('确认删除？')){
-						var request = new XMLHttpRequest();
-						request.open("GET",document.getElementById('mediaHost').value+"/app/delete/"+getCookie('userId')+"/"+document.getElementById('appId').value);
-						request.send();
+						var node=this.parentNode.parentNode;
+						var url=Host+"/app/delete/"+getCookie('userId')+"/"+node.getElementsByTagName('input').item(0).value;
+						alert(node.getElementsByTagName('input').item(0).value);
+						interactiveByGet(url,null);
 						table.deleteRow(this.parentNode.parentNode.rowIndex);
 						//编号重排序
-						for(var l=0;l<table.rows.length;l++){
-							var SZ_col = table.rows[l+1].getElementsByTagName("td");
-							SZ_col[1].innerHTML=l+1;
-							if((l+1)%2==0){
-								table.rows[l+1].className="odd";
-							}else{
-								table.rows[l+1].className="even";
-							}
-						}
+						indexSort(table);
 					}
 				}
 				app_edit.item(k).onclick=function(){
@@ -907,4 +761,174 @@ function getCookie(c_name)
 		}
 	}
 
-	
+	function createTableContent(data,ftr,tr,th,tableId){
+		var str = "";
+		str+=ftr;
+		for(var i=0;i<data.length;i++){
+			str+=tr;
+		}
+		str=th+str;
+		var table = document.getElementById(tableId);
+		table.innerHTML=str;
+		var rows=table.rows;
+		for(var i=1;i<rows.length;i++){
+			if(i%2!=0){
+				rows.item(i).className='even';
+			}else{
+				rows.item(i).className='odd';
+			}
+			var tds=rows.item(i).getElementsByTagName('td');
+			rows.item(i).getElementsByClassName('index').item(0).innerHTML=i;
+			for(var key in data[i-1]){
+				for(var j=0;j<tds.length;j++){
+					if(key==tds.item(j).className){
+						if(j===0){
+							tds.item(j).getElementsByTagName('input').item(0).value=data[i-1][key];
+						}else{
+							tds.item(j).innerHTML=data[i-1][key];
+						}
+					}
+				}
+			}
+		}
+	}
+
+//生成API列表
+function createApiTable(data){
+	var str="";
+	var ftr="<tr>" +
+		"<td class=\'interface_id\' style=\"display: none;\"><input type=\"hidden\" /></td>"+
+		"<td class=\'index\'></td>" +
+		"<td class=\'api_name\'></td>" +
+		"<td class=\'frequency\'></td>" +
+		"<td class=\'timeout\'></td>" +
+		"<td class=\'unit\'></td>" +
+		"<td class=\'\'></td>" +
+		"<td><img title=\'编辑\' class=\"api_edit\" src=\""+imageRoot+"/edit_icon.png\" /></td>";
+	var tr="<tr>" +
+		"<td class=\'interface_id\' style=\"display: none;\"><input type=\"hidden\" /></td>"+
+		"<td class=\'index\'></td>" +
+		"<td class=\'api_name\'></td>" +
+		"<td class=\'frequency\'></td>" +
+		"<td class=\'timeout\'></td>" +
+		"<td class=\'unit\'></td>" +
+		"<td><a class=\'api_param\' style=\'cursor: pointer;\'>配置参数</a></td>" +
+		"<td><img title=\'编辑\' class=\"api_edit\" src=\""+imageRoot+"/edit_icon.png\" />"+
+		"<img title=\'删除\' class=\"api_delete\" src=\""+imageRoot+"/delete_icon.png\"  /></td>";
+	for(var i=0;i<data[1].length;i++){
+		str+=tr;
+	}
+	var th="<th style=\"width:50px;\">序号</th>" +
+		"<th>API名称</th> " +
+		"<th>控制频次</th>" +
+		"<th>时间长度</th>" +
+		"<th>时间单位</th>" +
+		"<th>参数列表</th>" +
+		"<th>操作</th>";
+	var table = document.getElementById('api_table_content');
+	table.innerHTML=th+ftr+str;
+	var rows=table.rows;
+	var ftds=rows.item(1).getElementsByTagName('td');
+	rows.item(1).getElementsByClassName('index').item(0).innerHTML=1;
+	rows.item(1).className='even';
+	for(var key in data[0]){
+		for(var j=0;j<ftds.length;j++){
+			if(key==ftds.item(j).className){
+				if(j===0){
+					ftds.item(j).getElementsByTagName('input').item(0).value=data[0][key];
+				}else if(j===2){
+					ftds.item(j).innerHTML='全局控制';
+				}else{
+					ftds.item(j).innerHTML=data[0][key];
+				}
+			}
+		}
+	}
+	for(var i=2;i<rows.length;i++){
+		if(i%2!=0){
+			rows.item(i).className='even';
+		}else{
+			rows.item(i).className='odd';
+		}
+		var tds=rows.item(i).getElementsByTagName('td');
+		rows.item(i).getElementsByClassName('index').item(0).innerHTML=i;
+		for(var key in data[1][i-2]){
+			for(var j=0;j<tds.length;j++){
+				if(key==tds.item(j).className){
+					if(j===0){
+						tds.item(j).getElementsByTagName('input').item(0).value=data[1][i-2][key];
+					}else{
+						tds.item(j).innerHTML=data[1][i-2][key];
+					}
+				}
+			}
+		}
+	}
+
+	document
+}
+
+	function createApiEvent(){
+		var api_delete = document.getElementsByClassName('api_delete');
+		var api_edit = document.getElementsByClassName('api_edit');
+		var api_param = document.getElementsByClassName('api_param');
+		var table = document.getElementById("api_table_content");
+		for(var k=0;k<table.rows.length-1;k++){
+			(function(k){
+				if(k<table.rows.length-2){
+					api_delete.item(k).onclick=function(){
+						if(confirm('确认删除？')){
+							var node=this.parentNode.parentNode;
+							apiDelete(node);
+						}
+					}
+				}
+
+				api_edit.item(k).onclick=function(){
+					var api_edit_propmt=document.getElementsByClassName('api_edit_propmt').item(0);
+					api_edit_propmt.style.display="block";
+					if(k===0){
+						api_edit_propmt.getElementsByTagName('input').item(1).style.display='none';
+						api_edit_propmt.getElementsByTagName('input').item(1).value='#overall#';
+					}else{
+						api_edit_propmt.getElementsByTagName('input').item(1).value=
+							this.parentNode.parentNode.getElementsByTagName('td')[2].innerHTML;
+					}
+					api_edit_propmt.getElementsByTagName('input').item(0).value=
+						this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
+					api_edit_propmt.getElementsByTagName('input').item(2).value=
+						this.parentNode.parentNode.getElementsByTagName('td')[3].innerHTML;
+					api_edit_propmt.getElementsByTagName('input').item(3).value=
+						this.parentNode.parentNode.getElementsByTagName('td')[4].innerHTML;
+					api_edit_propmt.getElementsByTagName('input').item(4).value=
+						this.parentNode.parentNode.getElementsByTagName('td')[5].innerHTML;
+				}
+
+				if(k<table.rows.length-2){
+					api_param.item(k).onclick=function(){
+						document.getElementsByClassName('api_param_propmt').item(0).style.display="block";
+						var interfaceId=this.parentNode.parentNode.getElementsByTagName('input').item(0).value;
+						readApiParam(interfaceId);
+					}
+				}
+			})(k);
+		}
+	}
+
+function indexSort(table){
+	for(var l=0;l<table.rows.length;l++){
+		var SZ_col = table.rows[l+1].getElementsByTagName("td");
+		SZ_col[1].innerHTML=l+1;
+		if((l+1)%2==0){
+			table.rows[l+1].className="odd";
+		}else{
+			table.rows[l+1].className="even";
+		}
+	}
+}
+function DelCookie(name) {
+	var exp = new Date();
+	exp.setTime(exp.getTime() + (-1 * 24 * 60 * 60 * 1000));
+	var cval =getCookie(name)
+	document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
+}
