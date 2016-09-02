@@ -15,7 +15,7 @@
         </div>
         <div class="bottom">
         	<img src="${imageRoot}/21cn_icon.png"  width="40px;" style="padding-top:18px; padding-left:120px;"/>
-        	<a href="${mediaHost}/login/index" id="loginStatus">登录</a>
+        	<a href="${mediaHost}/login/index" id="loginStatus">登录 </a>
         </div>
     </div>
     <div id="body">
