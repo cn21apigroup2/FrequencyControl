@@ -42,7 +42,7 @@
     
     <update id="modify" parameterType="Blacklist">
     	update blacklist set
-    	times=#{times}, fir_date=#{firDate}, sec_date=#{secDate}, thr_date=#{thrDate}, absolute_date=#{absoulteDate}
+    	times=#{times}, fir_date=#{firDate}, sec_date=#{secDate}, thr_date=#{thrDate}, absolute_date=#{absoluteDate}
     	where app_key=#{appKey} 
     </update>
     

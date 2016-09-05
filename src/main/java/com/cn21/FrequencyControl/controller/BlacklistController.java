@@ -111,9 +111,17 @@ public class BlacklistController {
   		@ResponseBody
   		public String pull(HttpServletRequest request) {
   			String appKey = request.getParameter("appKey");
+  			JSONObject result=new JSONObject();
+  			if(appKey==null || appKey.equals("")){
+  				result.put("success", 0);
+  				result.put("msg", "empty appkey");
+  				return result.toJSONString();
+  			}
+  			JSONArray array = new JSONArray();
   			List<Blacklist> query = bs.query(appKey);
-  			JSONArray result = new JSONArray();
-  			result.addAll(query);
+  			array.addAll(query);
+  			result.put("success", 1);
+  			result.put("blacklists", query);
   			return result.toJSONString();
   		}
   		

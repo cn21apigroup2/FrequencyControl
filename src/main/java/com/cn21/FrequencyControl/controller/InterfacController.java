@@ -161,13 +161,25 @@ public class InterfacController {
 		 * @param appKey
 		 * @return
 		 */
-		@RequestMapping("/pull/{appKey}")
+		@RequestMapping("/pull")
 		@ResponseBody
-		public String pull(HttpServletRequest request, @PathVariable String appKey) {
+		public String pull(HttpServletRequest request) {
+			String appKey = request.getParameter("appKey");
+			JSONObject jsonObject = new JSONObject();
+			if(appKey==null || appKey.equals("")) {
+				jsonObject.put("success", 0);
+				jsonObject.put("msg", "empty appKey");
+				return jsonObject.toJSONString();
+			}
 			Application application = applicationService.getApplicationByAppKey(appKey);
+			if(application==null){
+				jsonObject.put("success", 0);
+				jsonObject.put("msg", "invalid appKey");
+				return jsonObject.toJSONString();
+			}
 			List<InterfaceControl> interfaces = interfacService.getInterfacListByAppId(application.getApp_id());
 			InterfaceControl overAllControl = interfacService.getOverAllControl(interfaces);
-			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("success", 1);
 			jsonObject.put("overallControl", overAllControl);
 			JSONArray jSonArray = new JSONArray();
 			jSonArray.addAll(interfaces);

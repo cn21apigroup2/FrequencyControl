@@ -33,7 +33,7 @@ DROP TABLE IF EXISTS `interface_control`;
 CREATE TABLE `interface_control`(
 interface_id INT NOT NULL AUTO_INCREMENT COMMENT '唯一标识 自增主键',
 app_id INT NOT NULL COMMENT '应用标识',
-api_name VARCHAR(30) DEFAULT NULL COMMENT '标识接口的字符串',
+api_name VARCHAR(100) DEFAULT NULL COMMENT '标识接口的字符串',
 frequency INT DEFAULT 100 COMMENT '接口调用频次',
 timeout BIGINT DEFAULT 0  COMMENT '接口频次控制的时间长度 与unit配合使用',
 unit ENUM('s','m','h','d') DEFAULT 's' COMMENT '时间单位 与timeout配合使用 s/秒 m/分 h/时 d/天',
