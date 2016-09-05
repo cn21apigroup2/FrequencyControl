@@ -78,7 +78,7 @@ public class ServerThread extends Thread{
 				if(!isValidApp(appKey,appSecret))  continue;
 				//使用handleThread 管理连接
 				if(appKey!=null&&appSecret!=null){
-					System.out.println("server get appkey "+appKey);
+					System.out.println("server get appkey secret "+appKey+" "+appSecret);
 					HandleThread handler=new HandleThread(socket);
 					sockets.put(appKey, handler);
 					handler.start();

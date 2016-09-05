@@ -28,6 +28,7 @@ public class HandleThread extends Thread{
 		in=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out=new PrintWriter(socket.getOutputStream());
 		heartThread=new HeartThread();
+		updateThread=new UpdateThread();
 	}
 	
 	@Override
@@ -40,6 +41,7 @@ public class HandleThread extends Thread{
 					wait();
 					out.println(message);
 					out.flush();
+					System.out.println("server: send heart ack");
 				}				
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -167,7 +169,8 @@ public class HandleThread extends Thread{
 						handleMessage(code);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
+					System.out.println("server: disconnect with client");
 					break;
 				}catch(NumberFormatException e){
 					continue;
@@ -195,7 +198,9 @@ public class HandleThread extends Thread{
 						if(needUpdate){
 							notifySendMessage(MessageRule.APILIMITED_UPDATE);
 							setNeedUpdate(false);
+							System.out.println("server: send update");
 						}
+						//System.err.println("server: send update false");
 					}
 				}
 				//out.println(MessageRule.HEART);

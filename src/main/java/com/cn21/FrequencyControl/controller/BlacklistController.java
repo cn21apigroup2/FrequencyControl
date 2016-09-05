@@ -154,10 +154,14 @@ public class BlacklistController {
   				}
   			}
   			boolean success=true;
+			System.out.println(blacklists);
   			for (Blacklist blacklist : blacklists) {
-  				Blacklist fromDb = bs.queryByUsername(blacklist.getAppKey(), blacklist.getCustomerId());
+				if(blacklist.getBlacklistId()>0)
+					bs.update(blacklist);
+				else bs.add(blacklist);
+  				/*Blacklist fromDb = bs.queryByUsername(blacklist.getAppKey(), blacklist.getCustomerId());
   				if(fromDb!=null) bs.update(blacklist);
-  				else bs.add(blacklist);
+  				else bs.add(blacklist);*/
 			}
   			JSONObject result = new JSONObject();
   			result.put("success", success?1:0);

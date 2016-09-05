@@ -26,6 +26,22 @@ public class Blacklist {
     private Date absoluteDate;
     private short state;
 
+    @Override
+    public String toString() {
+        return "Blacklist{" +
+                "blacklistId=" + blacklistId +
+                ", appKey='" + appKey + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", limitedIp='" + limitedIp + '\'' +
+                ", times=" + times +
+                ", firDate=" + firDate +
+                ", secDate=" + secDate +
+                ", thrDate=" + thrDate +
+                ", absoluteDate=" + absoluteDate +
+                ", state=" + state +
+                '}';
+    }
+
     public int getBlacklistId() {
         return blacklistId;
     }
